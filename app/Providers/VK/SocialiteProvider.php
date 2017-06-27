@@ -20,7 +20,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = ['email'];
+    protected $scopes = ['audio','wall','info','pages','offline','groups','stats','docs','market','photos','video','email'];
 
     /**
      * {@inheritdoc}
@@ -115,7 +115,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
 
         if (is_null($this->httpClient)) {
             $this->httpClient = new Client([
-                'proxy'  => '185.147.124.174:8000',
+                'proxy'  => '185.148.24.243:8000',
                 'verify' => false,
             ]);
         }
