@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +15,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'vk_token',
+        'vk_id',
+        'expiresIn',
+        'avatar',
+        'FIO',
     ];
 
     /**
@@ -24,15 +31,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
-    public static function createBySocialProvider($providerUser)
-    {
-        return self::create([
-            'email' => $providerUser->getEmail(),
-            'username' => $providerUser->getNickname(),
-            'name' => $providerUser->getName(),
-        ]);
-    }
 }

@@ -30,12 +30,12 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\User::class,
+        'model' => App\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    'vkontakte' => [
+    'vk' => [
         'client_id' => env('VKONTAKTE_KEY'),
         'client_secret' => env('VKONTAKTE_SECRET'),
         'redirect' => env('VKONTAKTE_REDIRECT_URI'),

@@ -3,25 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Services\SocialAccountService;
 use Socialite;
 
 class SocialController extends Controller
 {
-
-    public function login($provider)
+    public function login()
     {
-        return Socialite::with($provider)->redirect();
+        return Socialite::with('vk')->redirect();
     }
 
-    public function callback(SocialAccountService $service, $provider)
+    public function callback()
     {
-
-        $driver   = Socialite::driver($provider);
-        $user = $service->createOrGetUser($driver, $provider);
+        $user = Socialite::with('vk')->stateless()->authUser();
         \Auth::login($user, true);
-        return redirect()->intended('/');
 
+        return redirect()->intended('/');
     }
 
 }

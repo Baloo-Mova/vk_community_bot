@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['login', 'logout']]);
     }
 
     /**
@@ -23,6 +23,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+            'user' => \Auth::user()
+        ]);
+    }
+
+    public function login()
+    {
+        return view('login');
+    }
+
+    public function logout()
+    {
+        \Auth::logout();
+
+        return redirect('/login');
     }
 }

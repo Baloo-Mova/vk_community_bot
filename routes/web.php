@@ -11,13 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', "HomeController@login")->name('login');
+Route::post('/logout', "HomeController@logout")->name('logout');
+Route::get('/social_login/', 'SocialController@login')->name('vk_login');
+Route::get('/social_login/callback/', 'SocialController@callback');
+
+Route::group(['middleware' => ['vkAuth', 'auth']], function () {
+    Route::get('/', "HomeController@index")->name('index');
 });
-
-Route::get('/social_login/{provider}', 'SocialController@login');
-Route::get('/social_login/callback/{provider}', 'SocialController@callback');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
