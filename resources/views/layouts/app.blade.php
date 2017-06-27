@@ -26,5 +26,10 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $(".button-collapse").sideNav();
+        });
+    </script>
 </body>
 </html>
