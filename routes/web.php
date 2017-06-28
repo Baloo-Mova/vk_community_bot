@@ -17,5 +17,5 @@ Route::get('/social_login/', 'SocialController@login')->name('vk_login');
 Route::get('/social_login/callback/', 'SocialController@callback');
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
-    Route::get('/', "HomeController@index")->name('index');
+    Route::get('/', "GroupsController@index")->name('groups.index');
 });

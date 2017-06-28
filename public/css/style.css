@@ -12,7 +12,7 @@
 header,
 main,
 footer {
-    padding-left: 300px;
+    padding-left: 140px;
 }
 
 body {
@@ -50,4 +50,65 @@ body {
     border-radius: 2px;
     color: #FFF;
     width: auto;
+}
+
+.page_title{
+    font-size: 25px;
+    margin: 20px 0px 20px 20px;
+}
+
+.tabs{
+    background-color: transparent;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #3F51B5;
+    text-decoration: none;
+}
+.tabs .indicator {
+    background-color: #3F51B5;
+}
+.tabs .tab a {
+    color: #637377;
+}
+
+.side-nav{
+    width: 140px;
+}
+
+.card.small {
+    height: 150px;
+}
+.groups_options_card a{
+    width: 100px;
+    font-size: 15px;
+}
+.groups_options_card,
+.groups_options_card_ul{
+    width: 100%;
+}
+
+.groups_options_card{
+    padding: 5px 30px;
+    text-align: left;
+}
+
+.groups_options_card_wrap{
+    padding: 0px !important;
+}
+
+.card .card-title {
+    font-size: 18px;
+}
+
+.groups_options_card_title{
+    padding: 3px 20px;
+}
+
+.header_user:hover{
+    text-decoration: none;
+    color: #fff;
+}
+.header_user_menu_item:hover{
+    text-decoration: none;
 }

@@ -18,6 +18,7 @@
         @include('layouts.partials.header')
 
         <main>
+            @include('layouts.partials.contentheader')
             @yield('content')
         </main>
 

@@ -1,17 +1,26 @@
 <header>
     <ul class="dropdown-content" id="user_dropdown">
         <li>
-            <a class="indigo-text" href="#!">Группы</a>
+            <a class="indigo-text header_user_menu_item" href="#!">Группы</a>
         </li>
         <li>
-            <a class="indigo-text" href="#!">Баланс</a>
+            <a class="indigo-text header_user_menu_item" href="#!">Баланс</a>
         </li>
         <li>
-            <a class="indigo-text" href="#!">Помощь</a>
+            <a class="indigo-text header_user_menu_item" href="#!">Помощь</a>
         </li>
         <li class="divider"></li>
         <li>
-            <a class="indigo-text" href="#!">Выход</a>
+
+            <a class="indigo-text header_user_menu_item" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+               document.getElementById('logout-form').submit();">
+                Выход
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
         </li>
     </ul>
 
@@ -23,7 +32,7 @@
 
             <ul class="right">
                 <li>
-                    <a class='right dropdown-button' href='' data-activates='user_dropdown'>
+                    <a class='right dropdown-button header_user' href='' data-activates='user_dropdown'>
                         <span>
                             {{$user->FIO}}
                         </span>
