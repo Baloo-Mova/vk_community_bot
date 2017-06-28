@@ -20,7 +20,20 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = ['audio','wall','info','pages','offline','groups','stats','docs','market','photos','video','email'];
+    protected $scopes = [
+        'audio',
+        'wall',
+        'info',
+        'pages',
+        'offline',
+        'groups',
+        'stats',
+        'docs',
+        'market',
+        'photos',
+        'video',
+        'email'
+    ];
 
     /**
      * {@inheritdoc}
@@ -69,9 +82,9 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
         }
 
         $user = $this->mapUserToObject($this->getUserByToken($token = $this->getAccessTokenResponse($this->getCode())));
+        $exp  = array_get($token, 'expires_in') == 0 ? 86400 : array_get($token, 'expires_in');
 
-        return $user->setToken(array_get($token, 'access_token'))->setExpiresIn(time() + array_get($token,
-                'expires_in'));
+        return $user->setToken(array_get($token, 'access_token'))->setExpiresIn(time() + $exp);
     }
 
     /**
@@ -115,7 +128,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
 
         if (is_null($this->httpClient)) {
             $this->httpClient = new Client([
-                //'proxy'  => '185.148.24.243:8000',
+               // 'proxy'  => '185.148.24.243:8000',
                 'verify' => false,
             ]);
         }
