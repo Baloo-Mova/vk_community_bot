@@ -39,8 +39,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $user = User::find(1);
-        $vk = new VK($user);
-        var_dump($vk->getAdminGroups());
+         time();
     }
 }
