@@ -21,6 +21,7 @@ class AddUserGroups extends Migration
             $table->integer('group_id');
             $table->integer('expiries');
             $table->string('token');
+
         });
     }
 
