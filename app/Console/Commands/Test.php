@@ -39,6 +39,6 @@ class Test extends Command
      */
     public function handle()
     {
-         time();
+        echo time();
     }
 }
