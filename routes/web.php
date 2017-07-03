@@ -26,6 +26,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/callback/', 'GroupsController@addGroupCallback')->name('group.add.callback');
         Route::get('/response-script/{group_id}', 'GroupsController@responseScript')->name('groups.response');
         Route::post('/add/response-script', 'GroupsController@addResponseScript')->name('groups.add.response');
+        Route::post('/edit/response-script', 'GroupsController@editResponseScript')->name('groups.edit.response');
         Route::get('/delete/response-script/{response}', 'GroupsController@deleteResponseScript')->name('groups.delete.response');
     });
 

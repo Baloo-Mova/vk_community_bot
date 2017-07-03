@@ -34,7 +34,7 @@
                                         <span class="card-title grey-text text-darken-4 small groups_options_card_title ">Настройки</span>
                                         <ul class="groups_options_card_ul">
                                             <li class="groups_options_card waves-effect wavev-dark">
-                                                <a href="{{ route('groups.response', ['bot_id' => $activated_groups->id]) }}" class="grey-text text-darken-2 a_non_decorated">Бот</a>
+                                                <a href="{{ route('groups.response', ['bot_id' => $activated_groups->id]) }}" class="grey-text text-darken-2 a_non_decorated">Сценарии ответов</a>
                                             </li>
                                         </ul>
                                     </div>
