@@ -18,7 +18,11 @@
         @include('layouts.partials.header')
 
         <main>
-            @include('layouts.partials.contentheader')
+            @if(Request::is('balance'))
+                @include('layouts.partials.balanceheader')
+            @else
+                @include('layouts.partials.contentheader')
+            @endif
             @yield('content')
         </main>
 

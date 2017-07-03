@@ -2,10 +2,12 @@
 
 @section('content')
     <div class="container-fluid">
-        @section('contentheader_title')
+        @section('balanceheader_title')
             Управление балансом
         @endsection
-        <span class="contentheader_badge badge blue">{{ $user->balance }}</span>
+        @section('balanceheader_badge')
+            {{ $user->balance }}
+        @endsection
 
         <div class="row">
             <div class="col s12">
@@ -20,14 +22,19 @@
                     </li>
                 </ul>
             </div>
-            <div id="balance" class="col s12">
+            <div id="balance" class="col s12 tab_content_custom">
                 <form action="{{ route('balance.replenishment') }}" method="post">
                     {{ csrf_field() }}
-                    <input type="text" name="sum" required>
-                    <button>Пополнить</button>
+                    <div class="input-field col s12">
+                        <input type="text" name="sum" id="sum" required>
+                        <label for="sum">Сума пополнения (руб)</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <button class="btn  light-blue darken-4 waves-effect wavev-light">Пополнить</button>
+                    </div>
                 </form>
             </div>
-            <div id="history" class="col s12">
+            <div id="history" class="col s12 tab_content_custom">
                 Test 2
             </div>
         </div>
