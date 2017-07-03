@@ -29,9 +29,11 @@
                                     </div>
                                     <div class="groups_options_card_wrap card-reveal">
                                         <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-                                        <span class="card-title grey-text text-darken-4 small groups_options_card_title">Настройки</span>
+                                        <span class="card-title grey-text text-darken-4 small groups_options_card_title ">Настройки</span>
                                         <ul class="groups_options_card_ul">
-                                            <li class="groups_options_card waves-effect wavev-dark"><a href="" class="grey-text text-darken-2 ">Бот</a></li>
+                                            <li class="groups_options_card waves-effect wavev-dark">
+                                                <a href="" class="grey-text text-darken-2 a_non_decorated">Бот</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -55,7 +57,7 @@
                                         <span class="card-title grey-text text-darken-4 small groups_options_card_title">Доступ</span>
                                         <ul class="groups_options_card_ul">
                                             <li class="groups_options_card waves-effect wavev-dark">
-                                                <a href="" class="grey-text text-darken-2 ">Предоставить</a>
+                                                <a href="" class="grey-text text-darken-2 a_non_decorated">Предоставить</a>
                                             </li>
                                         </ul>
                                     </div>

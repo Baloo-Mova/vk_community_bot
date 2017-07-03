@@ -17,8 +17,10 @@ class BalanceController extends Controller
 
     public function index()
     {
+        $user = \Auth::user();
         return view('balance.index', [
-            'user' => \Auth::user()
+            'user' => $user,
+            'payments' => $user->payments
         ]);
     }
 

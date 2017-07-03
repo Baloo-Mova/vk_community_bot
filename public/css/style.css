@@ -148,3 +148,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .tab_content_custom{
     padding-top: 20px !important;
 }
+.a_non_decorated:hover{
+    text-decoration: none !important;
+}

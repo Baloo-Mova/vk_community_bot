@@ -39,4 +39,8 @@ class User extends Authenticatable
         return $this->hasMany(UserGroups::class);
     }
 
+    public function payments(){
+        return $this->hasMany(PaymentLogs::class);
+    }
+
 }
