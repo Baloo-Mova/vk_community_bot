@@ -6,6 +6,8 @@
             Управление группами
         @endsection
 
+            <a href="">Оплата</a>
+
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
@@ -17,7 +19,7 @@
                         </li>
                     </ul>
                 </div>
-                <div id="test1" class="col s3">
+                <div id="test1" class="col s12 m6 l4 xl3">
                     <div class="card small">
                         <div class="card-content">
                             <img src="https://pp.userapi.com/c629424/v629424021/38cda/QVZ0yXquNDc.jpg" class="circle responsive-img">

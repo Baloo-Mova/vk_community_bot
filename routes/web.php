@@ -18,4 +18,5 @@ Route::get('/social_login/callback/', 'SocialController@callback');
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::get('/', "GroupsController@index")->name('groups.index');
+    Route::post('/replenishment_balance', ['uses'=>'GroupsController@replenishmentBalance', 'as'=>'groups.replenishment.balance']);
 });
