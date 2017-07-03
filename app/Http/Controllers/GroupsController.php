@@ -18,4 +18,22 @@ class GroupsController extends Controller
             'user' => \Auth::user()
         ]);
     }
+
+    public function replenishmentBalance(Request $request)
+    {
+
+
+
+        $payment = new \Idma\Robokassa\Payment(
+            '', '', '', true
+        );
+
+        $payment
+            ->setInvoiceId($order->id)
+            ->setSum($order->amount)
+            ->setDescription('Payment for some goods');
+
+        // redirect to payment url
+        $user->redirect($payment->getPaymentUrl());
+    }
 }
