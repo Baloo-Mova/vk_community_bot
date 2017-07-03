@@ -26,6 +26,13 @@ class VK
         'id'
     ];
 
+    private $authGroupScope = [
+        'photos',
+        'messages',
+        'docs',
+        'manage'
+    ];
+
     public function __construct($user)
     {
         $this->user       = $user;
@@ -37,6 +44,40 @@ class VK
 
     public function getGroupKeyRequest($groupId)
     {
+        return "https://oauth.vk.com/authorize?group_ids=" . $groupId . "&client_id=" . env('VKONTAKTE_KEY') . '&redirect_uri=' . env('VKONTAKTE_REDIRECT_GROUP_URI') . '&scope=' . implode(',',
+                $this->authGroupScope) . '&response_type=code';
+    }
+
+    public function updateGroupAccessToken($code)
+    {
+        $params = [
+            'client_id'     => env('VKONTAKTE_KEY'),
+            'client_secret' => env('VKONTAKTE_SECRET'),
+            'redirect_uri'  => env('VKONTAKTE_REDIRECT_GROUP_URI'),
+            'code'          => $code
+        ];
+        $data   = $this->httpClient->get('https://oauth.vk.com/access_token?' . http_build_query($params))->getBody()->getContents();
+        if (strpos($data, 'error') !== false) {
+            return false;
+        }
+
+        $group_id  = 0;
+        $result    = json_decode($data, true);
+        $tokenName = "";
+        foreach (array_keys($result) as $key) {
+            if (strpos($key, 'access_token_') !== false) {
+                $group_id  = str_replace('access_token_', '', $key);
+                $tokenName = $key;
+            }
+        }
+
+        if ($group_id == 0) {
+            return false;
+        }
+
+        UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
+
+        return true;
     }
 
     public function updateUserGroups()

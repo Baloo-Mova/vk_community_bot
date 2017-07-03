@@ -39,8 +39,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $user = User::find(4);
-
-         dd($user->groups);
+      echo  http_build_query(['asd'=>1,'test'=>2]);
     }
 }

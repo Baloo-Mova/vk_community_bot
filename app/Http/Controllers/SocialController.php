@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\VK;
 use App\Http\Requests;
 use Socialite;
 
@@ -12,7 +13,7 @@ class SocialController extends Controller
         return Socialite::with('vk')->redirect();
     }
 
-    public function callback()
+    public function loginCallback()
     {
         $user = Socialite::with('vk')->stateless()->authUser();
         \Auth::login($user, true);
