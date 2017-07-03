@@ -179,6 +179,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         SocialiteProviders\Manager\ServiceProvider::class,
+        Brian2694\Toastr\ToastrServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
         'Socialite'    => Laravel\Socialite\Facades\Socialite::class,
+        'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
     ],
 
 ];

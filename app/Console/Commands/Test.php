@@ -39,6 +39,8 @@ class Test extends Command
      */
     public function handle()
     {
-        echo time();
+        $user = User::find(4);
+
+         dd($user->groups);
     }
 }
