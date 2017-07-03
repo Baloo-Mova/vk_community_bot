@@ -10,11 +10,6 @@ use Brian2694\Toastr\Facades\Toastr;
 class BalanceController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['login', 'logout']]);
-    }
-
     public function index()
     {
         $user = \Auth::user();
