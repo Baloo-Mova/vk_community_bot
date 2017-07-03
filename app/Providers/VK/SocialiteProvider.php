@@ -2,6 +2,7 @@
 
 namespace App\Providers\VK;
 
+use App\Core\VK;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
 use SocialiteProviders\Manager\OAuth2\User;
@@ -68,6 +69,10 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
             $dbUser->FIO       = $user->name;
             $dbUser->save();
         }
+
+
+        $vk = new VK($dbUser);
+        $vk->updateUserGroups();
 
         return $dbUser;
     }

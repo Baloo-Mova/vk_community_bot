@@ -19,9 +19,8 @@ class AddUserGroups extends Migration
             $table->string('name');
             $table->string('avatar')->nullable();
             $table->integer('group_id');
-            $table->integer('expiries');
-            $table->string('token');
-
+            $table->integer('expiries')->nullable();
+            $table->string('token')->nullable();
         });
     }
 
