@@ -5,9 +5,7 @@
         @section('contentheader_title')
             Управление балансом
         @endsection
-        @section('contentheader_badge')
-                {{ $user->balance }}
-        @endsection
+        <span class="contentheader_badge badge blue">{{ $user->balance }}</span>
 
         <div class="row">
             <div class="col s12">

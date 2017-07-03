@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PaymentLogs;
 use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
 
 class BalanceController extends Controller
 {
@@ -75,7 +76,10 @@ class BalanceController extends Controller
                 $order->invoice_id = $answer;
                 $order->save();
             }else{
-                return "Error";
+                Toastr::error('Ошибка валидации',
+                    'Ошибка',
+                    ["positionClass" => "toast-bottom-right"]
+                );
             }
         }
     }
@@ -93,6 +97,10 @@ class BalanceController extends Controller
 
         if ($payment->validateSuccess($_GET)) {
             $order = PaymentLogs::where(['id' => $payment->getInvoiceId()])->first();
+            if($order->status != -1){
+                Toastr::error('Эта операция уже выполнена ', 'Ошибка', ["positionClass" => "toast-bottom-right"]);
+                return redirect('balance');
+            }
             if ($payment->getSum() == $order->payment_sum) {
                 $order->status = 1;
                 $order->save();
@@ -102,11 +110,37 @@ class BalanceController extends Controller
             }else{
                 $order->invoice_id = 0;
                 $order->save();
+                Toastr::error('Ваш баланс пополнен на '.$order->payment_sum,
+                    'Ошибка',
+                    ["positionClass" => "toast-bottom-right"]
+                );
+                return redirect('balance');
             }
 
         }
 
+        Toastr::success('Ваш баланс пополнен на '.$order->payment_sum,
+            'Успешная оплата',
+            ["positionClass" => "toast-bottom-right"]
+        );
         return redirect('balance');
 
     }
+
+    public function checkFair()
+    {
+        $order = PaymentLogs::where(['id' => $_GET["InvId"]])->first();
+        if(!empty($order)){
+            $order->status = 0;
+            $order->save();
+        }
+
+        Toastr::error('Отмена оплаты ',
+            'Ошибка',
+            ["positionClass" => "toast-bottom-right"]
+        );
+        return redirect('balance');
+
+    }
+
 }

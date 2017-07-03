@@ -25,6 +25,8 @@
         @yield('css')
 
         @yield('js')
+        <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+        {!! Toastr::message() !!}
         <script>
             $(document).ready(function(){
                 $('.button-collapse').sideNav();
@@ -32,6 +34,7 @@
                 $('.collapsible').collapsible();
             });
         </script>
+
     </body>
 
 </html>

@@ -25,4 +25,5 @@ Route::group(['prefix' => 'balance', 'middleware' => ['vkAuth', 'auth']], functi
     Route::post('/replenishment', ['uses'=>'BalanceController@replenishment', 'as'=>'balance.replenishment']);
     Route::get('/check-result/', ['uses'=>'BalanceController@checkResult', 'as'=>'balance.check.result']);
     Route::get('/check-success/', ['uses'=>'BalanceController@checkSuccess', 'as'=>'balance.check.success']);
+    Route::get('/check-fair/', ['uses'=>'BalanceController@checkFair', 'as'=>'balance.check.fair']);
 });
