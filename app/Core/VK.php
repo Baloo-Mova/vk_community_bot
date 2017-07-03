@@ -8,6 +8,7 @@
 
 namespace App\Core;
 
+use App\Models\BotCommunityResponse;
 use App\Models\Errors;
 use App\Models\UserGroups;
 use GuzzleHttp\Client;
@@ -17,6 +18,7 @@ class VK
 {
 
     private $user;
+    private $group;
     private $httpClient;
 
     private $groupScope = [
@@ -33,13 +35,22 @@ class VK
         'manage'
     ];
 
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user       = $user;
         $this->httpClient = new Client([
             'proxy'  => '185.148.24.243:8000',
             'verify' => false,
         ]);
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function setGroup($group)
+    {
+        $this->group = $group;
     }
 
     public function getGroupKeyRequest($groupId)
@@ -107,13 +118,20 @@ class VK
             'extended' => 1,
             'filter'   => 'admin',
             'fields'   => implode(',', $this->groupScope),
-        ]);
+        ], false);
     }
 
-    private function requestToApi($method, $fields)
+    private function requestToApi($method, $fields, $asGroup = false)
     {
-        $fields['access_token'] = $this->user->vk_token;
-        $data                   = "";
+        if ( ! $asGroup) {
+            $fields['access_token'] = $this->user->vk_token;
+        } else {
+            $fields['access_token'] = $this->group->token;
+        }
+
+        $fields['v'] = '5.64';
+
+        $data = "";
         foreach ($fields as $key => $value) {
             $data .= $key . '=' . $value . '&';
         }
@@ -138,6 +156,21 @@ class VK
             $error->url  = $method . ' ' . $data;
             $error->save();
         }
+    }
+
+    public function getUnseenDialogs()
+    {
+        return $this->requestToApi('messages.getDialogs', [
+            'count'  => 100,
+            'unread' => 1,
+        ], true)['response'];
+    }
+
+    public function setSeenMessage($messages, $userId){
+        return $this->requestToApi('messages.markAsRead',[
+            'message_ids'=>implode(',',$messages),
+            'peer_id' => $userId
+        ],true);
     }
 
 }

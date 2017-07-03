@@ -70,8 +70,8 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
             $dbUser->save();
         }
 
-
-        $vk = new VK($dbUser);
+        $vk = new VK();
+        $vk->setUser($dbUser);
         $vk->updateUserGroups();
 
         return $dbUser;

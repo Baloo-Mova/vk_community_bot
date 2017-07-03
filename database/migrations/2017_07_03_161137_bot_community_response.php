@@ -20,7 +20,7 @@ class BotCommunityResponse extends Migration
             $table->string('response', 255);
             $table->boolean('state')->default(0);
             $table->boolean('reserved')->default(0);
-            $table->timestamp('last_time_ckecked')->comment('Время последнего изменения');
+            $table->timestamp('last_time_checked')->comment('Время последнего изменения');
         });
     }
 

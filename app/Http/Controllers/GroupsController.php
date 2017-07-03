@@ -31,7 +31,8 @@ class GroupsController extends Controller
     {
         $code = $request->get('code');
         if (isset($code)) {
-            $vk = new VK(\Auth::user());
+            $vk = new VK();
+            $vk->setUser(\Auth::user());
             if ( ! $vk->updateGroupAccessToken($code)) {
                 Toastr::error('Не могу получить доступ к группе, попробуйте через 5 минут.', 'Ошибка');
             }
@@ -44,8 +45,8 @@ class GroupsController extends Controller
 
     public function addGroup($id)
     {
-        $vk = new VK(\Auth::user());
-
+        $vk = new VK();
+        $vk->setUser(\Auth::user());
         return redirect($vk->getGroupKeyRequest($id));
     }
 
