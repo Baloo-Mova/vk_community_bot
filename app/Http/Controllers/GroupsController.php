@@ -7,6 +7,8 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use App\Models\User;
+use App\Models\BotCommunityResponse;
+use Carbon\Carbon;
 
 class GroupsController extends Controller
 {
@@ -45,6 +47,46 @@ class GroupsController extends Controller
         $vk = new VK(\Auth::user());
 
         return redirect($vk->getGroupKeyRequest($id));
+    }
+
+    public function responseScript($group_id)
+    {
+        $responses = BotCommunityResponse::where(['group_id' => $group_id])->get();
+        if(!isset($responses)){
+            $responses = [];
+        }
+        return view('groups.response', [
+            'user' => \Auth::user(),
+            'responses' => $responses,
+            'group_id'  => $group_id
+        ]);
+    }
+
+    public function addResponseScript(Request $request)
+    {
+        $response = new BotCommunityResponse();
+        $response->fill($request->all());
+        $response->last_time_ckecked = Carbon::now();
+        $response->save();
+
+        return back();
+    }
+
+    public function deleteResponseScript($id)
+    {
+        $response = BotCommunityResponse::find($id);
+        $response->delete();
+
+        return back();
+    }
+
+    public function changeResponseStatus($response_id, $status)
+    {
+        $response = BotCommunityResponse::find($response_id);
+        $response->state = $status;
+        $response->save();
+
+        return json_encode(["success" => true]);
     }
 
 }

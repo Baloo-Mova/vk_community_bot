@@ -16,6 +16,7 @@ Route::post('/logout', "HomeController@logout")->name('logout');
 Route::get('/social_login/', 'SocialController@login')->name('vk_login');
 Route::get('/social_login/callback/', 'SocialController@loginCallback');
 Route::get('/balance/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
+Route::get('/change-response-status/{response_id}/{status}', ["uses" => "GroupsController@changeResponseStatus", "as" => "change.response.status"]);
 
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
@@ -23,7 +24,9 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['prefix' => 'group'], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');
         Route::get('/callback/', 'GroupsController@addGroupCallback')->name('group.add.callback');
-        Route::get('/response-script', 'GroupsController@response-script')->name('group.response.script');
+        Route::get('/response-script/{group_id}', 'GroupsController@responseScript')->name('groups.response');
+        Route::post('/add/response-script', 'GroupsController@addResponseScript')->name('groups.add.response');
+        Route::get('/delete/response-script/{response}', 'GroupsController@deleteResponseScript')->name('groups.delete.response');
     });
 
     Route::group(['prefix' => 'balance'], function () {

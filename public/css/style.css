@@ -151,3 +151,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .a_non_decorated:hover{
     text-decoration: none !important;
 }
+.modal, .modal-backdrop {
+    bottom: inherit;
+}
+.modal-content {
+    border-radius: 0px;
+}
