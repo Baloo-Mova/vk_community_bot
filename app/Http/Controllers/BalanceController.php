@@ -40,12 +40,12 @@ class BalanceController extends Controller
         $payment->payment_sum = $sum;
         $payment->save();
 
-        $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.demo_password1'),
+        $kassa = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.demo_password1'),
             config('robokassa.demo_password2'), true);
 
-        $payment->setInvoiceId($payment->id)->setSum($sum)->setDescription('Пополнение баланса на ' . $sum);
+        $kassa->setInvoiceId($payment->id)->setSum($sum)->setDescription('Пополнение баланса на ' . $sum);
 
-        return redirect($payment->getPaymentUrl());
+        return redirect($kassa->getPaymentUrl());
     }
 
     public function checkResult()
