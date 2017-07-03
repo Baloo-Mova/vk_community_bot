@@ -16,7 +16,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
      * Unique Provider Identifier.
      */
     const IDENTIFIER = 'VK';
-    protected $fields = ['uid', 'first_name', 'last_name', 'screen_name', 'photo'];
+    protected $fields = ['uid', 'first_name', 'last_name', 'screen_name', 'photo_200'];
     /**
      * {@inheritdoc}
      */
@@ -97,7 +97,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
             'nickname' => array_get($user, 'screen_name'),
             'name'     => trim(array_get($user, 'first_name') . ' ' . array_get($user, 'last_name')),
             'email'    => array_get($user, 'email'),
-            'avatar'   => array_get($user, 'photo'),
+            'avatar'   => array_get($user, 'photo_200'),
         ]);
     }
 
@@ -128,7 +128,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
 
         if (is_null($this->httpClient)) {
             $this->httpClient = new Client([
-               // 'proxy'  => '185.148.24.243:8000',
+                'proxy'  => '185.148.24.243:8000',
                 'verify' => false,
             ]);
         }
