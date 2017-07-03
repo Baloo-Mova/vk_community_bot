@@ -23,6 +23,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['prefix' => 'group'], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');
         Route::get('/callback/', 'GroupsController@addGroupCallback')->name('group.add.callback');
+        Route::get('/response-script', 'GroupsController@response-script')->name('group.response.script');
     });
 
     Route::group(['prefix' => 'balance'], function () {
