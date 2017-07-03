@@ -23,7 +23,7 @@
                             <div class="col s12 m6 l4 xl3">
                                 <div class="card small">
                                     <div class="card-content">
-                                        <img src="{{ $activated_groups->avatar }}" class="circle responsive-img">
+                                        <img src="{{ $activated_groups->avatar }}" class="circle responsive-img group_avatar_in_card">
                                         <span class="card-title activator grey-text text-darken-4">{{ $activated_groups->name }}<i class="material-icons right">more_vert</i></span>
                                         <p>28.06.2017</p>
                                     </div>
@@ -57,7 +57,7 @@
                                         <span class="card-title grey-text text-darken-4 small groups_options_card_title">Доступ</span>
                                         <ul class="groups_options_card_ul">
                                             <li class="groups_options_card waves-effect wavev-dark">
-                                                <a href="" class="grey-text text-darken-2 a_non_decorated">Предоставить</a>
+                                                <a href="{{ route('group.add', ['id' => $activated_groups->group_id]) }}" class="grey-text text-darken-2 a_non_decorated">Предоставить</a>
                                             </li>
                                         </ul>
                                     </div>
