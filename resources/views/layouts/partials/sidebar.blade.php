@@ -14,11 +14,11 @@
     <ul class="collapsible" data-collapsible="accordion">
         <ul>
             <li id="categories_category">
-                <a class="waves-effect" style="text-decoration: none;" href="#!">Группы</a>
+                <a class="waves-effect" style="text-decoration: none;" href="{{ route('groups.index') }}">Группы</a>
             </li>
 
             <li id="categories_sub_category">
-                <a class="waves-effect" style="text-decoration: none;" href="#!">Оплата</a>
+                <a class="waves-effect" style="text-decoration: none;" href="{{ route('balance.index') }}">Оплата</a>
             </li>
         </ul>
     </ul>

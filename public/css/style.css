@@ -112,3 +112,10 @@ body {
 .header_user_menu_item:hover{
     text-decoration: none;
 }
+.user_dropdown_ul{
+    top: 70px !important;
+}
+.contentheader_badge{
+    float: none !important;
+    color: #fff !important;
+}

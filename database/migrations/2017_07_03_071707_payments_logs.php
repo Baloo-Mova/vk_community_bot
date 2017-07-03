@@ -16,9 +16,10 @@ class PaymentsLogs extends Migration
         Schema::create('payments_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->text('description')->comment('Описание действия');
+            $table->smallInteger('description')->comment('Описание действия');
             $table->string('payment_sum', 50);
-            $table->string('payment_number', 50);
+            $table->string('invoice_id', 50)->nullable();
+            $table->smallInteger('status')->default(-1);
             $table->timestamps();
         });
     }

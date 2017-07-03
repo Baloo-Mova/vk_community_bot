@@ -1,10 +1,10 @@
 <header>
-    <ul class="dropdown-content" id="user_dropdown">
+    <ul class="dropdown-content user_dropdown_ul" id="user_dropdown">
         <li>
-            <a class="indigo-text header_user_menu_item" href="#!">Группы</a>
+            <a class="indigo-text header_user_menu_item" href="{{ route('groups.index') }}">Группы</a>
         </li>
         <li>
-            <a class="indigo-text header_user_menu_item" href="#!">Баланс</a>
+            <a class="indigo-text header_user_menu_item" href="{{ route('balance.index') }}">Баланс</a>
         </li>
         <li>
             <a class="indigo-text header_user_menu_item" href="#!">Помощь</a>

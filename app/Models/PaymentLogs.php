@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,6 @@ class PaymentLogs extends Model
         'user_id',
         'description',
         'payment_sum',
-        'payment_number'
+        'payment_number',
     ];
 }

@@ -3,38 +3,33 @@
 @section('content')
     <div class="container-fluid">
         @section('contentheader_title')
-            Управление группами
+            Управление балансом
+        @endsection
+        @section('contentheader_badge')
+                {{ $user->balance }}
         @endsection
 
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
                     <li class="tab col s3">
-                        <a class="active" href="#accessed">Группы с доступом</a>
+                        <a class="active" href="#balance">
+                            Управление балансом
+                        </a>
                     </li>
                     <li class="tab col s3">
-                        <a href="#notaccessed">Разрешить доступ</a>
+                        <a href="#history">История</a>
                     </li>
                 </ul>
             </div>
-            <div id="accessed" class="col s12">
-                <div class="card small col s12 m6 l4 xl3">
-                    <div class="card-content">
-                        <img src="https://pp.userapi.com/c629424/v629424021/38cda/QVZ0yXquNDc.jpg" class="circle responsive-img">
-                        <span class="card-title activator grey-text text-darken-4">Название<i class="material-icons right">more_vert</i></span>
-                        <p>28.06.2017</p>
-                    </div>
-                    <div class="groups_options_card_wrap card-reveal">
-                        <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-                        <span class="card-title grey-text text-darken-4 small groups_options_card_title">Настройки</span>
-                        <ul class="groups_options_card_ul">
-                            <li class="groups_options_card waves-effect wavev-dark"><a href="" class="grey-text text-darken-2 ">Бот</a></li>
-                        </ul>
-                    </div>
-                </div>
-
+            <div id="balance" class="col s12">
+                <form action="{{ route('balance.replenishment') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="text" name="sum" required>
+                    <button>Пополнить</button>
+                </form>
             </div>
-            <div id="notaccessed" class="col s12">
+            <div id="history" class="col s12">
                 Test 2
             </div>
         </div>
