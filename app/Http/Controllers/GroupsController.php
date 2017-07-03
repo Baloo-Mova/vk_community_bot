@@ -66,7 +66,7 @@ class GroupsController extends Controller
     {
         $response = new BotCommunityResponse();
         $response->fill($request->all());
-        $response->last_time_ckecked = Carbon::now();
+        $response->last_time_checked = Carbon::now();
         $response->save();
 
         return back();
@@ -87,6 +87,17 @@ class GroupsController extends Controller
         $response->save();
 
         return json_encode(["success" => true]);
+    }
+
+    public function editResponseScript(Request $request)
+    {
+        $id = $request->get('scenario_id');
+        $response = BotCommunityResponse::find($id);
+        $response->key = $request->get('key');
+        $response->response = $request->get('response');
+        $response->save();
+
+        return back();
     }
 
 }

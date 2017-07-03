@@ -157,3 +157,12 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .modal-content {
     border-radius: 0px;
 }
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #3F51B5;
+}
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #828AB2;
+}
+.btn:hover{
+    color: #fff;
+}

@@ -25,7 +25,7 @@
                                 <label for="response">Ответ</label>
                             </div>
                         </div>
-                        <button class="waves-effect waves-green btn">Добавить</button>
+                        <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
                     </form>
                 </div>
             </div>
@@ -33,28 +33,28 @@
             <div id="modal2" class="modal">
                 <div class="modal-content">
                     <h4>Редактирование сценария</h4>
-                    <form action="{{ route('groups.add.response') }}" method="post">
+                    <form action="{{ route('groups.edit.response') }}" class="scenario_edit_form" method="post">
                         {{ csrf_field() }}
-                        <input type="hidden" name="group_id" class="scenario_id">
+                        <input type="hidden" name="scenario_id" class="scenario_id">
                         <div class="row">
                             <div class="input-field col s12">
                                 <input name="key" id="key" class="scenario_key" type="text" class="validate">
-                                <label for="key">Ключевое слово</label>
+                                <label for="key" class="scenario_key_label">Ключевое слово</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <input name="response" id="response" class="scenario_response" type="text" class="validate">
-                                <label for="response">Ответ</label>
+                                <label for="response" class="scenario_response_label">Ответ</label>
                             </div>
                         </div>
-                        <button class="waves-effect waves-green btn">Сохранить</button>
+                        <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
                     </form>
                 </div>
             </div>
 
         <div class="row">
-            <a href="#modal1" class="waves-effect waves-light btn">Добавить сценарий</a>
+            <a href="#modal1" class="waves-effect waves-light light-blue darken-4 btn">Добавить сценарий</a>
             <div class="col s12">
                 <table class="highlight">
                     <thead>
@@ -71,13 +71,11 @@
                             <td>
                                 <div class="switch">
                                     <label>
-                                        Off
                                         <input {{ $resp->state == 1 ? 'checked' : '' }}
                                                class="resp_checkbox"
                                                data-response-id="{{$resp->id}}"
                                                type="checkbox">
                                         <span class="lever"></span>
-                                        On
                                     </label>
                                 </div>
                             </td>
@@ -127,9 +125,14 @@
 
             $(".scenario_edit").on("click", function () {
                 var scenarion_id = $(this).data("editId"),
-                    key          = $(this).data("editId"),
-                    response     = $(this).data("editId");
-                alert(scenarion_id);
+                    key          = $(this).data("editKey"),
+                    response     = $(this).data("editResponse");
+
+                $(".scenario_id").val(scenarion_id);
+                $(".scenario_key_label").addClass('active');
+                $(".scenario_key").val(key);
+                $(".scenario_response_label").addClass('active');
+                $(".scenario_response").val(response);
             });
         });
     </script>

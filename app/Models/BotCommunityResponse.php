@@ -14,6 +14,6 @@ class BotCommunityResponse extends Model
         'response',
         'state',
         'reserved',
-        'last_time_ckecked'
+        'last_time_checked'
     ];
 }
