@@ -70,7 +70,12 @@ class BalanceController extends Controller
 
         if ($payment->validateResult($_GET)){
             $order = PaymentLogs::find($payment->getInvoiceId());
-
+            if(empty($order)){
+                Toastr::error('Транзакция с таким Id не найдена!',
+                    'Ошибка',
+                    ["positionClass" => "toast-bottom-right"]);
+                return redirect('balance');
+            }
             $answer = $payment->getSuccessAnswer();
             if(!empty($answer)){
                 $order->invoice_id = $answer;
@@ -97,6 +102,12 @@ class BalanceController extends Controller
 
         if ($payment->validateSuccess($_GET)) {
             $order = PaymentLogs::where(['id' => $payment->getInvoiceId()])->first();
+            if(empty($order)){
+                Toastr::error('Транзакция с таким Id не найдена!',
+                    'Ошибка',
+                    ["positionClass" => "toast-bottom-right"]);
+                return redirect('balance');
+            }
             if($order->status != -1){
                 Toastr::error('Эта операция уже выполнена ', 'Ошибка', ["positionClass" => "toast-bottom-right"]);
                 return redirect('balance');
