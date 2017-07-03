@@ -6,21 +6,19 @@
             Управление группами
         @endsection
 
-            <a href="">Оплата</a>
-
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
                         <li class="tab col s3">
-                            <a class="active" href="#test1">Группы с доступом</a>
+                            <a class="active" href="#accessed">Группы с доступом</a>
                         </li>
                         <li class="tab col s3">
-                            <a href="#test2">Разрешить доступ</a>
+                            <a href="#notaccessed">Разрешить доступ</a>
                         </li>
                     </ul>
                 </div>
-                <div id="test1" class="col s12 m6 l4 xl3">
-                    <div class="card small">
+                <div id="accessed" class="col s12">
+                    <div class="card small col s12 m6 l4 xl3">
                         <div class="card-content">
                             <img src="https://pp.userapi.com/c629424/v629424021/38cda/QVZ0yXquNDc.jpg" class="circle responsive-img">
                             <span class="card-title activator grey-text text-darken-4">Название<i class="material-icons right">more_vert</i></span>
@@ -36,7 +34,7 @@
                     </div>
 
                 </div>
-                <div id="test2" class="col s12">
+                <div id="notaccessed" class="col s12">
                     Test 2
                 </div>
             </div>
