@@ -15,7 +15,7 @@ Route::get('/login', "HomeController@login")->name('login');
 Route::post('/logout', "HomeController@logout")->name('logout');
 Route::get('/social_login/', 'SocialController@login')->name('vk_login');
 Route::get('/social_login/callback/', 'SocialController@loginCallback');
-Route::get('/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
+Route::get('/balance/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
 
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
