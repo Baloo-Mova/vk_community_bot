@@ -16,4 +16,5 @@ class UserGroups extends Model
         'expiries',
         'token'
     ];
+
 }

@@ -14,11 +14,11 @@
     <ul class="collapsible" data-collapsible="accordion">
         <ul>
             <li id="categories_category">
-                <a class="waves-effect" style="text-decoration: none;" href="{{ route('groups.index') }}">Группы</a>
+                <a class="waves-effect {{ Request::is('/') ? 'blue-text text-darken-2' : '' }}" style="text-decoration: none;" href="{{ route('groups.index') }}">Группы</a>
             </li>
 
             <li id="categories_sub_category">
-                <a class="waves-effect" style="text-decoration: none;" href="{{ route('balance.index') }}">Оплата</a>
+                <a class="waves-effect {{ Request::is('balance') ? 'blue-text text-darken-2' : '' }}" style="text-decoration: none;" href="{{ route('balance.index') }}">Оплата</a>
             </li>
         </ul>
     </ul>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Core\VK;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use App\Models\UserGroups;
+use App\Models\User;
 
 class GroupsController extends Controller
 {
@@ -16,8 +18,10 @@ class GroupsController extends Controller
 
     public function index()
     {
+        $groups = \Auth::user()->groups;
         return view('groups.index', [
-            'user' => \Auth::user()
+            'user' => \Auth::user(),
+            'groups' => $groups
         ]);
     }
 
