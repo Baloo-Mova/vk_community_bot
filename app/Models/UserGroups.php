@@ -32,6 +32,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BotCommunityResponse[] $activeTasks
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups wherePayed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups wherePayedFor($value)
+ * @property int $reserved
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ClientGroups[] $clientGroups
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereReserved($value)
  */
 class UserGroups extends Model
 {
