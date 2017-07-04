@@ -56,6 +56,10 @@
                                             <a href="{{ route('groups.clientGroup', ['group_id' => $activated_groups->id]) }}"
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Группы</a>
                                         </li>
+                                        <li class="groups_options_card waves-effect wavev-dark">
+                                            <a href="{{ route('groups.massDelivery', ['group_id' => $activated_groups->id]) }}"
+                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Рассылка</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

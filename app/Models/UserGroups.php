@@ -63,4 +63,9 @@ class UserGroups extends Model
     {
         return $this->hasMany(ClientGroups::class, 'group_id', 'id');
     }
+
+    public function massDeliveries()
+    {
+        return $this->hasMany(MassDelivery::class, 'group_id', 'id');
+    }
 }

@@ -13,6 +13,7 @@ use App\Models\BotCommunityResponse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\ClientGroups;
+use App\Models\MassDelivery;
 
 class GroupsController extends Controller
 {
@@ -259,6 +260,40 @@ class GroupsController extends Controller
         }
         $client->delete();
 
+        return back();
+    }
+
+    public function massDelivery($group_id)
+    {
+        $userGroup = UserGroups::find($group_id);
+        $massDeliveries = $userGroup->massdeliveries;
+        return view('groups.massDelivery', [
+            "user" => \Auth::user(),
+            "group_id" => $group_id,
+            "deliveries" => $massDeliveries
+        ]);
+    }
+
+    public function addMassDelivery(Request $request)
+    {
+        $delivery = new MassDelivery();
+        $delivery->fill($request->all());
+        $delivery->save();
+
+        Toastr::success('Рассылка успешно добавлена', 'Добавлено');
+        return back();
+    }
+
+    public function deleteMassDelivery($delivery_id)
+    {
+        $delivery = MassDelivery::find($delivery_id);
+        if(!isset($delivery)){
+            Toastr::error('Рассылка не найдена!', 'Ошибка');
+            return back();
+        }
+        $delivery->delete();
+
+        Toastr::success('Рассылка успешно удалена', 'Удалено');
         return back();
     }
 
