@@ -32,9 +32,7 @@ class BotCommunityResponse extends Model
         'group_id',
         'key',
         'response',
-        'state',
-        'reserved',
-        'last_time_checked'
+        'state'
     ];
 
     public function group(){
