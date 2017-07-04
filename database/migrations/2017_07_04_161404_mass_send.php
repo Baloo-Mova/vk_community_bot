@@ -15,10 +15,11 @@ class MassSend extends Migration
     {
         Schema::create('mass_delivery', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('rules');
-            $table->string('message');
-            $table->boolean('reserved');
-            $table->boolean('sended');
+            $table->integer('group_id');
+            $table->text('rules');
+            $table->text('message');
+            $table->boolean('reserved')->default(0);
+            $table->boolean('sended')->default(0);
             $table->timestamps();
         });
     }
