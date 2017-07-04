@@ -2,9 +2,17 @@
 
 @section('content')
     <div class="container-fluid">
-        @section('contentheader_title')
-            Управление группами
-        @endsection
+            <section class="content-header">
+                <h1 class="page_title">
+                    Управление группами
+                    <span class="contentheader_badge update_badge badge ">
+                        <a href="{{ route('groups.update') }}" class="update_user_groups_button">
+                                    <span class="material-icons" title="Обновить группы">loop</span>
+                                </a>
+                    </span>
+
+                </h1>
+            </section>
 
             <div class="row">
                 <div class="col s12">
