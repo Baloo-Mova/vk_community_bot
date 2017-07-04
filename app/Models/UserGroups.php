@@ -55,4 +55,9 @@ class UserGroups extends Model
     {
         return $this->hasMany(BotCommunityResponse::class, 'group_id', 'id')->where(['bot_community_response.state' => 1]);
     }
+
+    public function clientGroups()
+    {
+        return $this->hasMany(ClientGroups::class, 'group_id', 'id');
+    }
 }

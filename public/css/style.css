@@ -208,3 +208,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .groups_back_button{
     margin: 10px 0px;
 }
+.mt20{
+    margin-top: 20px;
+}

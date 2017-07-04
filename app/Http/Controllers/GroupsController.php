@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\BotCommunityResponse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\ClientGroups;
 
 class GroupsController extends Controller
 {
@@ -180,11 +181,26 @@ class GroupsController extends Controller
 
     }
 
-    public function usersGroups($group_id)
+    public function clientGroup($group_id)
     {
-        return view('groups.usersGroups', [
-           "user" => \Auth::user()
+        $group = UserGroups::find($group_id);
+        $groups = $group->clientGroups;
+
+        return view('groups.clientGroup', [
+            "user"     => \Auth::user(),
+            "group_id" => $group_id,
+            "groups"   => isset($groups) ? $groups : []
         ]);
+    }
+
+    public function addClientGroup(Request $request)
+    {
+
+    }
+
+    public function editClientGroup(Request $request)
+    {
+
     }
 
 }
