@@ -20,7 +20,7 @@
         <main>
             @if(Request::is('balance'))
                 @include('layouts.partials.balanceheader')
-            @elseif(Request::is('/') || Request::is('groups/*') || Request::is('group/*'))
+            @elseif(Request::is('/') || Request::is('groups/*'))
             @else
                 @include('layouts.partials.contentheader')
             @endif

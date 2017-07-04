@@ -9,6 +9,7 @@ use App\Models\UserGroups;
 use App\Models\User;
 use App\Models\BotCommunityResponse;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GroupsController extends Controller
 {
@@ -56,10 +57,11 @@ class GroupsController extends Controller
         if(!isset($responses)){
             $responses = [];
         }
+        $group = UserGroups::find($group_id);
         return view('groups.response', [
             'user' => \Auth::user(),
             'responses' => $responses,
-            'group_id'  => $group_id
+            'group'  => isset($group) ? $group : []
         ]);
     }
 
@@ -67,7 +69,6 @@ class GroupsController extends Controller
     {
         $response = new BotCommunityResponse();
         $response->fill($request->all());
-        $response->last_time_checked = Carbon::now();
         $response->save();
 
         return back();
@@ -90,6 +91,20 @@ class GroupsController extends Controller
         return json_encode(["success" => true]);
     }
 
+    public function changeGroupBotStatus($group_id, $status)
+    {
+        $group = UserGroups::find($group_id);
+        if(!$group->payed){
+            Toastr::error('Возможность заблокирована для неоплаченных групп!', 'Ошибка');
+            return back();
+        }
+        $group->status = $status;
+        $group->save();
+
+        return json_encode(["success" => true]);
+    }
+
+
     public function editResponseScript(Request $request)
     {
         $id = $request->get('scenario_id');
@@ -103,11 +118,58 @@ class GroupsController extends Controller
 
     public function updateUserGroups()
     {
-
         $vk = new VK();
         $vk->setUser(\Auth::user());
         $vk->updateUserGroups();
         return back();
+    }
+
+    public function groupSettings($group_id)
+    {
+        $group = UserGroups::find($group_id);
+        return view('groups.groupSettings', [
+            "user"  => \Auth::user(),
+            "group" => isset($group) ? $group : []
+        ]);
+    }
+
+    public function newSubscription(Request $request)
+    {
+        $user = \Auth::user();
+        $payment_sum = config('robokassa.community_one_month_price');
+        $group_id = $request->get('group_id');
+
+        if(!isset($group_id)){
+            Toastr::error('Отсутствует обязательный (Id группы) параметр!', 'Ошибка');
+            return back();
+        }
+
+        if($user->balance < $payment_sum){
+            Toastr::error('На Вашем балансе недостаточно средств', 'Ошибка');
+            return back();
+        }
+
+        $get_money = $user->decrement('balance', $payment_sum);
+
+        if (!$get_money){
+            Toastr::error('На Вашем балансе недостаточно средств', 'Ошибка');
+            return back();
+        }
+
+        $group = UserGroups::where(['id' => $group_id])->first();
+        if ( !isset($group)) {
+            $user->increment('balance', $payment_sum);
+            Toastr::error('Группа не найдена', 'Ошибка');
+            return back();
+        }
+
+        $group->payed = 1;
+        $group->payed_for = Carbon::now()->addDays(30);
+        $group->save();
+
+        Toastr::success('Подписка успешно оплачена', 'Оплачено');
+        return back();
+
     }
 
 }

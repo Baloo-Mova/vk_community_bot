@@ -17,6 +17,7 @@ Route::get('/social_login/', 'SocialController@login')->name('vk_login');
 Route::get('/social_login/callback/', 'SocialController@loginCallback');
 Route::get('/balance/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
 Route::get('/change-response-status/{response_id}/{status}', ["uses" => "GroupsController@changeResponseStatus", "as" => "change.response.status"]);
+Route::get('/change-group-bot-status/{group_id}/{status}', ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
 
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
@@ -29,6 +30,8 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/edit/response-script', 'GroupsController@editResponseScript')->name('groups.edit.response');
         Route::get('/delete/response-script/{response}', 'GroupsController@deleteResponseScript')->name('groups.delete.response');
         Route::get('/update', 'GroupsController@updateUserGroups')->name('groups.update');
+        Route::get('/bot-settings/{group_id}', 'GroupsController@groupSettings')->name('groups.groupSettings');
+        Route::get('/new-subscription', 'GroupsController@newSubscription')->name('groups.new.subscription');
     });
 
     Route::group(['prefix' => 'balance'], function () {

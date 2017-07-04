@@ -6,13 +6,28 @@
             Сценарий ответов
         @endsection
 
+        @if(!$group->payed)
+                <div id="modal_payed" class="modal">
+                    <div class="modal-content">
+                        <h4>Внимание!</h4>
+                        <div class="group_not_payed">
+                            <p>В данный момент подписка на бота не оплачена. </p>
+                            <a href="{{ route('groups.groupSettings', ['bot_id' => $group->id]) }}"
+                               class="btn waves-effect waves-light light-blue darken-4">Перейти к оплате</a>
+                            <a href="{{ route('groups.index') }}"
+                               class="btn waves-effect waves-light light-blue darken-4">Назад</a>
+                        </div>
+                    </div>
+                </div>
+        @endif
+
             <!-- Modal Structure -->
             <div id="modal1" class="modal">
                 <div class="modal-content">
                     <h4>Добавление сценария</h4>
                     <form action="{{ route('groups.add.response') }}" method="post">
                         {{ csrf_field() }}
-                        <input type="hidden" name="group_id" value="{{ $group_id }}">
+                        <input type="hidden" name="group_id" value="{{ $group->id }}">
                         <div class="row">
                             <div class="input-field col s12">
                                 <input name="key" id="key" type="text" class="validate">
@@ -54,7 +69,7 @@
             </div>
 
         <div class="row">
-            <a href="#modal1" class="waves-effect waves-light light-blue darken-4 btn">Добавить сценарий</a>
+            <a href="#modal1" class="waves-effect waves-light light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Добавить сценарий</a>
             <div class="col s12">
                 <table class="highlight">
                     <thead>
@@ -64,41 +79,48 @@
                         <th>Действия</th>
                     </thead>
                     <tbody>
-                    @forelse($responses as $resp)
-                        <tr>
-                            <td>{{ $resp->key }}</td>
-                            <td>{{ $resp->response }}</td>
-                            <td>
-                                <div class="switch">
-                                    <label>
-                                        <input {{ $resp->state == 1 ? 'checked' : '' }}
-                                               class="resp_checkbox"
-                                               data-response-id="{{$resp->id}}"
-                                               type="checkbox">
-                                        <span class="lever"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>
-                                <a class="waves-effect waves-light scenario_edit"
-                                   data-edit-id="{{ $resp->id }}"
-                                   data-edit-key="{{ $resp->key }}"
-                                   data-edit-response="{{ $resp->response }}"
-                                   href="#modal2">
-                                    <i class="material-icons left">edit</i>
-                                </a>
-                                <a href="{{ route('groups.delete.response', ['response' => $resp->id]) }}"
-                                   class="waves-effect waves-light"
-                                   onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
-                                    <i class="material-icons left">delete</i>
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
+                    @if(!$group->payed)
                         <tr>
                             <td class="text-center" colspan="4">Нет записей</td>
                         </tr>
-                    @endforelse
+                    @else
+
+                        @forelse($responses as $resp)
+                            <tr>
+                                <td>{{ $resp->key }}</td>
+                                <td>{{ $resp->response }}</td>
+                                <td>
+                                    <div class="switch">
+                                        <label>
+                                            <input {{ $resp->state == 1 ? 'checked' : '' }}
+                                                   class="resp_checkbox"
+                                                   data-response-id="{{$resp->id}}"
+                                                   type="checkbox">
+                                            <span class="lever"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="waves-effect waves-light scenario_edit"
+                                       data-edit-id="{{ $resp->id }}"
+                                       data-edit-key="{{ $resp->key }}"
+                                       data-edit-response="{{ $resp->response }}"
+                                       href="#modal2">
+                                        <i class="material-icons left">edit</i>
+                                    </a>
+                                    <a href="{{ route('groups.delete.response', ['response' => $resp->id]) }}"
+                                       class="waves-effect waves-light"
+                                       onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
+                                        <i class="material-icons left">delete</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td class="text-center" colspan="4">Нет записей</td>
+                            </tr>
+                        @endforelse
+                    @endif
                     </tbody>
                 </table>
             </div>
@@ -111,6 +133,11 @@
     <script>
         $(document).ready(function(){
             $('.modal').modal();
+
+            $('#modal_payed').modal('open',{
+                    dismissible: false
+                }
+            );
 
             $(".resp_checkbox").on("change", function(){
                 var resp_id = $(this).data('responseId'),
