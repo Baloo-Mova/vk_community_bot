@@ -13,15 +13,14 @@
                         <div class="group_not_payed">
                             <p>В данный момент подписка на бота не оплачена. </p>
                             <a href="{{ route('groups.groupSettings', ['bot_id' => $group->id]) }}"
-                               class="btn waves-effect waves-light light-blue darken-4">Перейти к оплате</a>
+                               class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к оплате</a>
                             <a href="{{ route('groups.index') }}"
-                               class="btn waves-effect waves-light light-blue darken-4">Назад</a>
+                               class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Назад</a>
                         </div>
                     </div>
                 </div>
         @endif
 
-            <!-- Modal Structure -->
             <div id="modal1" class="modal">
                 <div class="modal-content">
                     <h4>Добавление сценария</h4>

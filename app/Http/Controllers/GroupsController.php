@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\VK;
+use App\Models\PaymentLogs;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
@@ -167,9 +168,23 @@ class GroupsController extends Controller
         $group->payed_for = Carbon::now()->addDays(30);
         $group->save();
 
+        PaymentLogs::insert([
+            "user_id"      => $user->id,
+            "description"  => PaymentLogs::SubscriptionPayment,
+            "payment_sum"  => $payment_sum,
+            "status"       => 1
+        ]);
+
         Toastr::success('Подписка успешно оплачена', 'Оплачено');
         return back();
 
+    }
+
+    public function usersGroups($group_id)
+    {
+        return view('groups.usersGroups', [
+           "user" => \Auth::user()
+        ]);
     }
 
 }

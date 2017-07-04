@@ -45,7 +45,7 @@
                     <tbody>
                         @forelse($payments as $pay)
                             <tr>
-                                <td>{{ $pay->description == 1 ? "Пополнение баланса" : $pay->description }}</td>
+                                <td>{{ $pay->description == 1 ? "Пополнение баланса" : "Оплата подписки" }}</td>
                                 <td>{{ $pay->payment_sum }} руб</td>
                                 <td>{{ $pay->status == 1 ? "Успешно" : "Неуспешно" }}</td>
                                 <td>{{ $pay->created_at }}</td>

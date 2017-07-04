@@ -13,7 +13,8 @@
                 <div class="col s12 m4 l4 xl4">
                     <div class="group_is_payed">
                     <span>
-                      Подписка оплачена до {{ $group->payed_for }}
+                      Подписка оплачена до <br>
+                        {{ $group->payed_for }}
                   </span>
                     </div>
                 </div>
@@ -22,12 +23,12 @@
                     <div class="group_not_payed">
                         <p>В данный момент подписка на бота не оплачена. </p>
                         <p>Стоимость подписки {{ config('robokassa.community_one_month_price') }} руб </p>
-                        <form action="{{ route('groups.new.subscription') }}">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="group_id" value="{{ $group->id }}">
-                            <button class="btn waves-effect waves-light light-blue darken-4">Оплатить</button>
-                        </form>
                     </div>
+                    <form action="{{ route('groups.new.subscription') }}">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="group_id" value="{{ $group->id }}">
+                        <button class="btn waves-effect waves-light light-blue darken-4">Оплатить</button>
+                    </form>
                 </div>
             @endif
         </div>

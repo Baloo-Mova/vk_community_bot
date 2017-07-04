@@ -29,6 +29,7 @@ class PaymentLogs extends Model
 {
 
     const ReplenishmentBalance = 1; // пополение баланса
+    const SubscriptionPayment = 2; // пополение баланса
 
     public $timestamps = true;
     public $table = "payments_logs";

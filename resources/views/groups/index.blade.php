@@ -52,6 +52,10 @@
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Сценарии
                                                 ответов</a>
                                         </li>
+                                        <li class="groups_options_card waves-effect wavev-dark">
+                                            <a href="{{ route('groups.usersGroups', ['group_id' => $activated_groups->id]) }}"
+                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Группы</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
