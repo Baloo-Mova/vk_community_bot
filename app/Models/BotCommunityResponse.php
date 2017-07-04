@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereState($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\UserGroups $group
  */
 class BotCommunityResponse extends Model
 {
