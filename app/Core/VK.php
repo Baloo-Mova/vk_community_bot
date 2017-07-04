@@ -138,7 +138,9 @@ class VK
         $data = trim($data, '&');
 
         try {
-            $response = $this->httpClient->get('https://api.vk.com/method/' . $method . '?' . $data)->getBody()->getContents();
+            $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
+                ['form_params' => $fields]
+            )->getBody()->getContents();
 
             if (strpos($response, "error") !== false) {
                 $error       = new Errors();
@@ -166,11 +168,22 @@ class VK
         ], true)['response'];
     }
 
-    public function setSeenMessage($messages, $userId){
-        return $this->requestToApi('messages.markAsRead',[
-            'message_ids'=>implode(',',$messages),
-            'peer_id' => $userId
-        ],true);
+    public function setSeenMessage($messages, $userId)
+    {
+        return $this->requestToApi('messages.markAsRead', [
+            'message_ids'      => implode(',', $messages),
+            'peer_id'          => $userId,
+            'start_message_id' => $messages[0]
+        ], true);
+    }
+
+    public function sendMessage($message, $userId)
+    {
+        return $this->requestToApi('messages.send', [
+            'user_id'   => $userId,
+            'random_id' => intval(microtime(true) * 1000),
+            'message'   => $message
+        ], true);
     }
 
 }
