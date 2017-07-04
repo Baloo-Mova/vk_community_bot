@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\VK;
+use App\Models\Clients;
 use App\Models\PaymentLogs;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -195,12 +196,33 @@ class GroupsController extends Controller
 
     public function addClientGroup(Request $request)
     {
+        $clGroup = new ClientGroups();
+        $clGroup->fill($request->all());
+        $clGroup->save();
 
+        return back();
     }
 
     public function editClientGroup(Request $request)
     {
+        $clGroups = ClientGroups::find($request->get('group_id'));
+        if(!isset($clGroups)){
+            Toastr::error('Группа не найдена', 'Ошибка');
+            return back();
+        }
+        $clGroups->name = $request->get('name');
+        $clGroups->save();
 
+        return back();
+    }
+
+    public function deleteClientGroup($group_id)
+    {
+        $clGroups = ClientGroups::find($group_id);
+        $clGroups->delete();
+        Clients::where(['client_group_id' => $group_id])->delete();
+
+        return back();
     }
 
 }
