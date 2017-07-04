@@ -51,7 +51,9 @@
                 <tbody>
                     @forelse($groups as $group)
                         <tr>
-                            <td class="col s8 table_td">{{ $group->name }}</td>
+                            <td class="col s8 table_td">
+                                <a href="{{ route('groups.clientGroupsUsers', ['group_id' => $group->id]) }}">{{ $group->name }}</a>
+                            </td>
                             <td class="col s4 table_td">
                                 <a class="waves-effect waves-light group_edit"
                                    data-edit-id="{{ $group->id }}"

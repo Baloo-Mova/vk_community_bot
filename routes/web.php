@@ -33,9 +33,12 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/bot-settings/{group_id}', 'GroupsController@groupSettings')->name('groups.groupSettings');
         Route::get('/new-subscription', 'GroupsController@newSubscription')->name('groups.new.subscription');
         Route::get('/client-group/{group_id}', 'GroupsController@clientGroup')->name('groups.clientGroup');
+        Route::get('/client-group-user/{group_id}', 'GroupsController@clientGroupsUsers')->name('groups.clientGroupsUsers');
         Route::post('/add/client-group', 'GroupsController@addClientGroup')->name('groups.add.client.group');
         Route::post('/edit/client-group', 'GroupsController@editClientGroup')->name('groups.edit.client.group');
         Route::get('/delete/client-group/{group_id}', 'GroupsController@deleteClientGroup')->name('groups.delete.client.group');
+        Route::post('/add/client-group-user', 'GroupsController@addClientGroupUser')->name('groups.add.client.group.user');
+        Route::get('/delete/client-group-user/{user_id}', 'GroupsController@deleteClientGroupUser')->name('groups.delete.client.group.user');
     });
 
     Route::group(['prefix' => 'balance'], function () {

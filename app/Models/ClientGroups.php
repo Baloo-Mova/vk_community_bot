@@ -13,4 +13,8 @@ class ClientGroups extends Model
         'name',
         'auto_add_key'
     ];
+
+    public function users(){
+        return $this->hasMany(Clients::class, 'client_group_id', 'id');
+    }
 }

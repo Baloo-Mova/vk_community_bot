@@ -225,4 +225,43 @@ class GroupsController extends Controller
         return back();
     }
 
+    public function clientGroupsUsers($group_id)
+    {
+        $data = ClientGroups::find($group_id);
+        $users = $data->users;
+        return view('groups.clientGroupsUsers', [
+            "user"     => \Auth::user(),
+            "group_id" => $group_id,
+            "data"  => $data,
+            "users"  => isset($users) ? $users : []
+        ]);
+    }
+
+    public function addClientGroupUser(Request $request)
+    {
+        if(!ctype_digit($request->get('vk_id'))){
+            Toastr::error('Id пользователя введен неверно!', 'Ошибка');
+            return back();
+        }
+        $user = new Clients();
+        $user->fill($request->all());
+        $user->save();
+
+        return back();
+    }
+
+    public function deleteClientGroupUser($user_id)
+    {
+        $client = Clients::find($user_id);
+        if(!isset($client)){
+            Toastr::error('Пользователь не найден!', 'Ошибка');
+            return back();
+        }
+        $client->delete();
+
+        return back();
+    }
+
+
+
 }
