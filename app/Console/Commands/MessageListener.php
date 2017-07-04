@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Core\VK;
+use App\Models\Clients;
+use App\Models\ClientGroups;
 use App\Models\Errors;
 use App\Models\UserGroups;
 use Carbon\Carbon;
@@ -66,6 +68,34 @@ class MessageListener extends Command
                     $userId    = $item['message']['user_id'];
                     $body      = $item['message']['body'];
                     $vk->setSeenMessage([$messageId], $userId);
+
+                    if (stripos($body, '/addToGroup') !== false) {
+                        $groupId     = trim(str_replace("/addToGroup", '', $body));
+                        $message     = "";
+                        $clientGroup = ClientGroups::where(['id' => $groupId, 'group_id' => $group->id])->first();
+
+                        if (isset($clientGroup)) {
+                            $client = Clients::where([
+                                'vk_id'           => $userId,
+                                'client_group_id' => $clientGroup->id
+                            ])->first();
+                            if (isset($client)) {
+                                $message = "Вы уже состоите в группе: " . $clientGroup->name;
+                            } else {
+                                $message                 = "Вы успешно добавлены в группу: " . $clientGroup->name;
+                                $client                  = new Clients();
+                                $client->client_group_id = $clientGroup->id;
+                                $client->vk_id           = $userId;
+                                $client->save();
+                            }
+                        } else {
+                            $message = "Группы с идентефикатором \"" . $groupId . "\" не существует!";
+                        }
+
+                        if ( ! empty($message)) {
+                            $vk->sendMessage($message, $userId);
+                        }
+                    }
 
                     foreach ($data as $key => $value) {
                         if (stripos($body, $key) !== false) {
