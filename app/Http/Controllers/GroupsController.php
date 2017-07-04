@@ -276,6 +276,12 @@ class GroupsController extends Controller
 
     public function addMassDelivery(Request $request)
     {
+
+        if(empty($request->get('message'))){
+            Toastr::error('Укажите поле сообшение', 'Ошибка');
+            return back();
+        }
+
         $delivery = new MassDelivery();
         $delivery->fill($request->all());
         $delivery->save();

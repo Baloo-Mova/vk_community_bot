@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MassDelivery;
 use App\Console\Commands\MessageListener;
 use App\Console\Commands\Test;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Test::class,
         MessageListener::class,
+        MassDelivery::class
     ];
 
     /**

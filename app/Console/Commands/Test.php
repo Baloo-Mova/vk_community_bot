@@ -41,11 +41,11 @@ class Test extends Command
      */
     public function handle()
     {
-        $group = UserGroups::find(2);
-        $tasks = $group->activeTasks;
+        $array = [
+            'in'=>[],
+            'notIn' => [],
+            'or'=>[],
 
-
-
-        var_dump($data['Здарова']);
+        ];
     }
 }

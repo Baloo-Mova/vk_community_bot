@@ -36,8 +36,6 @@
                                     <i class="group_menu_activator_in_card activator material-icons right">more_vert</i>
                                     <p class="group_link_in_card">
                                         https://vk.com/club{{ $activated_groups->group_id }}</p>
-                                    <span class="card-title activator grey-text text-darken-4">{{ $activated_groups->name }}
-                                        <i class="material-icons right">more_vert</i></span>
                                 </div>
                                 <div class="groups_options_card_wrap card-reveal">
                                     <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
