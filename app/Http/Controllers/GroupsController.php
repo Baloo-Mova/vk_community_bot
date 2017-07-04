@@ -101,4 +101,13 @@ class GroupsController extends Controller
         return back();
     }
 
+    public function updateUserGroups()
+    {
+
+        $vk = new VK();
+        $vk->setUser(\Auth::user());
+        $vk->updateUserGroups();
+        return back();
+    }
+
 }

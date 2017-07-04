@@ -28,6 +28,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/add/response-script', 'GroupsController@addResponseScript')->name('groups.add.response');
         Route::post('/edit/response-script', 'GroupsController@editResponseScript')->name('groups.edit.response');
         Route::get('/delete/response-script/{response}', 'GroupsController@deleteResponseScript')->name('groups.delete.response');
+        Route::get('/update', 'GroupsController@updateUserGroups')->name('groups.update');
     });
 
     Route::group(['prefix' => 'balance'], function () {

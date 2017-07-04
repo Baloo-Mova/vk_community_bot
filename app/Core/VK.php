@@ -94,11 +94,10 @@ class VK
     public function updateUserGroups()
     {
         $adminGroups = $this->getAdminGroups();
-        if (count($adminGroups['response']) > 1) {
-            for ($i = 1; $i < count($adminGroups['response']); $i++) {
-                $group = $adminGroups['response'][$i];
-
-                $groupBase = UserGroups::where(['group_id' => $group['gid'], 'user_id' => $this->user->id])->first();
+        if ($adminGroups['response']['count'] > 1) {
+            for ($i = 1; $i < $adminGroups['response']['count']; $i++) {
+                $group = $adminGroups['response']['items'][$i];
+                $groupBase = UserGroups::where(['group_id' => $group['id'], 'user_id' => $this->user->id])->first();
                 if ( ! isset($groupBase)) {
                     $groupBase = new UserGroups();
                 }
@@ -106,7 +105,7 @@ class VK
                 $groupBase->user_id  = $this->user->id;
                 $groupBase->name     = $group['name'];
                 $groupBase->avatar   = $group['photo_100'];
-                $groupBase->group_id = $group['gid'];
+                $groupBase->group_id = $group['id'];
                 $groupBase->save();
             }
         }

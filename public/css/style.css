@@ -166,3 +166,10 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .btn:hover{
     color: #fff;
 }
+.update_user_groups_button {
+}
+.update_badge{
+    background-color: #F5F8FA !important;
+    margin: 0px !important;
+    height: 26px !important;
+}
