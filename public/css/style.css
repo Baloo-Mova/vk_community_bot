@@ -211,3 +211,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .mt20{
     margin-top: 20px;
 }
+.table_td{
+    padding: 15px 5px !important;
+}

@@ -35,6 +35,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/client-group/{group_id}', 'GroupsController@clientGroup')->name('groups.clientGroup');
         Route::post('/add/client-group', 'GroupsController@addClientGroup')->name('groups.add.client.group');
         Route::post('/edit/client-group', 'GroupsController@editClientGroup')->name('groups.edit.client.group');
+        Route::get('/delete/client-group/{group_id}', 'GroupsController@deleteClientGroup')->name('groups.delete.client.group');
     });
 
     Route::group(['prefix' => 'balance'], function () {
