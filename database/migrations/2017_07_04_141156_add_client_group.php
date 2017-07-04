@@ -17,7 +17,7 @@ class AddClientGroup extends Migration
             $table->increments('id');
             $table->string('group_id');
             $table->string('name');
-            $table->string('auto_add_key');
+            $table->string('auto_add_key')->nullable();
         });
 
         Schema::create('clients', function (Blueprint $table) {

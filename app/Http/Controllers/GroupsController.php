@@ -195,7 +195,11 @@ class GroupsController extends Controller
 
     public function addClientGroup(Request $request)
     {
+        $clGroup = new ClientGroups();
+        $clGroup->fill($request->all());
+        $clGroup->save();
 
+        return back();
     }
 
     public function editClientGroup(Request $request)

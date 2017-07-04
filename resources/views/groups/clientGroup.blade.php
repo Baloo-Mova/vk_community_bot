@@ -18,12 +18,6 @@
                             <label for="name">Имя</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input name="response" id="response" type="text" class="validate">
-                            <label for="response">Ответ</label>
-                        </div>
-                    </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
                 </form>
             </div>
@@ -40,7 +34,7 @@
                 <tbody>
                     @forelse($groups as $group)
                         <tr>
-                            <td>1</td>
+                            <td>{{ $group }}</td>
                             <td>2</td>
                         </tr>
                     @empty
