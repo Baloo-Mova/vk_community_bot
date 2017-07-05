@@ -80,7 +80,7 @@ class MassDelivery extends Command
 
                 $sendTo = array_chunk($sendTo, 99);
 
-                $vk->setGroup($this->task->clientGroup->group);
+                $vk->setGroup($this->task->group);
 
                 foreach ($sendTo as $sendArray) {
                     try {

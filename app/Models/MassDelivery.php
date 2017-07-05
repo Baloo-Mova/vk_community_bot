@@ -38,7 +38,7 @@ class MassDelivery extends Model
     ];
     protected $table      = 'mass_delivery';
 
-    public function clientGroup(){
-        return $this->belongsTo(ClientGroups::class,'group_id','id');
+    public function group(){
+        return $this->belongsTo(UserGroups::class,'group_id','id');
     }
 }
