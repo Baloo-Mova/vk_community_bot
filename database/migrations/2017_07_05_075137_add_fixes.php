@@ -19,7 +19,7 @@ class AddFixes extends Migration
         });
 
         Schema::table('mass_delivery', function(Blueprint $tab){
-            $tab->timestamp('when_send');
+            $tab->timestamp('when_send')->nullable();
         });
     }
 
