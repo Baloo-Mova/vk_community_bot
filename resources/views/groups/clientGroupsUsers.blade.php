@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         @section('contentheader_title')
-            Группа пользователей - {{ $data->name }}
+            Группа пользователей - {{ $data->name }} (Id {{ $group_id }})
         @endsection
 
         <div id="modal_add" class="modal">
