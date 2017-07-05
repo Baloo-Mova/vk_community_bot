@@ -14,11 +14,21 @@
     <ul class="collapsible" data-collapsible="accordion">
         <ul>
             <li id="categories_category">
-                <a class="waves-effect {{ Request::is('/') || Request::is('group/*') ? 'blue-text text-darken-2' : '' }}" style="text-decoration: none;" href="{{ route('groups.index') }}">Группы</a>
+                <a class="waves-effect {{ Request::is('/') || Request::is('group/*') ? 'blue-text text-darken-2' : '' }}"
+                   style="text-decoration: none;"
+                   href="{{ route('groups.index') }}">
+                    <p><i class="material-icons">supervisor_account</i></p>
+                    <p>Группы</p>
+                </a>
             </li>
 
             <li id="categories_sub_category">
-                <a class="waves-effect {{ Request::is('balance') || Request::is('balance/*') ? 'blue-text text-darken-2' : '' }}" style="text-decoration: none;" href="{{ route('balance.index') }}">Оплата</a>
+                <a class="waves-effect {{ Request::is('balance') || Request::is('balance/*') ? 'blue-text text-darken-2' : '' }}"
+                   style="text-decoration: none;"
+                   href="{{ route('balance.index') }}">
+                    <p><i class="material-icons">account_balance_wallet</i></p>
+                    <p>Оплата</p>
+                </a>
             </li>
         </ul>
     </ul>
