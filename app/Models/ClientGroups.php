@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ClientGroups
  *
- * @property int $id
+ * @property int    $id
  * @property string $group_id
  * @property string $name
  * @property string $auto_add_key
@@ -19,15 +19,21 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ClientGroups extends Model
 {
-    public $table = 'client_groups';
+    public $table      = 'client_groups';
     public $timestamps = false;
-    public $fillable = [
+    public $fillable   = [
         'group_id',
         'name',
         'auto_add_key'
     ];
 
-    public function users(){
+    public function users()
+    {
         return $this->hasMany(Clients::class, 'client_group_id', 'id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(UserGroups::class, 'group_id', 'id');
     }
 }

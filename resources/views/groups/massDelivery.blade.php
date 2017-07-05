@@ -62,8 +62,7 @@
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 when_send_wrap">
-                            <input name="when_send" id="when_send" class="when_send" type="text"
-                                   placeholder="{{ \Carbon\Carbon::now() }}">
+                            <input name="when_send" id="when_send" class="when_send" type="text" maxlength="19" value="{{ \Carbon\Carbon::now() }}">
                             <label for="when_send" class="when_send">Дата рассылки</label>
                         </div>
 
@@ -162,7 +161,7 @@
                 }
             });
 
-            function togleItemsStatus(name, name2, state){
+            function togleItemsStatus(name, name2, state) {
                 $(name).select2("destroy");
                 $(name2).attr("disabled", state);
                 $(name).select2();

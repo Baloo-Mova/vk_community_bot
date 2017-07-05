@@ -33,7 +33,12 @@ class MassDelivery extends Model
         'rules',
         'message',
         'reserved',
-        'sended'
+        'sended',
+        'when_send'
     ];
     protected $table      = 'mass_delivery';
+
+    public function clientGroup(){
+        return $this->belongsTo(ClientGroups::class,'group_id','id');
+    }
 }

@@ -96,7 +96,7 @@ class VK
         $adminGroups = $this->getAdminGroups();
         if ($adminGroups['response']['count'] > 1) {
             for ($i = 1; $i < $adminGroups['response']['count']; $i++) {
-                $group = $adminGroups['response']['items'][$i];
+                $group     = $adminGroups['response']['items'][$i];
                 $groupBase = UserGroups::where(['group_id' => $group['id'], 'user_id' => $this->user->id])->first();
                 if ( ! isset($groupBase)) {
                     $groupBase = new UserGroups();
@@ -138,8 +138,7 @@ class VK
 
         try {
             $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
-                ['form_params' => $fields]
-            )->getBody()->getContents();
+                ['form_params' => $fields])->getBody()->getContents();
 
             if (strpos($response, "error") !== false) {
                 $error       = new Errors();
@@ -157,6 +156,22 @@ class VK
             $error->url  = $method . ' ' . $data;
             $error->save();
         }
+    }
+
+    public function getUserInfo($array)
+    {
+        return $this->requestToApi('users.get', [
+            'user_ids' => implode(',', $array)
+        ])['response'];
+    }
+
+    public function massSend($message, $to)
+    {
+        return $this->requestToApi('messages.send', [
+            'user_id'   => implode(',', $to),
+            'random_id' => intval(microtime(true) * 1000),
+            'message'   => $message
+        ], true);
     }
 
     public function getUnseenDialogs()

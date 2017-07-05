@@ -103,18 +103,20 @@ class MessageListener extends Command
                 }
 
                 $this->group->last_time_checked = Carbon::now();
+                $this->group->reserved          = 0;
                 $this->group->save();
                 sleep(5);
             } catch (\Exception $ex) {
-                $error       = new Errors();
-                $error->text = $ex->getMessage() . '   ' . $ex->getLine();
-                $error->url  = 'MessageListener';
-                $error->save();
-            } finally {
+
                 if (isset($this->group)) {
                     $this->group->reserved = 0;
                     $this->group->save();
                 }
+
+                $error       = new Errors();
+                $error->text = $ex->getMessage() . '   ' . $ex->getLine();
+                $error->url  = 'MessageListener';
+                $error->save();
             }
         }
     }

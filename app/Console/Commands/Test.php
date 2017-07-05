@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Core\VK;
 use App\Models\BotCommunityResponse;
+use App\Models\MassDelivery;
 use App\Models\User;
 use App\Models\UserGroups;
 use Illuminate\Console\Command;
@@ -41,5 +42,6 @@ class Test extends Command
      */
     public function handle()
     {
+
     }
 }
