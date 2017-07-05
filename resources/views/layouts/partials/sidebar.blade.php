@@ -30,6 +30,15 @@
                     <p>Оплата</p>
                 </a>
             </li>
+
+            <li id="categories_sub_category">
+                <a class="waves-effect {{ Request::is('balance') || Request::is('balance/*') ? 'blue-text text-darken-2' : '' }}"
+                   style="text-decoration: none;"
+                   href="https://vk.me/vkknocker">
+                    <p><i class="material-icons">live_help</i></p>
+                    <p>Помощь</p>
+                </a>
+            </li>
         </ul>
     </ul>
 </ul>

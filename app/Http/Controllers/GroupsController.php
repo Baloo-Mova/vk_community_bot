@@ -369,6 +369,11 @@ class GroupsController extends Controller
             $result["not"] = [];
         }
 
+        if(count($not_in) + count($in_arr) == 0){
+            Toastr::error('Вы не указали кому рассылать.','Ошибка');
+            return back();
+        }
+
         $delivery = new MassDelivery();
         $delivery->fill($request->all());
         $delivery->rules = json_encode($result);

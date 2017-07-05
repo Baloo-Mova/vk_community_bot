@@ -19,7 +19,7 @@
                         </div>
                         <div class="input-field col s12">
                             <textarea id="users" name="users" class="materialize-textarea textarea6"></textarea>
-                            <label for="users">Масовая загрузка пользователей (каждый с новой строки)</label>
+                            <label for="users">Массовая загрузка пользователей (каждый с новой строки)</label>
                         </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
