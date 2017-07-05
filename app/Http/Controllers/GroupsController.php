@@ -78,6 +78,7 @@ class GroupsController extends Controller
         $response->fill($request->all());
         $response->save();
 
+        Toastr::success('Сценарий успешно добавлен', 'Успешно');
         return back();
     }
 
@@ -86,6 +87,7 @@ class GroupsController extends Controller
         $response = BotCommunityResponse::find($id);
         $response->delete();
 
+        Toastr::success('Сценарий успешно удален', 'Успешно');
         return back();
     }
 
@@ -118,8 +120,11 @@ class GroupsController extends Controller
         $response = BotCommunityResponse::find($id);
         $response->key = $request->get('key');
         $response->response = $request->get('response');
+        $response->action_id = $request->get('action_id');
+        $response->add_group_id = $request->get('add_group_id');
         $response->save();
 
+        Toastr::success('Сценарий успешно отредактирован', 'Успешно');
         return back();
     }
 

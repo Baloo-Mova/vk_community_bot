@@ -45,7 +45,7 @@
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 mt10 action_select">
-                            <select name="action_id">
+                            <select name="action_id" class="action_select_select">
                                 <option value="" disabled selected>Выберите действие</option>
                                 <option value="1">Добавить в группу</option>
                             </select>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 mt10 group_select">
-                            <select name="add_group_id">
+                            <select name="add_group_id" class="group_select_select">
                                 <option value="" disabled selected>Выберите группу</option>
                                 @forelse($client_groups as $clg)
                                     <option value="{{ $clg->id }}">{{ $clg->name }}</option>
@@ -92,18 +92,18 @@
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 action_select_edit">
-                            <select name="action_id">
-                                <option value="" disabled selected>Выберите действие</option>
-                                <option value="1">Добавить в группу</option>
+                            <select name="action_id" class="action_select_edit_select">
+                                <option value="" disabled class="action_select_edit_0">Выберите действие</option>
+                                <option value="1" class="action_select_edit_1">Добавить в группу</option>
                             </select>
                             <label>Действия</label>
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 group_select_edit">
-                            <select name="add_group_id">
-                                <option value="" disabled selected>Выберите группу</option>
+                            <select name="add_group_id" class="group_select_edit_select">
+                                <option value="" disabled class="group_select_edit_-1">Выберите группу</option>
                                 @forelse($client_groups as $clg)
-                                    <option value="{{ $clg->id }}">{{ $clg->name }}</option>
+                                    <option value="{{ $clg->id }}" class="group_select_edit_{{ $clg->id }}">{{ $clg->name }}</option>
                                 @empty
                                     <option value="">У Вас нет Групп пользователей</option>
                                 @endforelse
@@ -152,6 +152,8 @@
                                        data-edit-id="{{ $resp->id }}"
                                        data-edit-key="{{ $resp->key }}"
                                        data-edit-response="{{ $resp->response }}"
+                                       data-edit-action-id="{{ ($resp->action_id) ? $resp->action_id : -1 }}"
+                                       data-edit-add-group-id="{{ ($resp->add_group_id) ? $resp->add_group_id : -1 }}"
                                        href="#modal2">
                                         <i class="material-icons left">edit</i>
                                     </a>
@@ -180,7 +182,10 @@
     <script>
         $(document).ready(function(){
             $('.modal').modal();
-            $('select').material_select();
+            $('.action_select_select').material_select();
+            $('.group_select_select').material_select();
+            $('.action_select_edit_select').material_select();
+            $('.group_select_edit_select').material_select();
 
             $('#modal_payed').modal('open',{
                     dismissible: false
@@ -201,13 +206,38 @@
             $(".scenario_edit").on("click", function () {
                 var scenarion_id = $(this).data("editId"),
                     key          = $(this).data("editKey"),
-                    response     = $(this).data("editResponse");
+                    response     = $(this).data("editResponse"),
+                    action_id    = $(this).data("editActionId"),
+                    group_id     = $(this).data("editAddGroupId");
 
                 $(".scenario_id").val(scenarion_id);
                 $(".scenario_key_label").addClass('active');
                 $(".scenario_key").val(key);
                 $(".scenario_response_label").addClass('active');
                 $(".scenario_response").val(response);
+
+                if(action_id != -1){
+                    $(".is_action_edit").prop("checked", true);
+                    $(".action_select_edit").css("display", "block");
+                    $(".group_select_edit").css("display", "block");
+                    $('.action_select_edit_select').material_select('destroy');
+                    $('.group_select_edit_select').material_select('destroy');
+                    $(".action_select_edit_select").val(action_id);
+                    $('.group_select_edit_select').val(group_id);
+                    $('.action_select_edit_select').material_select();
+                    $('.group_select_edit_select').material_select();
+
+                }else{
+                    $(".is_action_edit").prop("checked", false);
+                    $(".action_select_edit").css("display", "none");
+                    $(".group_select_edit").css("display", "none");
+                    $('.action_select_edit_select').material_select('destroy');
+                    $('.group_select_edit_select').material_select('destroy');
+                    $(".action_select_edit_select").val(0);
+                    $('.group_select_edit_select').val(-1);
+                    $('.action_select_edit_select').material_select();
+                    $('.group_select_edit_select').material_select();
+                }
             });
 
             $(".is_action").on("change", function(){
@@ -217,6 +247,12 @@
                     $(".action_select").css("display", "block");
                     $(".group_select").css("display", "none");
                 }else{
+                    $('.action_select_select').material_select('destroy');
+                    $('.group_select_select').material_select('destroy');
+                    $(".action_select_select").val(0);
+                    $('.group_select_select').val(-1);
+                    $('.action_select_select').material_select();
+                    $('.group_select_select').material_select();
                     $(".action_select").css("display", "none");
                     $(".group_select").css("display", "none");
                 }
@@ -224,7 +260,31 @@
 
             $(".action_select").on("change", function () {
                 $(".group_select").css("display", "block");
-            })
+            });
+
+            $(".is_action_edit").on("change", function(){
+                var state = $(this).prop("checked");
+
+                if(state){
+                    $(".action_select_edit").css("display", "block");
+                    $(".group_select_edit").css("display", "none");
+                }else{
+                    $('.action_select_edit_select').material_select('destroy');
+                    $('.group_select_edit_select').material_select('destroy');
+                    $(".action_select_edit_select").val(0);
+                    $('.group_select_edit_select').val(-1);
+                    $('.action_select_edit_select').material_select();
+                    $('.group_select_edit_select').material_select();
+                    $(".action_select_edit").css("display", "none");
+                    $(".group_select_edit").css("display", "none");
+                }
+            });
+
+            $(".action_select_edit").on("change", function () {
+                $(".group_select_edit").css("display", "block");
+            });
+
+
         });
     </script>
 

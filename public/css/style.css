@@ -242,7 +242,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     height: 20px;
 }
 .action_select,
-.group_select{
+.group_select,
+.action_select_edit,
+.group_select_edit{
     display: none;
 }
 .h10{
