@@ -96,6 +96,7 @@ class MassDelivery extends Command
                 $this->task->sended   = 1;
                 $this->task->reserved = 0;
                 $this->task->save();
+                sleep(10);
             } catch (\Exception $ex) {
                 $error       = new Errors();
                 $error->text = $ex->getMessage() . '   ' . $ex->getLine();
