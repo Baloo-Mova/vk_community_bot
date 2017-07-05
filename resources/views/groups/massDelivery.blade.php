@@ -80,7 +80,7 @@
                     </thead>
                     <tbody>
                     @forelse($deliveries as $delivery)
-                        <tr {{ $delivery->sended ? "teal lighten-4" : "" }}>
+                        <tr class="{{ $delivery->sended ? "teal lighten-4" : "" }}">
                             <td>{{ $delivery->message }}</td>
                             <td>{{ $delivery->created_at }}</td>
                             <td>
