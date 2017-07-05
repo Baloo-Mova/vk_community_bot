@@ -250,3 +250,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .h10{
     height: 10px;
 }
+.when_send_wrap{
+    display: none;
+}

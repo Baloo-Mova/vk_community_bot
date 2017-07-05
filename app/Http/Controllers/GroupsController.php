@@ -311,23 +311,59 @@ class GroupsController extends Controller
     {
         $userGroup = UserGroups::find($group_id);
         $massDeliveries = $userGroup->massdeliveries;
+        $groups = $userGroup->clientGroups;
         return view('groups.massDelivery', [
             "user" => \Auth::user(),
             "group_id" => $group_id,
-            "deliveries" => $massDeliveries
+            "deliveries" => $massDeliveries,
+            "groups"     => isset($groups) ? $groups : []
         ]);
     }
 
     public function addMassDelivery(Request $request)
     {
-
         if(empty($request->get('message'))){
             Toastr::error('Укажите поле сообшение', 'Ошибка');
             return back();
         }
 
+
+        $in = $request->get('in');
+        $in_arr = [];
+        $not_in = $request->get('not_in');
+        $not_in_arr = [];
+        $result = [];
+
+        if(!empty($in)){
+            foreach ($in as $i){
+                $in_arr[] = $i;
+            }
+        }
+
+        if(!empty($not_in)){
+            foreach ($not_in as $n){
+                $not_in_arr[] = $n;
+            }
+        }
+
+        if (count($in_arr) > 0){
+            $result["in"] = $in_arr;
+        }else{
+            $result["in"] = [];
+        }
+
+        if (count($not_in) > 0){
+            $result["not"] = $not_in;
+        }else{
+            $result["not"] = [];
+        }
+
         $delivery = new MassDelivery();
         $delivery->fill($request->all());
+        $delivery->rules = json_encode($result);
+        if(empty($request->get('when_send'))){
+            $delivery->when_send = Carbon::now();
+        }
         $delivery->save();
 
         Toastr::success('Рассылка успешно добавлена', 'Добавлено');
@@ -345,6 +381,45 @@ class GroupsController extends Controller
 
         Toastr::success('Рассылка успешно удалена', 'Удалено');
         return back();
+    }
+
+    public function massDeleteClientGroup(Request $request)
+    {
+        $group_id = $request->get('client_group_id');
+        $users_str = $request->get('users');
+        if(empty($group_id)){
+            Toastr::error('Id группы не указан', 'Ошибка');
+            return back();
+        }
+        if(empty($users_str)){
+            Toastr::error('Вы не указали Id пользователей для удаления', 'Ошибка');
+            return back();
+        }
+
+        $users_str = $request->get('users');
+        $users_arr = [];
+
+        $users = array_map('trim', explode("\r\n", $users_str));
+        foreach ($users as $user){
+            if(empty($user)){
+                continue;
+            }
+
+            $user_id = $this->checkVkId($user);
+
+            $user = Clients::where([
+                        "client_group_id" => $group_id,
+                        "vk_id" => $user_id
+                    ])->first();
+
+            if(isset($user)){
+                $user->delete();
+            }
+        }
+
+        Toastr::success('Пользователи удачно удалены', 'Удалено');
+        return back();
+
     }
 
 

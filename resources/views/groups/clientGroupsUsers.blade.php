@@ -19,7 +19,7 @@
                         </div>
                         <div class="input-field col s12">
                             <textarea id="users" name="users" class="materialize-textarea textarea6"></textarea>
-                            <label for="users">Масовая загрузка пользователей</label>
+                            <label for="users">Масовая загрузка пользователей (каждый с новой строки)</label>
                         </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
@@ -27,8 +27,26 @@
             </div>
         </div>
 
+        <div id="modal_delete" class="modal">
+            <div class="modal-content">
+                <h4>Массовое удаление пользователей</h4>
+                <form action="{{ route('groups.mass.delete.client.group') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="client_group_id" value="{{ $group_id }}">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="users" name="users" class="materialize-textarea textarea6"></textarea>
+                            <label for="users">Id пользователей (каждый с новой строки)</label>
+                        </div>
+                    </div>
+                    <button class="waves-effect waves-green light-blue darken-4 btn">Удалить</button>
+                </form>
+            </div>
+        </div>
+
         <div class="row">
             <a href="#modal_add" class="waves-effect waves-light light-blue darken-4 btn">Добавить пользователя</a>
+            <a href="#modal_delete" class="waves-effect waves-light light-blue darken-4 btn">Удалить пользователей</a>
             <div class="col s12 mt20">
                 <table class="highlight">
                     <thead>

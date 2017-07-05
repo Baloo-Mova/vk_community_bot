@@ -37,6 +37,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/add/client-group', 'GroupsController@addClientGroup')->name('groups.add.client.group');
         Route::post('/edit/client-group', 'GroupsController@editClientGroup')->name('groups.edit.client.group');
         Route::get('/delete/client-group/{group_id}', 'GroupsController@deleteClientGroup')->name('groups.delete.client.group');
+        Route::post('/mass-delete/client-group', 'GroupsController@massDeleteClientGroup')->name('groups.mass.delete.client.group');
         Route::post('/add/client-group-user', 'GroupsController@addClientGroupUser')->name('groups.add.client.group.user');
         Route::get('/delete/client-group-user/{user_id}', 'GroupsController@deleteClientGroupUser')->name('groups.delete.client.group.user');
         Route::get('/mass-delivery/{group_id}', 'GroupsController@massDelivery')->name('groups.massDelivery');
