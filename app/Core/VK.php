@@ -168,7 +168,7 @@ class VK
     public function massSend($message, $to)
     {
         return $this->requestToApi('messages.send', [
-            'user_id'   => implode(',', $to),
+            'user_ids'   => implode(',', $to),
             'random_id' => intval(microtime(true) * 1000),
             'message'   => $message
         ], true);
