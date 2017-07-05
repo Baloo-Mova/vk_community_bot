@@ -240,15 +240,48 @@ class GroupsController extends Controller
 
     public function addClientGroupUser(Request $request)
     {
-        if(!ctype_digit($request->get('vk_id'))){
-            Toastr::error('Id пользователя введен неверно!', 'Ошибка');
-            return back();
+
+        $group_id = $request->get('client_group_id');
+        $vk_id_str = $request->get('vk_id');
+
+        if(!empty($vk_id_str)){
+            $user = new Clients();
+            $vk_id = $this->checkVkId($vk_id_str);
+            $user->vk_id = $vk_id;
+            $user->client_group_id = $group_id;
+            $user->save();
         }
-        $user = new Clients();
-        $user->fill($request->all());
-        $user->save();
+
+        $users_str = $request->get('users');
+        $users_arr = [];
+
+        if(!empty($users_str)){
+            $users = array_map('trim', explode("\r\n", $users_str));
+            foreach ($users as $user){
+                $users_arr[] = [
+                    "vk_id" => $this->checkVkId($user),
+                    "client_group_id" => $group_id
+                ];
+            }
+        }
+
+        if(count($users_arr) > 0){
+            Clients::insert($users_arr);
+        }
+
+        Toastr::success('Пользователи успешно добавлены!', 'Добавлено');
+        return back();
 
         return back();
+    }
+
+    private function checkVkId($id)
+    {
+        if(strtolower($id[0]) == "i" && strtolower ($id[1]) == "d"){
+            return substr($id, 2);
+        }else {
+            return $id;
+        }
     }
 
     public function deleteClientGroupUser($user_id)

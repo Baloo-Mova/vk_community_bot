@@ -17,6 +17,10 @@
                             <input name="vk_id" id="vk_id" type="text" class="validate">
                             <label for="vk_id">Id пользователя</label>
                         </div>
+                        <div class="input-field col s12">
+                            <textarea id="users" name="users" class="materialize-textarea"></textarea>
+                            <label for="users">Масовая загрузка пользователей</label>
+                        </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
                 </form>
