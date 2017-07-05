@@ -27,17 +27,41 @@
                     <form action="{{ route('groups.add.response') }}" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="group_id" value="{{ $group->id }}">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input name="key" id="key" type="text" class="validate">
-                                <label for="key">Ключевое слово</label>
-                            </div>
+                        <div class="input-field col s12">
+                            <input name="key" id="key" type="text" class="validate">
+                            <label for="key">Ключевое слово</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input name="response" id="response" type="text" class="validate">
-                                <label for="response">Ответ</label>
-                            </div>
+                        <div class="input-field col s12">
+                            <input name="response" id="response" type="text" class="validate">
+                            <label for="response">Ответ</label>
+                        </div>
+                        <div class="switch">
+                            <label>
+                                <input type="checkbox" class="is_action">
+                                <span class="lever"></span>
+                                <span class="bot_status">
+                            действие</span>
+                            </label>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="input-field col s12 mt10 action_select">
+                            <select name="action_id">
+                                <option value="" disabled selected>Выберите действие</option>
+                                <option value="1">Добавить в группу</option>
+                            </select>
+                            <label>Действия</label>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="input-field col s12 mt10 group_select">
+                            <select name="add_group_id">
+                                <option value="" disabled selected>Выберите группу</option>
+                                @forelse($client_groups as $clg)
+                                    <option value="{{ $clg->id }}">{{ $clg->name }}</option>
+                                @empty
+                                    <option value="">У Вас нет Групп пользователей</option>
+                                @endforelse
+                            </select>
+                            <label>Группы</label>
                         </div>
                         <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
                     </form>
@@ -50,17 +74,41 @@
                     <form action="{{ route('groups.edit.response') }}" class="scenario_edit_form" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="scenario_id" class="scenario_id">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input name="key" id="key" class="scenario_key" type="text" class="validate">
-                                <label for="key" class="scenario_key_label">Ключевое слово</label>
-                            </div>
+                        <div class="input-field col s12">
+                            <input name="key" id="key" class="scenario_key" type="text" class="validate">
+                            <label for="key" class="scenario_key_label">Ключевое слово</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input name="response" id="response" class="scenario_response" type="text" class="validate">
-                                <label for="response" class="scenario_response_label">Ответ</label>
-                            </div>
+                        <div class="input-field col s12">
+                            <input name="response" id="response" class="scenario_response" type="text" class="validate">
+                            <label for="response" class="scenario_response_label">Ответ</label>
+                        </div>
+                        <div class="switch">
+                            <label>
+                                <input type="checkbox" class="is_action_edit">
+                                <span class="lever"></span>
+                                <span class="bot_status">
+                            действие</span>
+                            </label>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="input-field col s12 action_select_edit">
+                            <select name="action_id">
+                                <option value="" disabled selected>Выберите действие</option>
+                                <option value="1">Добавить в группу</option>
+                            </select>
+                            <label>Действия</label>
+                        </div>
+                        <div class="h10"></div>
+                        <div class="input-field col s12 group_select_edit">
+                            <select name="add_group_id">
+                                <option value="" disabled selected>Выберите группу</option>
+                                @forelse($client_groups as $clg)
+                                    <option value="{{ $clg->id }}">{{ $clg->name }}</option>
+                                @empty
+                                    <option value="">У Вас нет Групп пользователей</option>
+                                @endforelse
+                            </select>
+                            <label>Группы</label>
                         </div>
                         <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
                     </form>
@@ -132,6 +180,7 @@
     <script>
         $(document).ready(function(){
             $('.modal').modal();
+            $('select').material_select();
 
             $('#modal_payed').modal('open',{
                     dismissible: false
@@ -160,6 +209,22 @@
                 $(".scenario_response_label").addClass('active');
                 $(".scenario_response").val(response);
             });
+
+            $(".is_action").on("change", function(){
+                var state = $(this).prop("checked");
+
+                if(state){
+                    $(".action_select").css("display", "block");
+                    $(".group_select").css("display", "none");
+                }else{
+                    $(".action_select").css("display", "none");
+                    $(".group_select").css("display", "none");
+                }
+            });
+
+            $(".action_select").on("change", function () {
+                $(".group_select").css("display", "block");
+            })
         });
     </script>
 

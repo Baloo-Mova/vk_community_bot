@@ -61,11 +61,14 @@ class GroupsController extends Controller
         if(!isset($responses)){
             $responses = [];
         }
+
         $group = UserGroups::find($group_id);
+        $groups = $group->clientGroups;
         return view('groups.response', [
             'user' => \Auth::user(),
             'responses' => $responses,
-            'group'  => isset($group) ? $group : []
+            'group'  => isset($group) ? $group : [],
+            'client_groups' => isset($groups) ? $groups : []
         ]);
     }
 

@@ -208,8 +208,14 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .groups_back_button{
     margin: 10px 0px;
 }
+.mt10{
+    margin-top: 10px;
+}
 .mt20{
     margin-top: 20px;
+}
+.mb10{
+    margin-bottom: 10px;
 }
 .table_td{
     padding: 15px 5px !important;
@@ -234,4 +240,11 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     margin: 0;
     padding: 0;
     height: 20px;
+}
+.action_select,
+.group_select{
+    display: none;
+}
+.h10{
+    height: 10px;
 }
