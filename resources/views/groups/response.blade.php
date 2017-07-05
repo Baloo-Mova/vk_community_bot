@@ -58,7 +58,7 @@
                                 @forelse($client_groups as $clg)
                                     <option value="{{ $clg->id }}">{{ $clg->name }}</option>
                                 @empty
-                                    <option value="">У Вас нет Групп пользователей</option>
+                                    <option value="" disabled>У Вас нет Групп пользователей</option>
                                 @endforelse
                             </select>
                             <label>Группы</label>
