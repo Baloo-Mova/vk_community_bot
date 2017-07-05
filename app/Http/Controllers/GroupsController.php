@@ -258,6 +258,9 @@ class GroupsController extends Controller
         if(!empty($users_str)){
             $users = array_map('trim', explode("\r\n", $users_str));
             foreach ($users as $user){
+                if(empty($user)){
+                    continue;
+                }
                 $users_arr[] = [
                     "vk_id" => $this->checkVkId($user),
                     "client_group_id" => $group_id

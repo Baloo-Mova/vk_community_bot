@@ -18,7 +18,7 @@
                             <label for="vk_id">Id пользователя</label>
                         </div>
                         <div class="input-field col s12">
-                            <textarea id="users" name="users" class="materialize-textarea"></textarea>
+                            <textarea id="users" name="users" class="materialize-textarea textarea6"></textarea>
                             <label for="users">Масовая загрузка пользователей</label>
                         </div>
                     </div>
