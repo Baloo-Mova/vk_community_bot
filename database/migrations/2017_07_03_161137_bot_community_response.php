@@ -18,7 +18,7 @@ class BotCommunityResponse extends Migration
             $table->integer('group_id');
             $table->string('key', 255);
             $table->string('response', 255);
-            $table->boolean('state')->default(0);
+            $table->boolean('state')->default(1);
             $table->boolean('reserved')->default(0);
             $table->timestamp('last_time_checked')->comment('Время последнего изменения');
         });

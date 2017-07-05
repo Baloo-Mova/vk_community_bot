@@ -41,11 +41,5 @@ class Test extends Command
      */
     public function handle()
     {
-        $array = [
-            'in'=>[],
-            'notIn' => [],
-            'or'=>[],
-
-        ];
     }
 }
