@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\VK;
 use App\Http\Requests;
+use App\Models\User;
 use Socialite;
 
 class SocialController extends Controller
