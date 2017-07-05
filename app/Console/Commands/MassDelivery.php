@@ -67,8 +67,8 @@ class MassDelivery extends Command
 
                 $rules = json_decode($this->task->rules, true);
 
-                $good = array_column(Clients::whereIn('client_group_id', $rules['in'])->get()->toArray(), 'vk_id');
-                $bad  = array_column(Clients::whereIn('client_group_id', $rules['not'])->get()->toArray(), 'vk_id');
+                $good = array_column(Clients::whereIn('client_group_id', $rules['in'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+                $bad  = array_column(Clients::whereIn('client_group_id', $rules['not'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
 
                 $sendTo = [];
                 foreach ($good as $item) {
