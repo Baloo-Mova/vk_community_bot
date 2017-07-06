@@ -7,7 +7,7 @@
             <a class="indigo-text header_user_menu_item" href="{{ route('balance.index') }}">Баланс</a>
         </li>
         <li>
-            <a class="indigo-text header_user_menu_item" href="#!">Помощь</a>
+            <a class="indigo-text header_user_menu_item" href="https://vk.me/vkknocker">Помощь</a>
         </li>
         <li class="divider"></li>
         <li>
