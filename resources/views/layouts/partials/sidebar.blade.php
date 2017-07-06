@@ -3,7 +3,6 @@
         <div class="indigo darken-2 white-text" style="height: 180px;">
             <div class="row">
                 <img style="margin-top: 5%;" src="{{$user->avatar}}" class="circle responsive-img" height="100" width="100">
-
                 <p>
                     {{$user->FIO}}
                 </p>
