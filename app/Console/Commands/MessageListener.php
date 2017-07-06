@@ -59,7 +59,7 @@ class MessageListener extends Command
                         ['status', '=', '1'],
                         ['payed', '=', 1],
                         ['reserved', '=', 0]
-                    ])->whereNotNull('token')->orderBy('last_time_checked', 'desc')->first();
+                    ])->whereNotNull('token')->orderBy('last_time_checked', 'asc')->first();
 
                     if (isset($this->group)) {
                         $this->group->reserved = 1;
