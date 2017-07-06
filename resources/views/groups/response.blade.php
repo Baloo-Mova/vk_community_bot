@@ -32,7 +32,7 @@
                             <label for="key">Ключевое слово</label>
                         </div>
                         <div class="input-field col s12">
-                            <input name="response" id="response" type="text" class="validate">
+                            <textarea id="response" name="response" class="materialize-textarea"></textarea>
                             <label for="response">Ответ</label>
                         </div>
                         <div class="switch">
@@ -79,7 +79,7 @@
                             <label for="key" class="scenario_key_label">Ключевое слово</label>
                         </div>
                         <div class="input-field col s12">
-                            <input name="response" id="response" class="scenario_response" type="text" class="validate">
+                            <textarea id="response" name="response" class="materialize-textarea scenario_response"></textarea>
                             <label for="response" class="scenario_response_label">Ответ</label>
                         </div>
                         <div class="switch">
