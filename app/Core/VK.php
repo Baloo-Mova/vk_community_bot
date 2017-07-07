@@ -95,7 +95,7 @@ class VK
     {
         $adminGroups = $this->getAdminGroups();
         if ($adminGroups['response']['count'] > 1) {
-            for ($i = 1; $i < $adminGroups['response']['count']; $i++) {
+            for ($i = 0; $i < $adminGroups['response']['count']; $i++) {
                 $group     = $adminGroups['response']['items'][$i];
                 $groupBase = UserGroups::where(['group_id' => $group['id'], 'user_id' => $this->user->id])->first();
                 if ( ! isset($groupBase)) {
@@ -115,7 +115,7 @@ class VK
     {
         return $this->requestToApi('groups.get', [
             'extended' => 1,
-            'filter'   => 'admin',
+            'filter'   => 'editor',
             'fields'   => implode(',', $this->groupScope),
         ], false);
     }
@@ -168,7 +168,7 @@ class VK
     public function massSend($message, $to)
     {
         return $this->requestToApi('messages.send', [
-            'user_ids'   => implode(',', $to),
+            'user_ids'  => implode(',', $to),
             'random_id' => intval(microtime(true) * 1000),
             'message'   => $message
         ], true);
