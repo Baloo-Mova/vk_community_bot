@@ -1,129 +1,135 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container-fluid">
-        @section('contentheader_title')
-            Сценарий ответов
-        @endsection
+<div class="container-fluid">
+    @section('contentheader_title')
+        Сценарий ответов
+    @endsection
 
         @if(!$group->payed)
-                <div id="modal_payed" class="modal">
-                    <div class="modal-content">
-                        <h4>Внимание!</h4>
-                        <div class="group_not_payed">
-                            <p>В данный момент подписка на бота не оплачена. </p>
-                            <a href="{{ route('groups.groupSettings', ['bot_id' => $group->id]) }}"
-                               class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к оплате</a>
-                            <a href="{{ route('groups.index') }}"
-                               class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Назад</a>
-                        </div>
+            <div id="modal_payed" class="modal">
+                <div class="modal-content">
+                    <h4>Внимание!</h4>
+                    <div class="group_not_payed">
+                        <p>В данный момент подписка на бота не оплачена. </p>
+                        <a href="{{ route('groupSettings.index', ['bot_id' => $group->id]) }}"
+                           class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к оплате</a>
+                        <a href="{{ route('groups.index') }}"
+                           class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Назад</a>
                     </div>
                 </div>
+            </div>
         @endif
-
-            <div id="modal1" class="modal">
-                <div class="modal-content">
-                    <h4>Добавление сценария</h4>
-                    <form action="{{ route('groups.add.response') }}" method="post">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="group_id" value="{{ $group->id }}">
-                        <div class="input-field col s12">
-                            <input name="key" id="key" type="text" class="validate">
-                            <label for="key">Ключевое слово</label>
-                        </div>
-                        <div class="input-field col s12">
-                            <textarea id="response" name="response" class="materialize-textarea"></textarea>
-                            <label for="response">Ответ</label>
-                        </div>
-                        <div class="switch">
-                            <label>
-                                <input type="checkbox" class="is_action">
-                                <span class="lever"></span>
-                                <span class="bot_status">
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4>Добавление сценария</h4>
+                <form action="{{ route('groupTasks.add') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="group_id" value="{{ $group->id }}">
+                    <div class="input-field col s12">
+                        <input name="key" id="key" type="text" class="validate">
+                        <label for="key">Ключевое слово</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea id="response" name="response" class="materialize-textarea"></textarea>
+                        <label for="response">Ответ</label>
+                    </div>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" class="is_action">
+                            <span class="lever"></span>
+                            <span class="bot_status">
                             действие</span>
-                            </label>
-                        </div>
-                        <div class="h10"></div>
-                        <div class="input-field col s12 mt10 action_select">
-                            <select name="action_id" class="action_select_select">
-                                <option value="" disabled selected>Выберите действие</option>
-                                <option value="1">Добавить в группу</option>
-                            </select>
-                            <label>Действия</label>
-                        </div>
-                        <div class="h10"></div>
-                        <div class="input-field col s12 mt10 group_select">
-                            <select name="add_group_id" class="group_select_select">
-                                <option value="" disabled selected>Выберите группу</option>
-                                @forelse($client_groups as $clg)
-                                    <option value="{{ $clg->id }}">{{ $clg->name }}</option>
-                                @empty
-                                    <option value="" disabled>У Вас нет Групп пользователей</option>
-                                @endforelse
-                            </select>
-                            <label>Группы</label>
-                        </div>
-                        <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
-                    </form>
-                </div>
+                        </label>
+                    </div>
+                    <div class="h10"></div>
+                    <div class="input-field col s12 mt10 action_select">
+                        <select name="action_id" class="action_select_select">
+                            <option value="" disabled selected>Выберите действие</option>
+                            <option value="1">Добавить в группу</option>
+                        </select>
+                        <label>Действия</label>
+                    </div>
+                    <div class="h10"></div>
+                    <div class="input-field col s12 mt10 group_select">
+                        <select name="add_group_id" class="group_select_select">
+                            <option value="" disabled selected>Выберите группу</option>
+                            @forelse($client_groups as $clg)
+                                <option value="{{ $clg->id }}">{{ $clg->name }}</option>
+                            @empty
+                                <option value="" disabled>У Вас нет Групп пользователей</option>
+                            @endforelse
+                        </select>
+                        <label>Группы</label>
+                    </div>
+                    <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
+                </form>
             </div>
+        </div>
 
-            <div id="modal2" class="modal">
-                <div class="modal-content">
-                    <h4>Редактирование сценария</h4>
-                    <form action="{{ route('groups.edit.response') }}" class="scenario_edit_form" method="post">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="scenario_id" class="scenario_id">
-                        <div class="input-field col s12">
-                            <input name="key" id="key" class="scenario_key" type="text" class="validate">
-                            <label for="key" class="scenario_key_label">Ключевое слово</label>
-                        </div>
-                        <div class="input-field col s12">
-                            <textarea id="response" name="response" class="materialize-textarea scenario_response"></textarea>
-                            <label for="response" class="scenario_response_label">Ответ</label>
-                        </div>
-                        <div class="switch">
-                            <label>
-                                <input type="checkbox" class="is_action_edit">
-                                <span class="lever"></span>
-                                <span class="bot_status">
+        <div id="modal2" class="modal">
+            <div class="modal-content">
+                <h4>Редактирование сценария</h4>
+                <form action="{{ route('groupTasks.edit') }}" class="scenario_edit_form" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="scenario_id" class="scenario_id">
+                    <div class="input-field col s12">
+                        <input name="key" id="key" class="scenario_key" type="text" class="validate">
+                        <label for="key" class="scenario_key_label">Ключевое слово</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea id="response" name="response" class="materialize-textarea scenario_response"></textarea>
+                        <label for="response" class="scenario_response_label">Ответ</label>
+                    </div>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" class="is_action_edit">
+                            <span class="lever"></span>
+                            <span class="bot_status">
                             действие</span>
-                            </label>
-                        </div>
-                        <div class="h10"></div>
-                        <div class="input-field col s12 action_select_edit">
-                            <select name="action_id" class="action_select_edit_select">
-                                <option value="" disabled class="action_select_edit_0">Выберите действие</option>
-                                <option value="1" class="action_select_edit_1">Добавить в группу</option>
-                            </select>
-                            <label>Действия</label>
-                        </div>
-                        <div class="h10"></div>
-                        <div class="input-field col s12 group_select_edit">
-                            <select name="add_group_id" class="group_select_edit_select">
-                                <option value="" disabled class="group_select_edit_-1">Выберите группу</option>
-                                @forelse($client_groups as $clg)
-                                    <option value="{{ $clg->id }}" class="group_select_edit_{{ $clg->id }}">{{ $clg->name }}</option>
-                                @empty
-                                    <option value="">У Вас нет Групп пользователей</option>
-                                @endforelse
-                            </select>
-                            <label>Группы</label>
-                        </div>
-                        <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
-                    </form>
-                </div>
+                        </label>
+                    </div>
+                    <div class="h10"></div>
+                    <div class="input-field col s12 action_select_edit">
+                        <select name="action_id" class="action_select_edit_select">
+                            <option value="" disabled class="action_select_edit_0">Выберите действие</option>
+                            <option value="1" class="action_select_edit_1">Добавить в группу</option>
+                        </select>
+                        <label>Действия</label>
+                    </div>
+                    <div class="h10"></div>
+                    <div class="input-field col s12 group_select_edit">
+                        <select name="add_group_id" class="group_select_edit_select">
+                            <option value="" disabled class="group_select_edit_-1">Выберите группу</option>
+                            @forelse($client_groups as $clg)
+                                <option value="{{ $clg->id }}" class="group_select_edit_{{ $clg->id }}">{{ $clg->name }}</option>
+                            @empty
+                                <option value="">У Вас нет Групп пользователей</option>
+                            @endforelse
+                        </select>
+                        <label>Группы</label>
+                    </div>
+                    <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
+                </form>
             </div>
+        </div>
 
-        <div class="row">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                @include('layouts.partials.groups-maintabs')
+            </ul>
+        </div>
+        <div id="task" class="col s12">
+            <div class="h10"></div>
             <a href="#modal1" class="waves-effect waves-light light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Добавить сценарий</a>
-            <div class="col s12">
+            <div class="">
                 <table class="highlight">
                     <thead>
-                        <th>Ключевое слово</th>
-                        <th>Ответ</th>
-                        <th>Статус</th>
-                        <th>Действия</th>
+                    <th>Ключевое слово</th>
+                    <th>Ответ</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
                     </thead>
                     <tbody>
                     @if(!$group->payed)
@@ -157,7 +163,7 @@
                                        href="#modal2">
                                         <i class="material-icons left">edit</i>
                                     </a>
-                                    <a href="{{ route('groups.delete.response', ['response' => $resp->id]) }}"
+                                    <a href="{{ route('groupTasks.delete', ['response' => $resp->id]) }}"
                                        class="waves-effect waves-light"
                                        onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
                                         <i class="material-icons left">delete</i>
@@ -174,9 +180,9 @@
                 </table>
             </div>
         </div>
-
     </div>
-@endsection
+</div>
+@stop
 
 @section('js')
     <script>

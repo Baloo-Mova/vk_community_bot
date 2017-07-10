@@ -29,9 +29,7 @@ class VK
     ];
 
     private $authGroupScope = [
-        'photos',
         'messages',
-        'docs',
         'manage'
     ];
 
@@ -169,7 +167,8 @@ class VK
     public function getUserInfo($array)
     {
         return $this->requestToApi('users.get', [
-            'user_ids' => implode(',', $array)
+            'user_ids' => implode(',', $array),
+            'fields'   => 'photo_100'
         ])['response'];
     }
 
