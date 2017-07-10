@@ -32,7 +32,7 @@
                                     <img src="{{ $a_groups->avatar }}"
                                          class="circle responsive-img group_avatar_in_card activator">
                                     <p class="card-title grey-text text-darken-4 group_name_in_card activator">{{ $a_groups->name }}</p>
-                                    <p class="group_link_in_card">
+                                    <p class="group_link_in_card activator">
                                         https://vk.com/club{{ $a_groups->group_id }}</p>
                                 </div>
                                 <div class="groups_options_card_wrap card-reveal">
