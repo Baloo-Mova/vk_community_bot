@@ -105,6 +105,16 @@ class GroupsController extends Controller
 
     public function deleteGroupPermissions($group_id)
     {
-        dd($group_id);
+        $group = UserGroups::find($group_id);
+        if(!isset($group)){
+            Toastr::error('Группа не найдена!', 'Ошибка');
+            return back();
+        }
+        $group->expiries = NULL;
+        $group->token = NULL;
+        $group->save();
+
+        Toastr::success('Доступ успешно сброшен!', 'Выполнено');
+        return back();
     }
 }
