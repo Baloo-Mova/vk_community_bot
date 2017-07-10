@@ -46,12 +46,93 @@ class VK
         $this->user = $user;
     }
 
+    public function getGroupKeyRequest($groupId)
+    {
+        return "https://oauth.vk.com/authorize?group_ids=" . $groupId . "&client_id=" . env('VKONTAKTE_KEY') . '&redirect_uri=' . env('VKONTAKTE_REDIRECT_GROUP_URI') . '&scope=' . implode(',',
+                $this->authGroupScope) . '&response_type=code';
+    }
+
+    public function updateGroupAccessToken($code)
+    {
+        $params = [
+            'client_id'     => env('VKONTAKTE_KEY'),
+            'client_secret' => env('VKONTAKTE_SECRET'),
+            'redirect_uri'  => env('VKONTAKTE_REDIRECT_GROUP_URI'),
+            'code'          => $code
+        ];
+        $data   = $this->httpClient->get('https://oauth.vk.com/access_token?' . http_build_query($params))->getBody()->getContents();
+        if (strpos($data, 'error') !== false) {
+            return false;
+        }
+
+        $group_id  = 0;
+        $result    = json_decode($data, true);
+        $tokenName = "";
+        foreach (array_keys($result) as $key) {
+            if (strpos($key, 'access_token_') !== false) {
+                $group_id  = str_replace('access_token_', '', $key);
+                $tokenName = $key;
+            }
+        }
+
+        if ($group_id == 0) {
+            return false;
+        }
+
+        UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
+
+        $this->setCallbackServer($group_id);
+
+        return true;
+    }
+
+    public function setCallbackServer($id)
+    {
+        $callBaaaaaack = env('APP_URL') . "/vk-tells-us/" . $id;
+        $group         = UserGroups::whereGroupId($id)->first();
+        if (isset($group) && isset($group->token)) {
+            $this->setGroup($group);
+
+            $data = $this->getCallbackServer();
+            if (isset($data['error'])) {
+                return false;
+            }
+
+            if (stripos($data['response']['server_url'], $callBaaaaaack) !== false) {
+                return true;
+            }
+
+            // Проверили все, надо ставить, собственно ставим...
+            $confirm = $this->getCallbackCode($id);
+            if (isset($data['error'])) {
+                return false;
+            }
+
+            if(isset($data['response'])) {
+                $code                    = $data['response']['code'];
+                $group->success_response = $code;
+                $group->save();
+                $i = 10;
+                while ($i){
+                    sleep(1);
+                    $i++;
+
+
+                }
+            }
+        }
+    }
+
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
+
     public function getCallbackServer()
     {
-        $data = $this->requestToApi('groups.getCallbackServerSettings', [
+        return $this->requestToApi('groups.getCallbackServerSettings', [
             'group_id' => $this->group->group_id
         ], true);
-        var_dump($data);
     }
 
     private function requestToApi($method, $fields, $asGroup = false)
@@ -92,47 +173,11 @@ class VK
         }
     }
 
-    public function setGroup($group)
+    public function getCallbackCode($id)
     {
-        $this->group = $group;
-    }
-
-    public function getGroupKeyRequest($groupId)
-    {
-        return "https://oauth.vk.com/authorize?group_ids=" . $groupId . "&client_id=" . env('VKONTAKTE_KEY') . '&redirect_uri=' . env('VKONTAKTE_REDIRECT_GROUP_URI') . '&scope=' . implode(',',
-                $this->authGroupScope) . '&response_type=code';
-    }
-
-    public function updateGroupAccessToken($code)
-    {
-        $params = [
-            'client_id'     => env('VKONTAKTE_KEY'),
-            'client_secret' => env('VKONTAKTE_SECRET'),
-            'redirect_uri'  => env('VKONTAKTE_REDIRECT_GROUP_URI'),
-            'code'          => $code
-        ];
-        $data   = $this->httpClient->get('https://oauth.vk.com/access_token?' . http_build_query($params))->getBody()->getContents();
-        if (strpos($data, 'error') !== false) {
-            return false;
-        }
-
-        $group_id  = 0;
-        $result    = json_decode($data, true);
-        $tokenName = "";
-        foreach (array_keys($result) as $key) {
-            if (strpos($key, 'access_token_') !== false) {
-                $group_id  = str_replace('access_token_', '', $key);
-                $tokenName = $key;
-            }
-        }
-
-        if ($group_id == 0) {
-            return false;
-        }
-
-        UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
-
-        return true;
+        return $this->requestToApi('groups.getCallbackConfirmationCode', [
+            'group_id' => $id
+        ], true);
     }
 
     public function updateUserGroups()

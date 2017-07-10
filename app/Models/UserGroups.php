@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereStatus($value)
  * @property string|null $payed_for
  * @property string|null $success_response
+ * @property string|null $secret_key
  * @property int $payed
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BotCommunityResponse[] $activeTasks
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups wherePayed($value)

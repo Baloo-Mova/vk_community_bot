@@ -54,6 +54,7 @@ class GroupsController extends Controller
             $vk = new VK();
             $vk->setUser(\Auth::user());
             if ( ! $vk->updateGroupAccessToken($code)) {
+
                 Toastr::error('Не могу получить доступ к группе, попробуйте через 5 минут.', 'Ошибка');
             }
         } else {

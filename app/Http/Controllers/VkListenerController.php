@@ -8,6 +8,10 @@ class VkListenerController extends Controller
 {
     public function index(Request $request)
     {
+        $data = json_decode($request->getContent());
 
+        if ($data['type'] == 'confirmation') {
+            return "740cb521";
+        }
     }
 }
