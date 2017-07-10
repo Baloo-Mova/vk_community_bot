@@ -81,7 +81,13 @@ class VK
 
         UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
 
-        return $this->setCallbackServer($group_id);
+        if ( ! $this->setCallbackServer($group_id)) {
+            UserGroups::where('group_id', '=', $group_id)->update(['token' => null]);
+
+            return false;
+        }
+
+        return true;
     }
 
     public function setCallbackServer($id)
@@ -92,6 +98,7 @@ class VK
             $this->setGroup($group);
 
             $data = $this->getCallbackServer();
+            $this->log(json_encode($data) . PHP_EOL);
             if (isset($data['error'])) {
                 return false;
             }
@@ -212,16 +219,16 @@ class VK
         }
     }
 
+    private function log($message)
+    {
+        file_put_contents(storage_path('app/vklog.txt'), $message, 8);
+    }
+
     public function getCallbackCode($id)
     {
         return $this->requestToApi('groups.getCallbackConfirmationCode', [
             'group_id' => $id
         ], true);
-    }
-
-    private function log($message)
-    {
-        file_put_contents(storage_path('app/vklog.txt'), $message);
     }
 
     public function updateUserGroups()
