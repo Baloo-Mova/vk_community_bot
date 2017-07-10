@@ -98,7 +98,6 @@ class VK
             $this->setGroup($group);
 
             $data = $this->getCallbackServer();
-            $this->log(json_encode($data) . PHP_EOL);
             if (isset($data['error'])) {
                 return false;
             }
@@ -109,7 +108,6 @@ class VK
 
             // Проверили все, надо ставить, собственно ставим...
             $data = $this->getCallbackCode($id);
-            $this->log(json_encode($data) . PHP_EOL);
             if (isset($data['error'])) {
                 return false;
             }
@@ -124,8 +122,6 @@ class VK
                         'group_id'   => $id,
                         'server_url' => $callBaaaaaack
                     ], true);
-
-                    $this->log(json_encode($data) . PHP_EOL);
 
                     if (isset($data['error'])) {
                         return false;
@@ -144,7 +140,6 @@ class VK
                 $data = $this->requestToApi('groups.getCallbackServerSettings', [
                     'group_id' => $id
                 ], true);
-                $this->log(json_encode($data) . PHP_EOL);
                 if (isset($data['error'])) {
                     return false;
                 }
@@ -154,14 +149,12 @@ class VK
 
                 $this->group->secret_key = $data['response']['secret_key'];
                 $this->group->save();
-                $this->log(json_encode($data) . PHP_EOL);
                 $data = $this->requestToApi('groups.setCallbackSettings', [
                     'group_id'      => $id,
                     'message_new'   => 1,
                     'message_allow' => 1,
                     'message_deny'  => 1,
                 ], true);
-                $this->log(json_encode($data) . PHP_EOL);
                 if ( ! isset($data['error'])) {
                     return true;
                 }
@@ -217,11 +210,6 @@ class VK
             $error->url  = $method . ' ' . $data;
             $error->save();
         }
-    }
-
-    private function log($message)
-    {
-        file_put_contents(storage_path('app/vklog.txt'), $message, 8);
     }
 
     public function getCallbackCode($id)
@@ -301,6 +289,11 @@ class VK
             'random_id' => intval(microtime(true) * 1000),
             'message'   => $message
         ], true);
+    }
+
+    private function log($message)
+    {
+        file_put_contents(storage_path('app/vklog.txt'), $message, 8);
     }
 
 }

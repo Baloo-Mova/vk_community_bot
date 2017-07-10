@@ -22,10 +22,8 @@ class VkListenerController extends Controller
             $data = json_decode($request->getContent(), true);
             switch ($data['type']) {
                 case 'confirmation':
-                    file_put_contents(storage_path('app/vklog.txt'), json_encode($data), 8);
-                    $group = UserGroups::find($data['group_id']);
+                    $group = UserGroups::whereGroupId($data['group_id'])->first();
                     if (isset($group)) {
-                        file_put_contents(storage_path('app/vklog.txt'), 'echo ' . $group->success_response, 8);
                         echo $group->success_response;
                         exit();
                     }
