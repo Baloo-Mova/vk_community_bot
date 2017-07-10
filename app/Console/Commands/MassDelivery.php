@@ -67,8 +67,10 @@ class MassDelivery extends Command
 
                 $rules = json_decode($this->task->rules, true);
 
-                $good = array_column(Clients::whereIn('client_group_id', $rules['in'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
-                $bad  = array_column(Clients::whereIn('client_group_id', $rules['not'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+                $good = array_column(Clients::whereIn('client_group_id',
+                    $rules['in'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+                $bad  = array_column(Clients::whereIn('client_group_id',
+                    $rules['not'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
 
                 $sendTo = [];
                 foreach ($good as $item) {
@@ -78,13 +80,14 @@ class MassDelivery extends Command
                     $sendTo[] = $item;
                 }
 
-                $sendTo = array_chunk($sendTo, 99);
+                $sendTo = array_chunk($sendTo, 50);
 
                 $vk->setGroup($this->task->group);
 
                 foreach ($sendTo as $sendArray) {
                     try {
                         $vk->massSend($this->task->message, $sendArray);
+                        sleep(5);
                     } catch (\Exception $ex) {
                         $error       = new Errors();
                         $error->text = $ex->getMessage() . '   ' . $ex->getLine();

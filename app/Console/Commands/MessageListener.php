@@ -88,14 +88,13 @@ class MessageListener extends Command
                     $messageId = $item['message']['id'];
                     $userId    = $item['message']['user_id'];
                     $body      = $item['message']['body'];
-                    $vk->setSeenMessage([$messageId], $userId);
 
                     foreach ($data as $key => $value) {
                         if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
                             if ($value['action'] == 1) {
                                 $this->addToGroup($value['group'], $userId);
                             }
-
+                            $vk->setSeenMessage([$messageId], $userId);
                             $vk->sendMessage($value['response'], $userId);
                             break;
                         }

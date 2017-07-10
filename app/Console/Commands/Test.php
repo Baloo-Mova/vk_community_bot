@@ -42,5 +42,9 @@ class Test extends Command
      */
     public function handle()
     {
+        $user = User::find(6);
+        $vk = new VK();
+        $vk->setUser($user);
+        $vk->updateUserGroups();
     }
 }
