@@ -80,10 +80,8 @@ class VK
         }
 
         UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
-
-        $this->setCallbackServer($group_id);
-
-        return true;
+ 
+        return $this->setCallbackServer($group_id);
     }
 
     public function setCallbackServer($id)
