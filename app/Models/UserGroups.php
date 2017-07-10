@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereLastTimeChecked($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereStatus($value)
  * @property string|null $payed_for
+ * @property string|null $success_response
  * @property int $payed
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BotCommunityResponse[] $activeTasks
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups wherePayed($value)
@@ -44,6 +45,7 @@ class UserGroups extends Model
         'user_id',
         'name',
         'avatar',
+        'success_response',
         'group_id',
         'expiries',
         'token'

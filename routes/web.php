@@ -16,9 +16,12 @@ Route::post('/logout', "HomeController@logout")->name('logout');
 Route::get('/social_login/', 'SocialController@login')->name('vk_login');
 Route::get('/social_login/callback/', 'SocialController@loginCallback');
 Route::get('/balance/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
-Route::get('/change-response-status/{response_id}/{status}', ["uses" => "GroupsController@changeResponseStatus", "as" => "change.response.status"]);
-Route::get('/change-group-bot-status/{group_id}/{status}', ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
+Route::get('/change-response-status/{response_id}/{status}',
+    ["uses" => "GroupsController@changeResponseStatus", "as" => "change.response.status"]);
+Route::get('/change-group-bot-status/{group_id}/{status}',
+    ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
 Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
+Route::get('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::get('/', "GroupsController@index")->name('groups.index');
@@ -26,12 +29,14 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');
         Route::get('/callback/', 'GroupsController@addGroupCallback')->name('group.add.callback');
         Route::get('/update', 'GroupsController@updateUserGroups')->name('groups.update');
-        Route::get('/delete-permissions/{group_id}', 'GroupsController@deleteGroupPermissions')->name('groups.delete.permissions');
+        Route::get('/delete-permissions/{group_id}',
+            'GroupsController@deleteGroupPermissions')->name('groups.delete.permissions');
     });
 
     Route::group(['prefix' => 'group-settings'], function () {
         Route::get('/{id}', 'GroupSettingsController@index')->name('groupSettings.index');
-        Route::post('/new-subscription', 'GroupSettingsController@newSubscription')->name('groupSettings.new.subscription');
+        Route::post('/new-subscription',
+            'GroupSettingsController@newSubscription')->name('groupSettings.new.subscription');
     });
 
     Route::group(['prefix' => 'client-groups'], function () {
@@ -41,7 +46,8 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/edit-group', 'ClientGroupsController@editGroup')->name('clientGroups.edit.group');
         Route::get('/delete-group/{group_id}', 'ClientGroupsController@deleteGroup')->name('clientGroups.delete.group');
         Route::post('/add-users', 'ClientGroupsController@addUser')->name('clientGroups.add.user');
-        Route::post('/mass-delete-users', 'ClientGroupsController@massDeleteClientGroup')->name('clientGroups.mass.delete.users');
+        Route::post('/mass-delete-users',
+            'ClientGroupsController@massDeleteClientGroup')->name('clientGroups.mass.delete.users');
         Route::get('/delete-user/{user_id}', 'ClientGroupsController@deleteUser')->name('clientGroups.delete.user');
     });
 
