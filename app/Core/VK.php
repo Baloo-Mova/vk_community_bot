@@ -46,6 +46,66 @@ class VK
         $this->user = $user;
     }
 
+    public function checkAccess()
+    {
+        $callBaaaaaack = env('APP_URL') . "/vk-tells-us/" . $this->group->group_id;
+        $data          = $this->getCallbackServer();
+        if (isset($data['error'])) {
+            return false;
+        }
+
+        if (stripos($data['response']['server_url'], $callBaaaaaack) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getCallbackServer()
+    {
+        return $this->requestToApi('groups.getCallbackServerSettings', [
+            'group_id' => $this->group->group_id
+        ], true);
+    }
+
+    private function requestToApi($method, $fields, $asGroup = false)
+    {
+        if ( ! $asGroup) {
+            $fields['access_token'] = $this->user->vk_token;
+        } else {
+            $fields['access_token'] = $this->group->token;
+        }
+
+        $fields['v'] = '5.64';
+
+        $data = "";
+        foreach ($fields as $key => $value) {
+            $data .= $key . '=' . $value . '&';
+        }
+        $data = trim($data, '&');
+
+        try {
+            $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
+                ['form_params' => $fields])->getBody()->getContents();
+
+            if (strpos($response, "error") !== false) {
+                $error       = new Errors();
+                $error->text = $response;
+                $error->url  = $method . ' ' . $data;
+                $error->save();
+
+                return [];
+            }
+
+            return json_decode($response, true);
+        } catch (\Exception $ex) {
+            $error       = new Errors();
+            $error->text = $ex->getMessage();
+            $error->url  = $method . ' ' . $data;
+            $error->save();
+        }
+    }
+
     public function getGroupKeyRequest($groupId)
     {
         return "https://oauth.vk.com/authorize?group_ids=" . $groupId . "&client_id=" . env('VKONTAKTE_KEY') . '&redirect_uri=' . env('VKONTAKTE_REDIRECT_GROUP_URI') . '&scope=' . implode(',',
@@ -165,51 +225,6 @@ class VK
     public function setGroup($group)
     {
         $this->group = $group;
-    }
-
-    public function getCallbackServer()
-    {
-        return $this->requestToApi('groups.getCallbackServerSettings', [
-            'group_id' => $this->group->group_id
-        ], true);
-    }
-
-    private function requestToApi($method, $fields, $asGroup = false)
-    {
-        if ( ! $asGroup) {
-            $fields['access_token'] = $this->user->vk_token;
-        } else {
-            $fields['access_token'] = $this->group->token;
-        }
-
-        $fields['v'] = '5.64';
-
-        $data = "";
-        foreach ($fields as $key => $value) {
-            $data .= $key . '=' . $value . '&';
-        }
-        $data = trim($data, '&');
-
-        try {
-            $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
-                ['form_params' => $fields])->getBody()->getContents();
-
-            if (strpos($response, "error") !== false) {
-                $error       = new Errors();
-                $error->text = $response;
-                $error->url  = $method . ' ' . $data;
-                $error->save();
-
-                return [];
-            }
-
-            return json_decode($response, true);
-        } catch (\Exception $ex) {
-            $error       = new Errors();
-            $error->text = $ex->getMessage();
-            $error->url  = $method . ' ' . $data;
-            $error->save();
-        }
     }
 
     public function getCallbackCode($id)

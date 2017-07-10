@@ -15,11 +15,17 @@ class GroupSettingsController extends Controller
     {
         $group = UserGroups::find($id);
 
+        if ( ! $group->checkAccess()) {
+            $group->removeControl();
+
+            return back();
+        }
+
         return view('groupSettings.index', [
-            "user"  => \Auth::user(),
+            "user"     => \Auth::user(),
             "group_id" => $id,
-            "group" => isset($group) ? $group : [],
-            "tab_name"   => "settings"
+            "group"    => isset($group) ? $group : [],
+            "tab_name" => "settings"
         ]);
     }
 
