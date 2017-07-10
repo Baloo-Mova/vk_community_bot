@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereRules($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereSended($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereUpdatedAt($value)
+ * @property string $when_send
+ * @property-read \App\Models\UserGroups $group
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereWhenSend($value)
  */
 class MassDelivery extends Model
 {

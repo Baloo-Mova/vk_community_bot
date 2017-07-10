@@ -103,21 +103,58 @@ class VK
             }
 
             // Проверили все, надо ставить, собственно ставим...
-            $confirm = $this->getCallbackCode($id);
+            $data = $this->getCallbackCode($id);
             if (isset($data['error'])) {
                 return false;
             }
 
-            if(isset($data['response'])) {
+            if (isset($data['response'])) {
                 $code                    = $data['response']['code'];
                 $group->success_response = $code;
                 $group->save();
                 $i = 10;
-                while ($i){
+                while ($i) {
+                    $data = $this->requestToApi('groups.setCallbackServer', [
+                        'group_id'   => $id,
+                        'server_url' => $callBaaaaaack
+                    ], true);
+
+                    if (isset($data['error'])) {
+                        return false;
+                    }
+
+                    if ($data['response']['state_code'] == 1) {
+                        break;
+                    }
+                    if ($data['response']['state_code'] == 3 || $data['response']['state_code'] == 4) {
+                        return false;
+                    }
                     sleep(1);
                     $i++;
+                }
 
+                $data = $this->requestToApi('groups.getCallbackServerSettings', [
+                    'group_id' => $id
+                ], true);
+                if (isset($data['error'])) {
+                    return false;
+                }
+                if ($data['response']['server_url'] != $callBaaaaaack) {
+                    return false;
+                }
 
+                $this->group->secret_key = $data['response']['secret_key'];
+                $this->group->save();
+
+                $data = $this->requestToApi('groups.setCallbackSettings', [
+                    'group_id'      => $id,
+                    'message_new'   => 1,
+                    'message_allow' => 1,
+                    'message_deny'  => 1,
+                ], true);
+
+                if ( ! isset($data['error'])) {
+                    return true;
                 }
             }
         }

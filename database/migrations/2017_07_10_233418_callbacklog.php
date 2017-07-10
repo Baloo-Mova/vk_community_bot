@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGroupSecretKey extends Migration
+class Callbacklog extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AddGroupSecretKey extends Migration
      */
     public function up()
     {
-         Schema::table('user_groups',function(Blueprint $table){
-            $table->string('secret_key')->nullable();
-         });
+        Schema::create('callback_log', function (Blueprint $t) {
+            $t->increments('id');
+            $t->text('data');
+            $t->timestamps();
+        });
     }
 
     /**
@@ -25,6 +27,6 @@ class AddGroupSecretKey extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('callback_log');
     }
 }

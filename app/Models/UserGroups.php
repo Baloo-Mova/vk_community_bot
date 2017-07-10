@@ -37,6 +37,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $reserved
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ClientGroups[] $clientGroups
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereReserved($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MassDelivery[] $massDeliveries
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSecretKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSuccessResponse($value)
  */
 class UserGroups extends Model
 {

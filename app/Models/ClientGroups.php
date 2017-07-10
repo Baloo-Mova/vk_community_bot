@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientGroups whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientGroups whereName($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\UserGroups $group
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Clients[] $users
  */
 class ClientGroups extends Model
 {

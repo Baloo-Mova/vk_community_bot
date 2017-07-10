@@ -23,6 +23,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereState($value)
  * @mixin \Eloquent
  * @property-read \App\Models\UserGroups $group
+ * @property string|null $action_id
+ * @property int|null $add_group_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereActionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereAddGroupId($value)
  */
 class BotCommunityResponse extends Model
 {

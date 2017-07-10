@@ -14,6 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereVkId($value)
  * @mixin \Eloquent
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $avatar
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereLastName($value)
  */
 class Clients extends Model
 {
