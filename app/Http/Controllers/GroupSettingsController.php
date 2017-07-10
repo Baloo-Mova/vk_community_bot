@@ -17,6 +17,7 @@ class GroupSettingsController extends Controller
 
         if ( ! $group->checkAccess()) {
             $group->removeControl();
+            Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
 
             return back();
         }
