@@ -42,6 +42,10 @@ class Test extends Command
      */
     public function handle()
     {
+
+        $test = "{\"type\":\"confirmation\",\"group_id\":56908702}";
+        dd(json_decode($test));
+
         $user = UserGroups::find(2);
         $vk   = new VK();
         $vk->setGroup($user);
