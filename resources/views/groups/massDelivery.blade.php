@@ -1,33 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="container-fluid">
-@section('contentheader_title')
-    Рассылка
-@endsection
+    <div class="container-fluid">
+        @section('contentheader_title')
+            Рассылка
+        @endsection
 
-    @if(!$group->payed)
-        <div id="modal_payed" class="modal">
-            <div class="modal-content">
-                <h4>Внимание!</h4>
-                <div class="group_not_payed">
-                    <p>В данный момент подписка на бота не оплачена. </p>
-                    <a href="{{ route('groupSettings.index', ['bot_id' => $group->id]) }}"
-                       class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к оплате</a>
-                    <a href="{{ route('groups.index') }}"
-                       class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Назад</a>
-                </div>
-            </div>
-        </div>
-    @endif
-
-<div class="row">
-    <div class="col s12">
-        <ul class="tabs">
-            @include('layouts.partials.groups-maintabs')
-        </ul>
-    </div>
-    <div id="delivery" class="col s12">
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
@@ -41,7 +19,7 @@
             </div>
             <div id="create" class="col s12 tab_content_custom">
                 <div class="col s12 m6 l4 xl4">
-                    <form action="{{ route('massDelivery.add') }}" method="post">
+                    <form action="{{ route('groups.add.massDelivery') }}" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="group_id" value="{{ $group_id }}">
                         <input type="hidden" name="rules" value="test_rules">
@@ -84,11 +62,12 @@
                         </div>
                         <div class="h10"></div>
                         <div class="input-field col s12 when_send_wrap">
-                            <input name="when_send" id="when_send" class="when_send" type="text" data-field="datetime" readonly>
+                            <input name="when_send" id="when_send" class="when_send" type="text" maxlength="19" value="{{ \Carbon\Carbon::now() }}">
                             <label for="when_send" class="when_send">Дата рассылки</label>
-                            <div id="dtBox"></div>
                         </div>
-                        <button class="waves-effect waves-green light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Сохранить</button>
+
+
+                        <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
                     </form>
                 </div>
             </div>
@@ -105,7 +84,7 @@
                             <td>{{ $delivery->message }}</td>
                             <td>{{ $delivery->created_at }}</td>
                             <td>
-                                <a href="{{ route('massDelivery.delete', ['response' => $delivery->id]) }}"
+                                <a href="{{ route('groups.delete.massDelivery', ['response' => $delivery->id]) }}"
                                    class="waves-effect waves-light"
                                    onclick="return confirm('Вы действительно хотите удалить эту рассылку?')">
                                     <i class="material-icons left">delete</i>
@@ -121,83 +100,74 @@
                 </table>
             </div>
         </div>
+
     </div>
-</div>
 
 @stop
 
-    @section('js')
-        <script>
-            $(document).ready(function () {
+@section('js')
+    <script>
+        $(document).ready(function () {
+            $(".in_select").select2();
+            $(".not_in_select").select2();
 
-                $("#dtBox").DateTimePicker({
-                    "language"       : "ru"
-                });
-
-                $('#modal_payed').modal('open',{
-                        dismissible: false
-                    }
-                );
-                $(".in_select").select2();
-                $(".not_in_select").select2();
-
-                $(".in_select").on("change", function () {
-                    var v = $(this).val();
-                    if (v === null) {
-                        togleItemsStatus(".not_in_select", ".not_in_select_item", false);
-                        return false;
-                    }
+            $(".in_select").on("change", function () {
+                var v = $(this).val();
+                if (v === null) {
                     togleItemsStatus(".not_in_select", ".not_in_select_item", false);
+                    return false;
+                }
+                togleItemsStatus(".not_in_select", ".not_in_select_item", false);
 
-                    $(".not_in_select").select2("destroy");
+                $(".not_in_select").select2("destroy");
 
-                    if (v.length > 1) {
-                        v.forEach(function (item, i, arr) {
-                            $(".not_in_select_item_" + item).attr("disabled", true);
-                        });
-                    } else {
-                        $(".not_in_select_item_" + v).attr("disabled", true);
-                    }
-                    $(".not_in_select").select2();
-                });
+                if (v.length > 1) {
+                    v.forEach(function (item, i, arr) {
+                        $(".not_in_select_item_" + item).attr("disabled", true);
+                    });
+                } else {
+                    $(".not_in_select_item_" + v).attr("disabled", true);
+                }
+                $(".not_in_select").select2();
+            });
 
-                $(".not_in_select").on("change", function () {
-                    var v = $(this).val();
-                    if (v === null) {
-                        togleItemsStatus(".in_select", ".in_select_item", false);
-                        return false;
-                    }
+            $(".not_in_select").on("change", function () {
+                var v = $(this).val();
+                if (v === null) {
                     togleItemsStatus(".in_select", ".in_select_item", false);
+                    return false;
+                }
+                togleItemsStatus(".in_select", ".in_select_item", false);
 
-                    $(".in_select").select2("destroy");
+                $(".in_select").select2("destroy");
 
-                    if (v.length > 1) {
-                        v.forEach(function (item, i, arr) {
-                            $(".in_select_item_" + item).attr("disabled", true);
-                        });
-                    } else {
-                        $(".in_select_item_" + v).attr("disabled", true);
-                    }
-                    $(".in_select").select2();
-                });
+                if (v.length > 1) {
+                    v.forEach(function (item, i, arr) {
+                        $(".in_select_item_" + item).attr("disabled", true);
+                    });
+                } else {
+                    $(".in_select_item_" + v).attr("disabled", true);
+                }
+                $(".in_select").select2();
+            });
 
-                $(".delivery_time").on("change", function () {
-                    var state = $(this).prop("checked");
-                    if (state) {
-                        $(".when_send_wrap").css("display", "block");
-                    } else {
-                        $(".when_send_wrap").css("display", "none");
-                        $(".when_send").val("");
-                    }
-                });
-
-                function togleItemsStatus(name, name2, state) {
-                    $(name).select2("destroy");
-                    $(name2).attr("disabled", state);
-                    $(name).select2();
+            $(".delivery_time").on("change", function () {
+                var state = $(this).prop("checked");
+                if (state) {
+                    $(".when_send_wrap").css("display", "block");
+                } else {
+                    $(".when_send_wrap").css("display", "none");
+                    $(".when_send").val("");
                 }
             });
 
+            function togleItemsStatus(name, name2, state) {
+                $(name).select2("destroy");
+                $(name2).attr("disabled", state);
+                $(name).select2();
+            }
+        });
 
-        </script>
+
+    </script>
 @stop

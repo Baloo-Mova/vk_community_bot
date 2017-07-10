@@ -18,44 +18,31 @@ Route::get('/social_login/callback/', 'SocialController@loginCallback');
 Route::get('/balance/check-result/', ['uses' => 'BalanceController@checkResult', 'as' => 'balance.check.result']);
 Route::get('/change-response-status/{response_id}/{status}', ["uses" => "GroupsController@changeResponseStatus", "as" => "change.response.status"]);
 Route::get('/change-group-bot-status/{group_id}/{status}', ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
-Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
+
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::get('/', "GroupsController@index")->name('groups.index');
     Route::group(['prefix' => 'group'], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');
         Route::get('/callback/', 'GroupsController@addGroupCallback')->name('group.add.callback');
+        Route::get('/response-script/{group_id}', 'GroupsController@responseScript')->name('groups.response');
+        Route::post('/add/response-script', 'GroupsController@addResponseScript')->name('groups.add.response');
+        Route::post('/edit/response-script', 'GroupsController@editResponseScript')->name('groups.edit.response');
+        Route::get('/delete/response-script/{response}', 'GroupsController@deleteResponseScript')->name('groups.delete.response');
         Route::get('/update', 'GroupsController@updateUserGroups')->name('groups.update');
-        Route::get('/delete-permissions/{group_id}', 'GroupsController@deleteGroupPermissions')->name('groups.delete.permissions');
-    });
-
-    Route::group(['prefix' => 'group-settings'], function () {
-        Route::get('/{id}', 'GroupSettingsController@index')->name('groupSettings.index');
-        Route::post('/new-subscription', 'GroupSettingsController@newSubscription')->name('groupSettings.new.subscription');
-    });
-
-    Route::group(['prefix' => 'client-groups'], function () {
-        Route::get('/{group_id}', 'ClientGroupsController@index')->name('clientGroups.index');
-        Route::post('/add-group', 'ClientGroupsController@addGroup')->name('clientGroups.add.group');
-        Route::get('/group/{group_id}', 'ClientGroupsController@group')->name('clientGroups.group');
-        Route::post('/edit-group', 'ClientGroupsController@editGroup')->name('clientGroups.edit.group');
-        Route::get('/delete-group/{group_id}', 'ClientGroupsController@deleteGroup')->name('clientGroups.delete.group');
-        Route::post('/add-users', 'ClientGroupsController@addUser')->name('clientGroups.add.user');
-        Route::post('/mass-delete-users', 'ClientGroupsController@massDeleteClientGroup')->name('clientGroups.mass.delete.users');
-        Route::get('/delete-user/{user_id}', 'ClientGroupsController@deleteUser')->name('clientGroups.delete.user');
-    });
-
-    Route::group(['prefix' => 'group-tasks'], function () {
-        Route::get('/{group_id}', 'GroupTasksController@index')->name('groupTasks.index');
-        Route::post('/add', 'GroupTasksController@add')->name('groupTasks.add');
-        Route::post('/edit', 'GroupTasksController@edit')->name('groupTasks.edit');
-        Route::get('/delete/{response}', 'GroupTasksController@delete')->name('groupTasks.delete');
-    });
-
-    Route::group(['prefix' => 'mass-delivery'], function () {
-        Route::get('/{group_id}', 'MassDeliveryController@index')->name('massDelivery.index');
-        Route::post('/add', 'MassDeliveryController@add')->name('massDelivery.add');
-        Route::get('/delete/{delivery_id}', 'MassDeliveryController@delete')->name('massDelivery.delete');
+        Route::get('/bot-settings/{group_id}', 'GroupsController@groupSettings')->name('groups.groupSettings');
+        Route::get('/new-subscription', 'GroupsController@newSubscription')->name('groups.new.subscription');
+        Route::get('/client-group/{group_id}', 'GroupsController@clientGroup')->name('groups.clientGroup');
+        Route::get('/client-group-user/{group_id}', 'GroupsController@clientGroupsUsers')->name('groups.clientGroupsUsers');
+        Route::post('/add/client-group', 'GroupsController@addClientGroup')->name('groups.add.client.group');
+        Route::post('/edit/client-group', 'GroupsController@editClientGroup')->name('groups.edit.client.group');
+        Route::get('/delete/client-group/{group_id}', 'GroupsController@deleteClientGroup')->name('groups.delete.client.group');
+        Route::post('/mass-delete/client-group', 'GroupsController@massDeleteClientGroup')->name('groups.mass.delete.client.group');
+        Route::post('/add/client-group-user', 'GroupsController@addClientGroupUser')->name('groups.add.client.group.user');
+        Route::get('/delete/client-group-user/{user_id}', 'GroupsController@deleteClientGroupUser')->name('groups.delete.client.group.user');
+        Route::get('/mass-delivery/{group_id}', 'GroupsController@massDelivery')->name('groups.massDelivery');
+        Route::post('/add/mass-delivery', 'GroupsController@addMassDelivery')->name('groups.add.massDelivery');
+        Route::get('/delete/mass-delivery/{delivery_id}', 'GroupsController@deleteMassDelivery')->name('groups.delete.massDelivery');
     });
 
     Route::group(['prefix' => 'balance'], function () {

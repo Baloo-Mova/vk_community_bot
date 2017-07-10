@@ -39,11 +39,4 @@ class HomeController extends Controller
 
         return redirect('/login');
     }
-
-    public function inWorkPage()
-    {
-        return view('inwork', [
-            "user" => \Auth::user()
-        ]);
-    }
 }

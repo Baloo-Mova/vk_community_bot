@@ -21,9 +21,6 @@ class Clients extends Model
     public $timestamps = false;
     public $fillable = [
         'client_group_id',
-        'vk_id',
-        'first_name',
-        'last_name',
-        'avatar'
+        'vk_id'
     ];
 }

@@ -3,6 +3,6 @@
         @yield('balanceheader_title', 'Page Header here')
         <span class="contentheader_badge badge blue">
             @yield('balanceheader_badge', 'Page Header here')
-        </span>
+        руб</span>
     </h1>
 </section>

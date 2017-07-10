@@ -1,51 +1,43 @@
-<ul id="slide-out" class="side-nav fixed">
-    <li class="usernavitem">
-        <div class="userView center-align"><a href="#!" class="menuclosebtn white-text"><i class="material-icons">keyboard_backspace</i></a>
-            <img class="background" src="{{ asset('img/sidebar.jpg') }}" alt="">
-                <a href="#" class="center-align picture">
-                    <img class="circle sidebar_logo" src="{{ asset('img/logo.svg') }}" alt="">
-                </a>
-                <a href="#">
-                    <span class="white-text name site_name_in_sidebar">Knocker</span>
-                </a>
+<ul id="slide-out" class="side-nav fixed z-depth-2">
+    <li class="center no-padding">
+        <div class="indigo darken-2 white-text" style="height: 180px;">
+            <div class="row">
+                <img style="margin-top: 5%;" src="{{$user->avatar}}" class="circle responsive-img" height="100" width="100">
+                <p>
+                    {{$user->FIO}}
+                </p>
+            </div>
         </div>
     </li>
-    <li class="{{ Request::is('/') || Request::is('group/*')
-                || Request::is('group-settings/*') || Request::is('group-tasks/*')
-                || Request::is('client-groups/*') || Request::is('mass-delivery/*') ? 'active' : '' }}">
-        <a href="{{ route('groups.index') }}" class="waves-effect waves-grey">
-            <i class="fa fa-users  fa-2x sidebar_icon" aria-hidden="true"></i>
-            Подключенные группы
-        </a>
-    </li>
-    <li class="{{ Request::is('balance') || Request::is('balance/*') ? 'active' : '' }}">
-        <a href="{{ route('balance.index') }}" class="waves-effect waves-grey">
-            <i class="fa fa-credit-card-alt  fa-2x sidebar_icon" aria-hidden="true"></i>
-            Баланс
-        </a>
-    </li>
-    <li>
-        <a href="https://vk.me/vkknocker" class="waves-effect waves-grey">
-            <i class="fa fa-question-circle  fa-2x sidebar_icon" aria-hidden="true"></i>
-            Техподдержка
-        </a>
-    </li>
-    <li class="nonactive">
-        <a href="{{ route('inwork') }}" class="waves-effect waves-grey">
-            <i class="fa fa-percent  fa-2x sidebar_icon" aria-hidden="true"></i>
-            Партнерская программа
-        </a>
-    </li>
-    <li class="nonactive">
-        <a href="{{ route('inwork') }}" class="waves-effect waves-grey nonactive">
-            <i class="fa fa-graduation-cap fa-2x sidebar_icon" aria-hidden="true"></i>
-            Уроки по сервису
-        </a>
-    </li>
-    <li class="nonactive">
-        <a href="{{ route('inwork') }}" class="waves-effect waves-grey">
-            <i class="fa fa-lightbulb-o fa-2x sidebar_icon" aria-hidden="true"></i>
-            Ваши предложения
-        </a>
-    </li>
+
+    <ul class="collapsible" data-collapsible="accordion">
+        <ul>
+            <li id="categories_category">
+                <a class="waves-effect {{ Request::is('/') || Request::is('group/*') ? 'blue-text text-darken-2' : '' }}"
+                   style="text-decoration: none;"
+                   href="{{ route('groups.index') }}">
+                    <p><i class="material-icons">supervisor_account</i></p>
+                    <p>Группы</p>
+                </a>
+            </li>
+
+            <li id="categories_sub_category">
+                <a class="waves-effect {{ Request::is('balance') || Request::is('balance/*') ? 'blue-text text-darken-2' : '' }}"
+                   style="text-decoration: none;"
+                   href="{{ route('balance.index') }}">
+                    <p><i class="material-icons">account_balance_wallet</i></p>
+                    <p>Оплата</p>
+                </a>
+            </li>
+
+            <li id="categories_sub_category">
+                <a class="waves-effect"
+                   style="text-decoration: none;"
+                   href="https://vk.me/vkknocker">
+                    <p><i class="material-icons">live_help</i></p>
+                    <p>Помощь</p>
+                </a>
+            </li>
+        </ul>
+    </ul>
 </ul>
