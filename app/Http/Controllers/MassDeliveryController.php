@@ -64,7 +64,7 @@ class MassDeliveryController extends Controller
             $result["not"] = [];
         }
 
-        if(count($not_in) + count($in_arr) == 0){
+        if(count($not_in) - count($in_arr) == 0){
             Toastr::error('Вы не указали кому рассылать.','Ошибка');
             return back();
         }
