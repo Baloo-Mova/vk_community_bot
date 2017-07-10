@@ -38,7 +38,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy'  => '5.188.187.90:8000',
+            'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
     }
@@ -161,7 +161,8 @@ class VK
     public function getUserInfo($array)
     {
         return $this->requestToApi('users.get', [
-            'user_ids' => implode(',', $array)
+            'user_ids' => implode(',', $array),
+            'fields'   => 'photo_100,'
         ])['response'];
     }
 

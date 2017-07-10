@@ -17,80 +17,66 @@
             <div class="col s12">
                 <ul class="tabs">
                     <li class="tab col s3">
-                        <a class="active" href="#accessed">Группы с доступом</a>
+                        <a class="{{ $activated_groups_numb > 0 ? "active" : "" }}" href="#accessed">Группы с доступом</a>
                     </li>
                     <li class="tab col s3">
-                        <a href="#notaccessed">Разрешить доступ</a>
+                        <a class="{{ $activated_groups_numb == 0 ? "active" : ""}}" href="#notaccessed">Разрешить доступ</a>
                     </li>
                 </ul>
             </div>
             <div id="accessed" class="col s12 tab_content_custom">
-                @foreach($groups as $activated_groups)
-                    @if($activated_groups->token !== NULL)
+                @foreach($activated_groups as $a_groups)
                         <div class="col s12 m6 l4 xl3">
                             <div class="card small">
-                                <div class="card-content">
-                                    <img src="{{ $activated_groups->avatar }}"
+                                <div class="card-content activator bots_card">
+                                    <img src="{{ $a_groups->avatar }}"
                                          class="circle responsive-img group_avatar_in_card">
-                                    <p class="card-title grey-text text-darken-4 group_name_in_card">{{ $activated_groups->name }}</p>
-                                    <i class="group_menu_activator_in_card activator material-icons right">more_vert</i>
+                                    <p class="card-title grey-text text-darken-4 group_name_in_card">{{ $a_groups->name }}</p>
                                     <p class="group_link_in_card">
-                                        https://vk.com/club{{ $activated_groups->group_id }}</p>
+                                        https://vk.com/club{{ $a_groups->group_id }}</p>
                                 </div>
                                 <div class="groups_options_card_wrap card-reveal">
                                     <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
                                     <span class="card-title grey-text text-darken-4 small groups_options_card_title ">Настройки</span>
                                     <ul class="groups_options_card_ul">
                                         <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('groups.groupSettings', ['bot_id' => $activated_groups->id]) }}"
-                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Настройки</a>
+                                            <a href="{{ route('groupSettings.index', ['id' => $a_groups->id]) }}"
+                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Перейти к настройкам</a>
                                         </li>
                                         <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('groups.response', ['bot_id' => $activated_groups->id]) }}"
-                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Сценарии
-                                                ответов</a>
-                                        </li>
-                                        <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('groups.clientGroup', ['group_id' => $activated_groups->id]) }}"
-                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Группы</a>
-                                        </li>
-                                        <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('groups.massDelivery', ['group_id' => $activated_groups->id]) }}"
-                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Рассылка</a>
+                                            <a href="{{ route('groups.delete.permissions', ['group_id' => $a_groups->id]) }}"
+                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Удалить доступ
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    @endif
                 @endforeach
             </div>
             <div id="notaccessed" class="col s12 tab_content_custom">
-                @foreach($groups as $activated_groups)
-                    @if($activated_groups->token === null)
+                @foreach($non_activated_groups as $n_groups)
                         <div class="col s12 m6 l4 xl3">
                             <div class="card small">
-                                <div class="card-content">
-                                    <img src="{{ $activated_groups->avatar }}"
+                                <div class="card-content activator bots_card">
+                                    <img src="{{ $n_groups->avatar }}"
                                          class="circle responsive-img group_avatar_in_card">
-                                    <p class="card-title grey-text text-darken-4 group_name_in_card">{{ $activated_groups->name }}</p>
-                                    <i class="group_menu_activator_in_card activator material-icons right">more_vert</i>
+                                    <p class="card-title grey-text text-darken-4 group_name_in_card">{{ $n_groups->name }}</p>
                                     <p class="group_link_in_card">
-                                        https://vk.com/club{{ $activated_groups->group_id }}</p>
+                                        https://vk.com/club{{ $n_groups->group_id }}</p>
                                 </div>
                                 <div class="groups_options_card_wrap card-reveal">
                                     <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
                                     <span class="card-title grey-text text-darken-4 small groups_options_card_title">Доступ</span>
                                     <ul class="groups_options_card_ul">
                                         <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('group.add', ['id' => $activated_groups->group_id]) }}"
+                                            <a href="{{ route('group.add', ['id' => $n_groups->group_id]) }}"
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Предоставить</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    @endif
                 @endforeach
             </div>
         </div>

@@ -7315,7 +7315,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .side-nav.fixed {
-    left: 0;
+    left: 0px;
     -webkit-transform: translateX(0);
     transform: translateX(0);
     position: fixed;
