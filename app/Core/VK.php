@@ -38,7 +38,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy'  => '5.188.187.90:8000',
+            'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
     }
@@ -46,6 +46,52 @@ class VK
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function getCallbackServer()
+    {
+        $data = $this->requestToApi('groups.getCallbackServerSettings', [
+            'group_id' => $this->group->group_id
+        ], true);
+        var_dump($data);
+    }
+
+    private function requestToApi($method, $fields, $asGroup = false)
+    {
+        if ( ! $asGroup) {
+            $fields['access_token'] = $this->user->vk_token;
+        } else {
+            $fields['access_token'] = $this->group->token;
+        }
+
+        $fields['v'] = '5.64';
+
+        $data = "";
+        foreach ($fields as $key => $value) {
+            $data .= $key . '=' . $value . '&';
+        }
+        $data = trim($data, '&');
+
+        try {
+            $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
+                ['form_params' => $fields])->getBody()->getContents();
+
+            if (strpos($response, "error") !== false) {
+                $error       = new Errors();
+                $error->text = $response;
+                $error->url  = $method . ' ' . $data;
+                $error->save();
+
+                return [];
+            }
+
+            return json_decode($response, true);
+        } catch (\Exception $ex) {
+            $error       = new Errors();
+            $error->text = $ex->getMessage();
+            $error->url  = $method . ' ' . $data;
+            $error->save();
+        }
     }
 
     public function setGroup($group)
@@ -118,44 +164,6 @@ class VK
             'filter'   => 'editor',
             'fields'   => implode(',', $this->groupScope),
         ], false);
-    }
-
-    private function requestToApi($method, $fields, $asGroup = false)
-    {
-        if ( ! $asGroup) {
-            $fields['access_token'] = $this->user->vk_token;
-        } else {
-            $fields['access_token'] = $this->group->token;
-        }
-
-        $fields['v'] = '5.64';
-
-        $data = "";
-        foreach ($fields as $key => $value) {
-            $data .= $key . '=' . $value . '&';
-        }
-        $data = trim($data, '&');
-
-        try {
-            $response = $this->httpClient->post('https://api.vk.com/method/' . $method,
-                ['form_params' => $fields])->getBody()->getContents();
-
-            if (strpos($response, "error") !== false) {
-                $error       = new Errors();
-                $error->text = $response;
-                $error->url  = $method . ' ' . $data;
-                $error->save();
-
-                return [];
-            }
-
-            return json_decode($response, true);
-        } catch (\Exception $ex) {
-            $error       = new Errors();
-            $error->text = $ex->getMessage();
-            $error->url  = $method . ' ' . $data;
-            $error->save();
-        }
     }
 
     public function getUserInfo($array)
