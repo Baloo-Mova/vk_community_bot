@@ -1,7 +1,7 @@
 <ul id="slide-out" class="side-nav fixed">
     <li class="usernavitem">
         <div class="userView center-align"><a href="#!" class="menuclosebtn white-text"><i class="material-icons">keyboard_backspace</i></a>
-            <img class="background" src="{{ asset('img/sidebar.jpg') }}" alt="">
+            <img class="background" src="{{ asset('img/sidebar.png') }}" alt="">
                 <a href="#" class="center-align picture">
                     <img class="circle sidebar_logo" src="{{ asset('img/logo.svg') }}" alt="">
                 </a>
@@ -43,7 +43,7 @@
         </a>
     </li>
     <li class="nonactive">
-        <a href="{{ route('inwork') }}" class="waves-effect waves-grey">
+        <a href="https://vk.com/topic-149816340_35569562" class="waves-effect waves-grey">
             <i class="fa fa-lightbulb-o fa-2x sidebar_icon" aria-hidden="true"></i>
             Ваши предложения
         </a>
