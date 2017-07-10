@@ -21,7 +21,7 @@ Route::get('/change-response-status/{response_id}/{status}',
 Route::get('/change-group-bot-status/{group_id}/{status}',
     ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
 Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
-Route::get('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us']);
+Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::get('/', "GroupsController@index")->name('groups.index');
