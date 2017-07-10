@@ -6,7 +6,7 @@
             Управление балансом
         @endsection
         @section('balanceheader_badge')
-            {{ $user->balance }}
+            {{ $user->balance }} р.
         @endsection
 
         <div class="row">

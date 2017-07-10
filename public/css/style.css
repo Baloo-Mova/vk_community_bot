@@ -12,7 +12,7 @@
 header,
 main,
 footer {
-    padding-left: 200px;
+    padding-left: 300px;
 }
 
 body {
@@ -73,7 +73,7 @@ body {
 }
 
 .side-nav{
-    width: 200px;
+    width: 290px;
 }
 
 .card.small {
@@ -226,7 +226,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     padding: 10px !important;
 }
 .side-nav li{
-    text-align: center;
+    text-align: left;
 }
 .side-nav li > a {
     color: rgba(0, 0, 0, 0.87);
@@ -252,4 +252,31 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 }
 .when_send_wrap{
     display: none;
+}
+.template__badge-balance{
+    padding-top: 8px;
+}
+.template__badge-balance span{
+    border-radius: 3px;
+}
+.site_name_in_sidebar{
+    font-size: 25px !important;
+}
+.bots_card{
+    cursor: pointer;
+}
+.sidebar_icon{
+    color: #fff !important;
+}
+.side-nav a:hover,
+.nav-wrapper a:hover{
+    text-decoration: none;
+    color: #fff;
+}
+.sidebar_logo{
+    width: 150px !important;
+    height: 150px !important;
+}
+.nonactive{
+    background: transparent !important;
 }
