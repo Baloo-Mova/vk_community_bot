@@ -15,14 +15,14 @@ class VkListenerController extends Controller
     public function index(Request $request, $id)
     {
         $addThisToList = $request->getContent();
-
-        $item       = new CallbackLog();
-        $item->data = $addThisToList;
+        $item          = new CallbackLog();
+        $item->data    = $addThisToList;
         $item->save();
         try {
             $data = json_decode($request->getContent(), true);
             switch ($data['type']) {
                 case 'confirmation':
+                    file_put_contents(storage_path('app/vklog.txt'), json_encode($data), 8);
                     $group = UserGroups::find($id);
                     if (isset($group)) {
                         echo $group->success_response;
