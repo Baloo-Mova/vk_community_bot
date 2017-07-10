@@ -80,7 +80,7 @@ class VK
         }
 
         UserGroups::where('group_id', '=', $group_id)->update(['token' => $result[$tokenName]]);
- 
+
         return $this->setCallbackServer($group_id);
     }
 
@@ -102,6 +102,7 @@ class VK
 
             // Проверили все, надо ставить, собственно ставим...
             $data = $this->getCallbackCode($id);
+            $this->log(json_encode($data) . PHP_EOL);
             if (isset($data['error'])) {
                 return false;
             }
@@ -117,6 +118,8 @@ class VK
                         'server_url' => $callBaaaaaack
                     ], true);
 
+                    $this->log(json_encode($data) . PHP_EOL);
+
                     if (isset($data['error'])) {
                         return false;
                     }
@@ -127,13 +130,14 @@ class VK
                     if ($data['response']['state_code'] == 3 || $data['response']['state_code'] == 4) {
                         return false;
                     }
-                    sleep(1);
+                    sleep(2);
                     $i++;
                 }
 
                 $data = $this->requestToApi('groups.getCallbackServerSettings', [
                     'group_id' => $id
                 ], true);
+                $this->log(json_encode($data) . PHP_EOL);
                 if (isset($data['error'])) {
                     return false;
                 }
@@ -143,14 +147,14 @@ class VK
 
                 $this->group->secret_key = $data['response']['secret_key'];
                 $this->group->save();
-
+                $this->log(json_encode($data) . PHP_EOL);
                 $data = $this->requestToApi('groups.setCallbackSettings', [
                     'group_id'      => $id,
                     'message_new'   => 1,
                     'message_allow' => 1,
                     'message_deny'  => 1,
                 ], true);
-
+                $this->log(json_encode($data) . PHP_EOL);
                 if ( ! isset($data['error'])) {
                     return true;
                 }
@@ -213,6 +217,11 @@ class VK
         return $this->requestToApi('groups.getCallbackConfirmationCode', [
             'group_id' => $id
         ], true);
+    }
+
+    private function log($message)
+    {
+        file_put_contents(storage_path('app/vklog.txt'), $message);
     }
 
     public function updateUserGroups()
