@@ -79,6 +79,7 @@ class ClientGroupsController extends Controller
         $group_id  = $request->get('client_group_id');
         $userIds   = [];
         $vk_id_str = $request->get('vk_id');
+        $group = UserGroups::find($group_id);
 
         if ( ! empty($vk_id_str)) {
             $userIds[] = $vk_id_str;
@@ -92,10 +93,13 @@ class ClientGroupsController extends Controller
 
         $vk = new VK();
         $vk->setUser(\Auth::user());
+        //$vk->setGroup($group);
 
         $array   = array_chunk($userIds, 999);
+
         $userIds = [];
         foreach ($array as $item) {
+            dd($vk->checkUserCanSend($group_id, $group_id));
             $user_info = $vk->getUserInfo($item);
             $userIds = array_merge($userIds, $user_info);
         }

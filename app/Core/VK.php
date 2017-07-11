@@ -306,6 +306,14 @@ class VK
         ], true);
     }
 
+    public function checkUserCanSend($groupid, $userid)
+    {
+        return $this->requestToApi('messages.isMessagesFromGroupAllowed', [
+            'user_id'   => $userid,
+            'group_id'  => $groupid
+        ], true);
+    }
+
     private function log($message)
     {
         file_put_contents(storage_path('app/vklog.txt'), $message, 8);
