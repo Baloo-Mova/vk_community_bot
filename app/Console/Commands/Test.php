@@ -36,6 +36,10 @@ class Test extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->httpClient = new Client([
+            'proxy' => '5.188.187.90:8000',
+            'verify' => false,
+        ]);
     }
 
     /**
@@ -46,41 +50,37 @@ class Test extends Command
     public function handle()
     {
         $userId = 342644021;
-        $groupId = 2;
+        $groupId = 149476726;
 
-        $this->httpClient = new Client([
-            'proxy' => '5.188.187.90:8000',
-            'verify' => false,
-        ]);
+        $group = UserGroups::whereGroupId($groupId)->first();
+        if (isset($group->token)) {
+            $vk = new VK();
+            $vk->setGroup($group);
 
-        $client = Clients::where([
-            'vk_id' => $userId,
-            'client_group_id' => $groupId
-        ])->first();
+            $task = $group->activeTasks;
+            $res  = $task->mapWithKeys(function ($item) {
+                return [
+                    $item['key'] => [
+                        'response' => $item['response'],
+                        'action'   => $item['action_id'],
+                        'group'    => $item['add_group_id']
+                    ]
+                ];
+            });
+            $messageId = $this->data['id'];
+            $userId    = $this->data['user_id'];
+            $body      = $this->data['body'];
 
-        if (!isset($client)) {
-            $response = $this->httpClient->post('https://api.vk.com/method/users.get',
-                ['form_params' => [
-                    'user_ids' => $userId,
-                    'fields' => 'photo_100',
-                    'v' => '5.67'
-                ]])->getBody()->getContents();
-
-            $user_info = json_decode($response, true);
-
-            if (isset($user_info['error'])) {
-                return false;
+            foreach ($res as $key => $value) {
+                if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
+                    if ($value['action'] == 1) {
+                        $this->addToGroup($value['group'], $userId);
+                    }
+                    $vk->setSeenMessage([$messageId], $userId);
+                    $vk->sendMessage($value['response'], $userId);
+                    break;
+                }
             }
-
-            $client = new Clients();
-            $client->client_group_id = $groupId;
-            $client->vk_id = $userId;
-            $client->first_name = $user_info["response"][0]["first_name"];
-            $client->last_name = $user_info["response"][0]["last_name"];
-            $client->avatar = $user_info["response"][0]["photo_100"];
-            $client->save();
-
-            return true;
         }
     }
 }

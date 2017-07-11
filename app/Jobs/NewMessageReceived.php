@@ -18,7 +18,7 @@ class NewMessageReceived implements ShouldQueue
 
     public $data     = null;
     public $group_id = null;
-    public $httpClient;
+    public $httpClient = null;
 
     /**
      * Create a new job instance.
@@ -31,7 +31,7 @@ class NewMessageReceived implements ShouldQueue
         $this->group_id = $group_id;
         $this->queue    = "NewMessageReceived";
         $this->httpClient = new Client([
-            //'proxy'  => '5.188.187.90:8000',
+            'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
     }
@@ -78,6 +78,7 @@ class NewMessageReceived implements ShouldQueue
 
     private function addToGroup($groupId, $userId)
     {
+        file_put_contents("inf.txt", "1");
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
