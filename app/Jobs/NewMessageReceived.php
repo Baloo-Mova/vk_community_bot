@@ -60,7 +60,7 @@ class NewMessageReceived implements ShouldQueue
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
                     if ($value['action'] == 1) {
-                        $this->addToGroup($value['group'], $userId, $vk);
+                        $this->addToGroup($value['group'], $userId);
                     }
                     $vk->setSeenMessage([$messageId], $userId);
                     $vk->sendMessage($value['response'], $userId);
@@ -70,15 +70,16 @@ class NewMessageReceived implements ShouldQueue
         }
     }
 
-    private function addToGroup($groupId, $userId, $vk)
+    private function addToGroup($groupId, $userId)
     {
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
         ])->first();
         if ( ! isset($client)) {
+            $vk = new VK();
             $vk->setGroup($groupId);
-            $user_info = $vk->getUserInfo($groupId, true);
+            $user_info = $vk->getUserInfo($userId, true);
 
             $client                  = new Clients();
             $client->client_group_id = $groupId;
