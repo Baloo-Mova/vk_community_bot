@@ -90,7 +90,7 @@ class NewMessageReceived implements ShouldQueue
                     'v'        => '5.67'
                 ]])->getBody()->getContents();
 
-            $user_info = json_decode($response);
+            $user_info = json_decode($response,true);
 
             if(!isset($user_info)){
                 return false;
@@ -99,9 +99,9 @@ class NewMessageReceived implements ShouldQueue
             $client                  = new Clients();
             $client->client_group_id = $groupId;
             $client->vk_id           = $userId;
-            $client->first_name      = $user_info->response[0]["first_name"];
-            $client->last_name       = $user_info->response[0]["last_name"];
-            $client->avatar          = $user_info->response[0]["avatar"];
+            $client->first_name      = $user_info["response"][0]["first_name"];
+            $client->last_name       = $user_info["response"][0]["last_name"];
+            $client->avatar          = $user_info["response"][0]["avatar"];
             $client->save();
 
             return true;

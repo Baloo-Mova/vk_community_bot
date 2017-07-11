@@ -48,14 +48,14 @@ class Test extends Command
             'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
-        $response = $this->httpClient->post('https://api.vk.com/method/user.get',
+        $response = $this->httpClient->post('https://api.vk.com/method/users.get',
             ['form_params' => [
                 'user_ids' => implode(',', ['342644021']),
                 'fields'   => 'photo_100',
                 'v'        => '5.67'
             ]])->getBody()->getContents();
-        $info = json_decode($response);
-        dd($info->response[0]);
+        $info = json_decode($response,true);
+        dd($info);
         //$vk->getUserInfo(["342644021"], true);
         //$vk->setCallbackServer($user->group_id);
     }
