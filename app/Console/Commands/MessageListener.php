@@ -12,9 +12,11 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Driver\IBMDB2\DB2Driver;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Client;
 
 class MessageListener extends Command
 {
+    public $httpClient;
     /**
      * @var UserGroups
      */
@@ -40,6 +42,10 @@ class MessageListener extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->httpClient = new Client([
+            //'proxy'  => '5.188.187.90:8000',
+            'verify' => false,
+        ]);
     }
 
     /**
@@ -127,16 +133,26 @@ class MessageListener extends Command
             'client_group_id' => $groupId
         ])->first();
         if ( ! isset($client)) {
-            $vk = new VK();
-            $vk->setGroup($groupId);
-            $user_info = $vk->getUserInfo($userId, true);
+
+            $response = $this->httpClient->post('https://api.vk.com/method/users.get',
+                ['form_params' => [
+                    'user_ids' => $userId,
+                    'fields'   => 'photo_100',
+                    'v'        => '5.67'
+                ]])->getBody()->getContents();
+
+            $user_info = json_decode($response);
+
+            if(!isset($user_info)){
+                return false;
+            }
 
             $client                  = new Clients();
             $client->client_group_id = $groupId;
             $client->vk_id           = $userId;
-            $client->first_name      = $user_info["first_name"];
-            $client->last_name       = $user_info["last_name"];
-            $client->avatar          = $user_info["avatar"];
+            $client->first_name      = $user_info->response[0]["first_name"];
+            $client->last_name       = $user_info->response[0]["last_name"];
+            $client->avatar          = $user_info->response[0]["avatar"];
             $client->save();
 
             return true;

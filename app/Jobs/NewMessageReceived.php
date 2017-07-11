@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use GuzzleHttp\Client;
 
 class NewMessageReceived implements ShouldQueue
 {
@@ -17,6 +18,7 @@ class NewMessageReceived implements ShouldQueue
 
     public $data     = null;
     public $group_id = null;
+    public $httpClient;
 
     /**
      * Create a new job instance.
@@ -28,6 +30,10 @@ class NewMessageReceived implements ShouldQueue
         $this->data     = $data;
         $this->group_id = $group_id;
         $this->queue    = "NewMessageReceived";
+        $this->httpClient = new Client([
+            //'proxy'  => '5.188.187.90:8000',
+            'verify' => false,
+        ]);
     }
 
     /**
@@ -77,16 +83,25 @@ class NewMessageReceived implements ShouldQueue
             'client_group_id' => $groupId
         ])->first();
         if ( ! isset($client)) {
-            $vk = new VK();
-            $vk->setGroup($groupId);
-            $user_info = $vk->getUserInfo($userId, true);
+            $response = $this->httpClient->post('https://api.vk.com/method/users.get',
+                ['form_params' => [
+                    'user_ids' => $userId,
+                    'fields'   => 'photo_100',
+                    'v'        => '5.67'
+                ]])->getBody()->getContents();
+
+            $user_info = json_decode($response);
+
+            if(!isset($user_info)){
+                return false;
+            }
 
             $client                  = new Clients();
             $client->client_group_id = $groupId;
             $client->vk_id           = $userId;
-            $client->first_name      = $user_info["first_name"];
-            $client->last_name       = $user_info["last_name"];
-            $client->avatar          = $user_info["avatar"];
+            $client->first_name      = $user_info->response[0]["first_name"];
+            $client->last_name       = $user_info->response[0]["last_name"];
+            $client->avatar          = $user_info->response[0]["avatar"];
             $client->save();
 
             return true;
