@@ -30,10 +30,6 @@ class NewMessageReceived implements ShouldQueue
         $this->data     = $data;
         $this->group_id = $group_id;
         $this->queue    = "NewMessageReceived";
-        $this->httpClient = new Client([
-            'proxy'  => '5.188.187.90:8000',
-            'verify' => false,
-        ]);
     }
 
     /**
@@ -79,7 +75,10 @@ class NewMessageReceived implements ShouldQueue
 
     private function addToGroup($groupId, $userId)
     {
-
+        $this->httpClient = new Client([
+            'proxy'  => '5.188.187.90:8000',
+            'verify' => false,
+        ]);
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
