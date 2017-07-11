@@ -92,7 +92,7 @@ class MessageListener extends Command
                     foreach ($data as $key => $value) {
                         if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
                             if ($value['action'] == 1) {
-                                $this->addToGroup($value['group'], $userId);
+                                $this->addToGroup($value['group'], $userId, $vk);
                             }
                             $vk->setSeenMessage([$messageId], $userId);
                             $vk->sendMessage($value['response'], $userId);
@@ -120,16 +120,22 @@ class MessageListener extends Command
         }
     }
 
-    private function addToGroup($groupId, $userId)
+    private function addToGroup($groupId, $userId, $vk)
     {
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
         ])->first();
         if ( ! isset($client)) {
+            $vk->setGroup($groupId);
+            $user_info = $vk->getUserInfo($groupId, true);
+
             $client                  = new Clients();
             $client->client_group_id = $groupId;
             $client->vk_id           = $userId;
+            $client->first_name      = $user_info["first_name"];
+            $client->last_name       = $user_info["last_name"];
+            $client->avatar          = $user_info["avatar"];
             $client->save();
 
             return true;

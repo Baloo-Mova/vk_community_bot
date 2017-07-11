@@ -263,12 +263,12 @@ class VK
         ], false);
     }
 
-    public function getUserInfo($array)
+    public function getUserInfo($array, $asGroup = false)
     {
         return $this->requestToApi('users.get', [
             'user_ids' => implode(',', $array),
             'fields'   => 'photo_100'
-        ])['response'];
+        ], $asGroup)['response'];
     }
 
     public function massSend($message, $to)
