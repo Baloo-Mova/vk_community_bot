@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Core\VK;
 use App\Models\BotCommunityResponse;
+use App\Models\Clients;
 use App\Models\MassDelivery;
 use App\Models\User;
 use App\Models\UserGroups;
@@ -44,19 +45,42 @@ class Test extends Command
      */
     public function handle()
     {
+        $userId = 342644021;
+        $groupId = 2;
+
         $this->httpClient = new Client([
-            'proxy'  => '5.188.187.90:8000',
+            'proxy' => '5.188.187.90:8000',
             'verify' => false,
         ]);
-        $response = $this->httpClient->post('https://api.vk.com/method/users.get',
-            ['form_params' => [
-                'user_ids' => implode(',', ['342644021']),
-                'fields'   => 'photo_100',
-                'v'        => '5.67'
-            ]])->getBody()->getContents();
-        $info = json_decode($response,true);
-        dd($info);
-        //$vk->getUserInfo(["342644021"], true);
-        //$vk->setCallbackServer($user->group_id);
+
+        $client = Clients::where([
+            'vk_id' => $userId,
+            'client_group_id' => $groupId
+        ])->first();
+
+        if (!isset($client)) {
+            $response = $this->httpClient->post('https://api.vk.com/method/users.get',
+                ['form_params' => [
+                    'user_ids' => $userId,
+                    'fields' => 'photo_100',
+                    'v' => '5.67'
+                ]])->getBody()->getContents();
+
+            $user_info = json_decode($response, true);
+
+            if (isset($user_info['error'])) {
+                return false;
+            }
+
+            $client = new Clients();
+            $client->client_group_id = $groupId;
+            $client->vk_id = $userId;
+            $client->first_name = $user_info["response"][0]["first_name"];
+            $client->last_name = $user_info["response"][0]["last_name"];
+            $client->avatar = $user_info["response"][0]["photo_100"];
+            $client->save();
+
+            return true;
+        }
     }
 }

@@ -92,7 +92,7 @@ class NewMessageReceived implements ShouldQueue
 
             $user_info = json_decode($response,true);
 
-            if(!isset($user_info)){
+            if (isset($user_info['error'])) {
                 return false;
             }
 
@@ -101,7 +101,7 @@ class NewMessageReceived implements ShouldQueue
             $client->vk_id           = $userId;
             $client->first_name      = $user_info["response"][0]["first_name"];
             $client->last_name       = $user_info["response"][0]["last_name"];
-            $client->avatar          = $user_info["response"][0]["avatar"];
+            $client->avatar          = $user_info["response"][0]["photo_100"];
             $client->save();
 
             return true;
