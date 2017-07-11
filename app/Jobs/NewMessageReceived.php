@@ -43,6 +43,7 @@ class NewMessageReceived implements ShouldQueue
      */
     public function handle()
     {
+        file_put_contents("inf.txt", "1", FILE_APPEND);
         $group = UserGroups::whereGroupId($this->group_id)->first();
         if (isset($group->token)) {
             $vk = new VK();
@@ -62,7 +63,7 @@ class NewMessageReceived implements ShouldQueue
             $messageId = $this->data['id'];
             $userId    = $this->data['user_id'];
             $body      = $this->data['body'];
-
+            file_put_contents("inf.txt", "2", FILE_APPEND);
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
                     if ($value['action'] == 1) {
@@ -78,7 +79,7 @@ class NewMessageReceived implements ShouldQueue
 
     private function addToGroup($groupId, $userId)
     {
-        file_put_contents("inf.txt", "1");
+        file_put_contents("inf.txt", "3", FILE_APPEND);
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
