@@ -14,7 +14,7 @@ class AddCanSend extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->boolean('can_send')->default(0);
+            $table->boolean('can_send')->default(1);
         });
     }
 
