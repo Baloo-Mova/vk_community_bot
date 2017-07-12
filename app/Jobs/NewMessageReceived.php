@@ -105,6 +105,7 @@ class NewMessageReceived implements ShouldQueue
             $client->last_name       = $user_info["response"][0]["last_name"];
             $client->avatar          = $user_info["response"][0]["photo_100"];
             $client->can_send        = 1;
+            $client->group_id        = $this->group_id;
             $client->save();
 
             return true;
