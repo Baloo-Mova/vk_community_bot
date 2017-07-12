@@ -17,7 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Test::class,
-        MessageListener::class,
         MassDelivery::class
     ];
 

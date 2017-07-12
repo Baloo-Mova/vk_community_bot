@@ -36,7 +36,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy'  => '5.188.187.90:8000',
+            'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
     }
@@ -214,6 +214,9 @@ class VK
                     'message_new'   => 1,
                     'message_allow' => 1,
                     'message_deny'  => 1,
+                    'message_reply' => 0,
+                    'group_join'    => 0,
+                    'group_leave'   => 1
                 ], true);
                 if ( ! isset($data['error'])) {
                     return true;
@@ -232,6 +235,22 @@ class VK
         return $this->requestToApi('groups.getCallbackConfirmationCode', [
             'group_id' => $id
         ], true);
+    }
+
+    public function canUserSend($id)
+    {
+        $data = $this->requestToApi('messages.isMessagesFromGroupAllowed', [
+            'user_id'  => $id,
+            'group_id' => $this->group->group_id
+        ], true);
+
+        if (isset($data['error'])) {
+            return false;
+        }
+
+        if (isset($data['response'])) {
+            return $data['response']['is_allowed'] == 1;
+        }
     }
 
     public function updateUserGroups()
@@ -309,8 +328,8 @@ class VK
     public function checkUserCanSend($groupid, $userid)
     {
         return $this->requestToApi('messages.isMessagesFromGroupAllowed', [
-            'user_id'   => $userid,
-            'group_id'  => $groupid
+            'user_id'  => $userid,
+            'group_id' => $groupid
         ], true);
     }
 

@@ -46,4 +46,6 @@ class VkListenerController extends Controller
         echo 'ok';
         exit();
     }
+
+
 }
