@@ -85,7 +85,7 @@ class MassDelivery extends Command
 
                 foreach ($sendTo as $item) {
                     try {
-                        $result = $vk->massSend($this->task->message, $item);
+                        $result = $vk->sendMessage($this->task->message, $item);
                         if (isset($result['error'])) {
                             Clients::where([
                                 'vk_id'    => $item,
