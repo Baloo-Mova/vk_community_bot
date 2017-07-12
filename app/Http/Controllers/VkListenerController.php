@@ -55,11 +55,25 @@ class VkListenerController extends Controller
 
     public function setAllow($id, $group_id)
     {
-        Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 1]);
+        try {
+            Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 1]);
+        } catch (\Exception $ex) {
+            $err       = new Errors();
+            $err->text = $ex->getMessage();
+            $err->url  = $ex->getLine();
+            $err->save();
+        }
     }
 
     public function setDeny($id, $group_id)
     {
-        Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 0]);
+        try {
+            Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 0]);
+        } catch (\Exception $ex) {
+            $err       = new Errors();
+            $err->text = $ex->getMessage();
+            $err->url  = $ex->getLine();
+            $err->save();
+        }
     }
 }
