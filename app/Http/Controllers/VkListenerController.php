@@ -32,6 +32,7 @@ class VkListenerController extends Controller
                     $this->newMessageReceived($data['object'], $data['group_id']);
                     break;
             }
+            echo 'ok';
         } catch (\Exception $ex) {
             $err       = new Errors();
             $err->text = $ex->getMessage();
@@ -43,9 +44,6 @@ class VkListenerController extends Controller
     public function newMessageReceived($data, $group_id)
     {
         $this->dispatch(new NewMessageReceived($data, $group_id));
-        echo 'ok';
-        exit();
     }
-
 
 }

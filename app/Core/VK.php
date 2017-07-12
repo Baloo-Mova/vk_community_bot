@@ -36,7 +36,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-           // 'proxy'  => '194.242.125.76:8000',
+            // 'proxy'  => '194.242.125.76:8000',
             'verify' => false,
         ]);
     }
@@ -210,13 +210,38 @@ class VK
                 $this->group->secret_key = $data['response']['secret_key'];
                 $this->group->save();
                 $data = $this->requestToApi('groups.setCallbackSettings', [
-                    'group_id'      => $id,
-                    'message_new'   => 1,
-                    'message_allow' => 1,
-                    'message_deny'  => 1,
-                    'message_reply' => 0,
-                    'group_join'    => 0,
-                    'group_leave'   => 1
+                    'group_id'               => $id,
+                    'message_new'            => 1,
+                    'message_allow'          => 1,
+                    'message_deny'           => 1,
+                    'message_reply'          => 0,
+                    'group_join'             => 0,
+                    'group_leave'            => 1,
+                    'photo_new'              => 0,
+                    'audio_new'              => 0,
+                    'video_new'              => 0,
+                    'wall_reply_new'         => 0,
+                    'wall_reply_edit'        => 0,
+                    'wall_reply_delete'      => 0,
+                    'wall_post_new'          => 0,
+                    'wall_repost'            => 0,
+                    'board_post_new'         => 0,
+                    'board_post_edit'        => 0,
+                    'board_post_delete'      => 0,
+                    'board_post_restore'     => 0,
+                    'photo_comment_new'      => 0,
+                    'photo_comment_edit'     => 0,
+                    'photo_comment_delete'   => 0,
+                    'photo_comment_restore'  => 0,
+                    'video_comment_new'      => 0,
+                    'video_comment_edit'     => 0,
+                    'video_comment_delete'   => 0,
+                    'video_comment_restore'  => 0,
+                    'market_comment_new'     => 0,
+                    'market_comment_edit'    => 0,
+                    'market_comment_delete'  => 0,
+                    'market_comment_restore' => 0,
+                    'poll_vote_new'          => 0,
                 ], true);
                 if ( ! isset($data['error'])) {
                     return true;
