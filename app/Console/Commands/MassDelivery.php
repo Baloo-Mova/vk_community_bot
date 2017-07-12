@@ -83,16 +83,23 @@ class MassDelivery extends Command
 
                 $vk->setGroup($this->task->group);
 
+                $sendTo = array_chunk($sendTo, 50);
+
                 foreach ($sendTo as $item) {
                     try {
-                        $result = $vk->sendMessage($this->task->message, $item);
-                        if (isset($result['error'])) {
-                            Clients::where([
-                                'vk_id'    => $item,
-                                'group_id' => $this->task->group->id
-                            ])->update(['can_send' => 0]);
+                        if (empty($vk->massSend($this->task->message, $item))) {
+                            foreach ($item as $oneItem) {
+                                $result = $vk->sendMessage($this->task->message, $oneItem);
+                                if (empty($result)) {
+                                    Clients::where([
+                                        'vk_id'    => $item,
+                                        'group_id' => $this->task->group->group_id
+                                    ])->update(['can_send' => 0]);
+                                }
+                                usleep(500000);
+                            }
                         }
-                        usleep(500000);
+                        sleep(5);
                     } catch (\Exception $ex) {
                         $error       = new Errors();
                         $error->text = $ex->getMessage() . '   ' . $ex->getLine();
