@@ -22,7 +22,7 @@ class ClientGroupsController extends Controller
             "group"    => $group,
             "group_id" => $group_id,
             "groups"   => isset($groups) ? $groups : [],
-            "tab_name"   => "lists"
+            "tab_name" => "lists"
         ]);
     }
 
@@ -76,32 +76,32 @@ class ClientGroupsController extends Controller
 
     public function addUser(Request $request)
     {
-        $group_id  = $request->get('client_group_id');
-        $userIds   = [];
-        $vk_id_str = $request->get('vk_id');
-        $group = UserGroups::find($group_id);
+        $group_id = $request->get('client_group_id');
+        $userIds  = [];
+        try {
+            $group = ClientGroups::find($group_id)->group;
+        } catch (\Exception $ex) {
+            Toastr::error('Ошибка добавления (Отсутствует группа?)', 'Ошибка');
 
-        if ( ! empty($vk_id_str)) {
-            $userIds[] = $vk_id_str;
+            return back();
         }
 
         $users_str = $request->get('users');
         if ( ! empty($users_str)) {
-            $users   = array_map('trim', explode("\r\n", $users_str));
+            $users   = array_map('trim', explode("\n", $users_str));
             $userIds = array_filter(array_merge($userIds, $users));
         }
 
         $vk = new VK();
+        $vk->setGroup($group);
         $vk->setUser(\Auth::user());
-        //$vk->setGroup($group);
 
-        $array   = array_chunk($userIds, 999);
+        $array = array_chunk($userIds, 999);
 
         $userIds = [];
         foreach ($array as $item) {
-            dd($vk->checkUserCanSend($group_id, $group_id));
             $user_info = $vk->getUserInfo($item);
-            $userIds = array_merge($userIds, $user_info);
+            $userIds   = array_merge($userIds, $user_info);
         }
 
         Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id', array_column($userIds, 'id'))->delete();
@@ -113,7 +113,8 @@ class ClientGroupsController extends Controller
                 'vk_id'           => $item["id"],
                 'first_name'      => $item["first_name"],
                 'last_name'       => $item["last_name"],
-                'avatar'          => $item["photo_100"]
+                'avatar'          => $item["photo_100"],
+                'can_send'        => 1
             ];
         }
 
@@ -168,6 +169,7 @@ class ClientGroupsController extends Controller
         }
         $client->delete();
         Toastr::success('Пользователь удачно удален', 'Удалено');
+
         return back();
     }
 }

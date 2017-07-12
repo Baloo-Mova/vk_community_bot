@@ -76,7 +76,6 @@ class NewMessageReceived implements ShouldQueue
     private function addToGroup($groupId, $userId)
     {
         $this->httpClient = new Client([
-            //'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
 
@@ -86,12 +85,12 @@ class NewMessageReceived implements ShouldQueue
         ])->first();
         if ( ! isset($client)) {
             $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
-                    'form_params' => [
-                        'user_ids' => $userId,
-                        'fields'   => 'photo_100',
-                        'v'        => '5.67'
-                    ]
-                ])->getBody()->getContents();
+                'form_params' => [
+                    'user_ids' => $userId,
+                    'fields'   => 'photo_100',
+                    'v'        => '5.67'
+                ]
+            ])->getBody()->getContents();
 
             $user_info = json_decode($response, true);
 
@@ -105,6 +104,7 @@ class NewMessageReceived implements ShouldQueue
             $client->first_name      = $user_info["response"][0]["first_name"];
             $client->last_name       = $user_info["response"][0]["last_name"];
             $client->avatar          = $user_info["response"][0]["photo_100"];
+            $client->can_send        = 1;
             $client->save();
 
             return true;

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $client_group_id
  * @property int $vk_id
+ * @property int $group_id
+ * @property int $can_send
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereClientGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereVkId($value)
@@ -28,8 +30,10 @@ class Clients extends Model
     public $fillable = [
         'client_group_id',
         'vk_id',
+        'group_id',
         'first_name',
         'last_name',
-        'avatar'
+        'avatar',
+        'can_send'
     ];
 }

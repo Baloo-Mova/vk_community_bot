@@ -8,6 +8,7 @@ use App\Models\Errors;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use malkusch\lock\mutex\FlockMutex;
 
 class MassDelivery extends Command
 {
@@ -47,7 +48,8 @@ class MassDelivery extends Command
         while (true) {
             $this->task = null;
             try {
-                DB::transaction(function () {
+                $mutex = new FlockMutex(fopen(__FILE__, "r"));
+                $mutex->synchronized(function () {
                     $this->task = \App\Models\MassDelivery::where([
                         ['reserved', '=', 0],
                         ['sended', '=', 0],
@@ -66,11 +68,10 @@ class MassDelivery extends Command
                 }
 
                 $rules = json_decode($this->task->rules, true);
-
-                $good = array_column(Clients::whereIn('client_group_id',
-                    $rules['in'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
-                $bad  = array_column(Clients::whereIn('client_group_id',
-                    $rules['not'])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+                $good  = array_column(Clients::whereIn('client_group_id',
+                    $rules['in'])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+                $bad   = array_column(Clients::whereIn('client_group_id',
+                    $rules['not'])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
 
                 $sendTo = [];
                 foreach ($good as $item) {
@@ -80,14 +81,18 @@ class MassDelivery extends Command
                     $sendTo[] = $item;
                 }
 
-                $sendTo = array_chunk($sendTo, 50);
-
                 $vk->setGroup($this->task->group);
 
-                foreach ($sendTo as $sendArray) {
+                foreach ($sendTo as $item) {
                     try {
-                        $vk->massSend($this->task->message, $sendArray);
-                        sleep(5);
+                        $result = $vk->massSend($this->task->message, $item);
+                        if (isset($result['error'])) {
+                            Clients::where([
+                                'vk_id'    => $item,
+                                'group_id' => $this->task->group->id
+                            ])->update(['can_send' => 0]);
+                        }
+                        usleep(500000);
                     } catch (\Exception $ex) {
                         $error       = new Errors();
                         $error->text = $ex->getMessage() . '   ' . $ex->getLine();

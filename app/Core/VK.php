@@ -161,7 +161,7 @@ class VK
             if (isset($data['error'])) {
                 return false;
             }
-            
+
             // Проверили все, надо ставить, собственно ставим...
             $data = $this->getCallbackCode($id);
             if (isset($data['error'])) {
@@ -258,7 +258,7 @@ class VK
         ], true);
     }
 
-    public function canUserSend($id)
+    public function canGroupSendMessage($id)
     {
         $data = $this->requestToApi('messages.isMessagesFromGroupAllowed', [
             'user_id'  => $id,
@@ -343,14 +343,6 @@ class VK
             'user_id'   => $userId,
             'random_id' => intval(microtime(true) * 1000),
             'message'   => $message
-        ], true);
-    }
-
-    public function checkUserCanSend($groupid, $userid)
-    {
-        return $this->requestToApi('messages.isMessagesFromGroupAllowed', [
-            'user_id'  => $userid,
-            'group_id' => $groupid
         ], true);
     }
 

@@ -9,11 +9,12 @@
         "barryvdh/laravel-ide-helper": "^2.4",
         "brian2694/laravel-toastr": "^1.0",
         "doctrine/dbal": "^2.5",
+        "idma/robokassa": "dev-master",
         "laravel/framework": "5.4.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
-        "socialiteproviders/manager": "^3.0",
-        "idma/robokassa": "dev-master"
+        "malkusch/lock": "^1.0",
+        "socialiteproviders/manager": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

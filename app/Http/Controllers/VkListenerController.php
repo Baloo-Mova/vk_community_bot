@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\VK;
 use App\Jobs\NewMessageReceived;
 use App\Models\CallbackLog;
+use App\Models\Clients;
 use App\Models\Errors;
 use App\Models\User;
 use App\Models\UserGroups;
@@ -31,14 +32,20 @@ class VkListenerController extends Controller
                 case 'message_new':
                     $this->newMessageReceived($data['object'], $data['group_id']);
                     break;
+                case 'message_allow':
+                    $this->setAllow($data['object']['user_id'], $data['group_id']);
+                    break;
+                case 'message_deny':
+                    $this->setDeny($data['object']['user_id'], $data['group_id']);
+                    break;
             }
-            echo 'ok';
         } catch (\Exception $ex) {
             $err       = new Errors();
             $err->text = $ex->getMessage();
             $err->url  = $ex->getLine();
             $err->save();
         }
+        echo 'ok';
     }
 
     public function newMessageReceived($data, $group_id)
@@ -46,4 +53,13 @@ class VkListenerController extends Controller
         $this->dispatch(new NewMessageReceived($data, $group_id));
     }
 
+    public function setAllow($id, $group_id)
+    {
+        Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 1]);
+    }
+
+    public function setDeny($id, $group_id)
+    {
+        Clients::where(['vk_id' => $id, 'group_id' => $group_id])->update(['can_send' => 0]);
+    }
 }
