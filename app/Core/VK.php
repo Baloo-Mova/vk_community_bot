@@ -161,11 +161,7 @@ class VK
             if (isset($data['error'])) {
                 return false;
             }
-
-            if (stripos($data['response']['server_url'], $callBaaaaaack) !== false) {
-                return true;
-            }
-
+            
             // Проверили все, надо ставить, собственно ставим...
             $data = $this->getCallbackCode($id);
             if (isset($data['error'])) {
