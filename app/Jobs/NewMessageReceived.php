@@ -16,8 +16,8 @@ class NewMessageReceived implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $data     = null;
-    public $group_id = null;
+    public $data       = null;
+    public $group_id   = null;
     public $httpClient = null;
 
     /**
@@ -76,22 +76,24 @@ class NewMessageReceived implements ShouldQueue
     private function addToGroup($groupId, $userId)
     {
         $this->httpClient = new Client([
-            'proxy'  => '5.188.187.90:8000',
+            //'proxy'  => '5.188.187.90:8000',
             'verify' => false,
         ]);
+
         $client = Clients::where([
             'vk_id'           => $userId,
             'client_group_id' => $groupId
         ])->first();
         if ( ! isset($client)) {
-            $response = $this->httpClient->post('https://api.vk.com/method/users.get',
-                ['form_params' => [
-                    'user_ids' => $userId,
-                    'fields'   => 'photo_100',
-                    'v'        => '5.67'
-                ]])->getBody()->getContents();
+            $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
+                    'form_params' => [
+                        'user_ids' => $userId,
+                        'fields'   => 'photo_100',
+                        'v'        => '5.67'
+                    ]
+                ])->getBody()->getContents();
 
-            $user_info = json_decode($response,true);
+            $user_info = json_decode($response, true);
 
             if (isset($user_info['error'])) {
                 return false;
