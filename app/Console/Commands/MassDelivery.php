@@ -92,7 +92,7 @@ class MassDelivery extends Command
                                 $result = $vk->sendMessage($this->task->message, $oneItem);
                                 if (empty($result)) {
                                     Clients::where([
-                                        'vk_id'    => $item,
+                                        'vk_id'    => $oneItem,
                                         'group_id' => $this->task->group->group_id
                                     ])->update(['can_send' => 0]);
                                 }

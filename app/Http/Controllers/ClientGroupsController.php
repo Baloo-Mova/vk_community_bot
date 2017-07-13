@@ -96,12 +96,13 @@ class ClientGroupsController extends Controller
         $vk->setGroup($group);
         $vk->setUser(\Auth::user());
 
-        $array = array_chunk($userIds, 999);
+        $array = array_chunk($userIds, 500);
 
         $userIds = [];
         foreach ($array as $item) {
             $user_info = $vk->getUserInfo($item);
             $userIds   = array_merge($userIds, $user_info);
+            sleep(1);
         }
 
         Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id', array_column($userIds, 'id'))->delete();
