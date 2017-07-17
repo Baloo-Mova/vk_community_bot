@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clients;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use Brian2694\Toastr\Facades\Toastr;
@@ -64,23 +65,31 @@ class MassDeliveryController extends Controller
             $result["not"] = [];
         }
 
-        if(count($not_in) - count($in_arr) == 0){
-            Toastr::error('Вы не указали кому рассылать.','Ошибка');
+        $good = array_column(Clients::whereIn('client_group_id',
+            $result["in"])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+        $bad  = array_column(Clients::whereIn('client_group_id',
+            $result["not"])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
+
+        $sendTo = array_diff($good, $bad);
+
+        if (count($sendTo) < 1) {
+            Toastr::error('Вы не указали кому рассылать.', 'Ошибка');
+
             return back();
         }
 
         $delivery = new MassDelivery();
         $delivery->fill($request->all());
         $delivery->rules = json_encode($result);
-        $then_send = $request->get('when_send');
+        $then_send       = $request->get('when_send');
         if (empty($then_send)) {
             $delivery->when_send = Carbon::now();
-        }else{
+        } else {
             $delivery->when_send = Carbon::parse($then_send)->format("y-m-d H:m:s");
         }
         $delivery->save();
 
-        Toastr::success('Рассылка успешно добавлена', 'Добавлено');
+        Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . $sendTo, 'Добавлено');
 
         return back();
     }
