@@ -89,7 +89,7 @@ class MassDeliveryController extends Controller
         }
         $delivery->save();
 
-        Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . $sendTo, 'Добавлено');
+        Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . count($sendTo), 'Добавлено');
 
         return back();
     }
