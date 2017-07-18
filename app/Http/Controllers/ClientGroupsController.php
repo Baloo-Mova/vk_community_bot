@@ -111,12 +111,12 @@ class ClientGroupsController extends Controller
 
         $funnel      = Funnels::with('times')->where(['client_group_id' => $group_id])->get();
         $itemsToSend = [];
-        foreach ($funnel as $item) { 
+        foreach ($funnel as $item) {
             $itemsToSend = array_merge($itemsToSend, $item->times->toArray());
         }
 
         $data = Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id',
-            array_column($userIds, 'id'))->get();
+            array_column($userIds, 'id'))->get()->toArray();
 
         $VkIds      = array_column($data, 'vk_id');
         $insert     = [];
