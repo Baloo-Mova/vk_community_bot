@@ -13,7 +13,7 @@ class FunnelsController extends Controller
     public function index($group_id)
     {
         $group  = UserGroups::find($group_id);
-        $funnels = $group->with('clientGroup')->funnels;
+        $funnels = $group->funnels;
 
         $clientsGroups = $group->clientGroups;
 
