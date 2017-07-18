@@ -28,7 +28,7 @@ class Funnels extends Model
 
     public function times()
     {
-        return $this->hasMany(FunnelsTime::class, 'funell_id', 'id')->orderBy('time', 'desc');
+        return $this->hasMany(FunnelsTime::class, 'funell_id', 'id')->orderBy('time', 'asc');
     }
 
     public function clientGroup()
