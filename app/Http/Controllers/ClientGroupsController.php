@@ -131,6 +131,7 @@ class ClientGroupsController extends Controller
                             'vk_id'           => $item['id'],
                             'client_group_id' => $group_id,
                             'group_id'        => $group->group_id,
+                            'funnel_id'       => $itemSend['id'],
                             'message'         => $itemSend['text'],
                             'when_send'       => $time
                         ];
@@ -155,9 +156,10 @@ class ClientGroupsController extends Controller
                 $autoSender[] = [
                     'vk_id'           => $item['id'],
                     'client_group_id' => $group_id,
+                    'funnel_id'       => $itemSend['id'],
                     'group_id'        => $group->group_id,
                     'message'         => $itemSend['text'],
-                    'when_send'       => time() + $itemSend['time']
+                    'when_send'       => time() + $itemSend['time'],
                 ];
             }
 
