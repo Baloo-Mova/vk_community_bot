@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AutoDelivery;
+use App\Models\Funnels;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
@@ -77,6 +79,7 @@ class ClientGroupsController extends Controller
 
     public function addUser(Request $request)
     {
+        set_time_limit(0);
         $group_id = $request->get('client_group_id');
         $userIds  = [];
         try {
@@ -106,10 +109,37 @@ class ClientGroupsController extends Controller
             sleep(1);
         }
 
-        Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id', array_column($userIds, 'id'))->delete();
+        $funnel      = Funnels::with('times')->where(['client_group_id' => $group_id])->get();
+        $itemsToSend = [];
+        foreach ($funnel as $item) {
+            $itemsToSend = array_merge($itemsToSend, $item->times);
+        }
 
-        $insert = [];
+        $data = Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id',
+            array_column($userIds, 'id'))->get();
+
+        $VkIds      = array_column($data, 'vk_id');
+        $insert     = [];
+        $autoSender = [];
         foreach ($userIds as $item) {
+            $index = array_search($item['id'], $VkIds);
+            if ($index !== false) {
+                foreach ($itemsToSend as $itemSend) {
+                    $time = Carbon::createFromFormat("Y-m-d H:i:s", $data['created'])->timestamp + $itemSend->time;
+                    if ($time > time()) {
+                        $autoSender[] = [
+                            'vk_id'           => $item['id'],
+                            'client_group_id' => $group_id,
+                            'group_id'        => $group->group_id,
+                            'message'         => $itemSend->text,
+                            'when_send'       => $time
+                        ];
+                    }
+                }
+
+                continue;
+            }
+
             $insert[] = [
                 'client_group_id' => $group_id,
                 'vk_id'           => $item["id"],
@@ -120,6 +150,25 @@ class ClientGroupsController extends Controller
                 'can_send'        => 1,
                 'created'         => Carbon::now()
             ];
+
+            foreach ($itemsToSend as $itemSend) {
+                $autoSender[] = [
+                    'vk_id'           => $item['id'],
+                    'client_group_id' => $group_id,
+                    'group_id'        => $group->group_id,
+                    'message'         => $itemSend->text,
+                    'when_send'       => time() + $itemSend->time
+                ];
+            }
+
+            if (count($autoSender) > 1000) {
+                AutoDelivery::insert($autoSender);
+                $autoSender = [];
+            }
+        }
+
+        if (count($autoSender) > 0) {
+            AutoDelivery::insert($autoSender);
         }
 
         if (count($insert) > 0) {
