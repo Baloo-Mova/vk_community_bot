@@ -28,6 +28,6 @@ class FunnelsTime extends Model
     ];
 
     public function funnel(){
-        return $this->belongsTo(Funnels::class, 'id', 'funell_id');
+        return $this->belongsTo(Funnels::class, 'funell_id', 'id');
     }
 }
