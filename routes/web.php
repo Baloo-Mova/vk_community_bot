@@ -70,5 +70,15 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/check-success/', ['uses' => 'BalanceController@checkSuccess', 'as' => 'balance.check.success']);
         Route::get('/check-fair/', ['uses' => 'BalanceController@checkFair', 'as' => 'balance.check.fair']);
     });
+
+    Route::group(['prefix' => 'funnels'], function () {
+        Route::get('/{group_id}', 'FunnelsController@index')->name('funnels.index');
+        Route::post('/add', 'FunnelsController@add')->name('funnels.add');
+        Route::post('/add-time', 'FunnelsController@addTime')->name('funnels.add.time');
+        Route::get('/delete/{funnel_id}', 'FunnelsController@delete')->name('funnels.delete');
+        Route::get('/delete-time/{time_id}', 'FunnelsController@deleteTime')->name('funnels.delete.time');
+        Route::post('/edit', 'FunnelsController@edit')->name('funnels.edit');
+        Route::get('/show/{funnel_id}', 'FunnelsController@show')->name('funnels.show');
+    });
 });
 

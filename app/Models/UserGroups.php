@@ -77,6 +77,11 @@ class UserGroups extends Model
         return $this->hasMany(MassDelivery::class, 'group_id', 'id');
     }
 
+    public function funnels()
+    {
+        return $this->hasMany(Funnels::class, 'group_id', 'id');
+    }
+
     public function checkAccess()
     {
         $vk = new VK();

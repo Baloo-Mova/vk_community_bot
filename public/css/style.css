@@ -283,3 +283,29 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .nonactive{
     background: transparent !important;
 }
+.funnel_action{
+    padding: 15px 0px !important;
+    color: #637377;
+}
+.funnel_link{
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 15px 0px !important;
+    color: #637377;
+}
+.funnels_tds{
+    padding: 15px 5px !important;
+}
+.funnels_tds .text_wrap{
+    max-height: 50px;
+    overflow: hidden;
+}
+.funnel_link:hover,
+.funnel_action:hover{
+    color: #2196F3;
+}
+.funnels_td:hover,
+.funnels_tds:hover{
+    cursor: pointer;
+}

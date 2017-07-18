@@ -53,6 +53,11 @@
                         Назад
                     </a>
                 @endif
+                @if( Request::is('funnels/show/*'))
+                    <a href="{{ route('funnels.index', ['funnel_id' => $funnel->group_id]) }}">
+                        Назад
+                    </a>
+                @endif
             </div>
             <div class="right template__badge-balance">
                 <a href="{{ route('balance.index') }}">
