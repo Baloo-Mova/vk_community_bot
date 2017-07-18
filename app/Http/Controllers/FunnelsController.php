@@ -29,6 +29,12 @@ class FunnelsController extends Controller
 
     public function add(Request $request)
     {
+
+        $this->validate($request, [
+            'client_group_id'=>'required',
+            'text' => 'required'
+        ]);
+
         $funnel = new Funnels();
         $funnel->fill($request->all());
         $funnel->save();
@@ -112,7 +118,7 @@ class FunnelsController extends Controller
 
     public function editTime(Request $request)
     {
-
+return;
         $time = 0;
         $d = $request->get('days');
         $h = $request->get('hours');
