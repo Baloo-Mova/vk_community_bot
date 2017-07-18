@@ -127,7 +127,8 @@ class FunnelsController extends Controller
         $funnel = $ftime->funnel;
         $group  = $funnel->group;
 
-        $clients = Clients::whereClientGroupId($funnel->client_group_id)->get();
+        $clients = Clients::whereClientGroupId($funnel->client_group_id)->where('created', '>',
+            Carbon::createFromTimestamp(time() - $time))->get();
 
         $array = [];
         foreach ($clients as $item) {
