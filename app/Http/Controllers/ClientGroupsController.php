@@ -125,13 +125,13 @@ class ClientGroupsController extends Controller
             $index = array_search($item['id'], $VkIds);
             if ($index !== false) {
                 foreach ($itemsToSend as $itemSend) {
-                    $time = Carbon::createFromFormat("Y-m-d H:i:s", $data['created'])->timestamp + $itemSend->time;
+                    $time = Carbon::createFromFormat("Y-m-d H:i:s", $data['created'])->timestamp + $itemSend['time'];
                     if ($time > time()) {
                         $autoSender[] = [
                             'vk_id'           => $item['id'],
                             'client_group_id' => $group_id,
                             'group_id'        => $group->group_id,
-                            'message'         => $itemSend->text,
+                            'message'         => $itemSend['text'],
                             'when_send'       => $time
                         ];
                     }
@@ -156,8 +156,8 @@ class ClientGroupsController extends Controller
                     'vk_id'           => $item['id'],
                     'client_group_id' => $group_id,
                     'group_id'        => $group->group_id,
-                    'message'         => $itemSend->text,
-                    'when_send'       => time() + $itemSend->time
+                    'message'         => $itemSend['text'],
+                    'when_send'       => time() + $itemSend['time']
                 ];
             }
 
