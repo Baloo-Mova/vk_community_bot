@@ -31,7 +31,7 @@ class FunnelsController extends Controller
     }
 
     public function add(Request $request)
-    { 
+    {
         if ( ! $request->has('client_group_id') || ! $request->has('name')) {
             Toastr::error('Заполнены не все данные', 'Ошибка');
 
@@ -138,6 +138,7 @@ class FunnelsController extends Controller
                 'funnel_id'       => $funnel->id
             ];
         }
+        dd($array);
 
         AutoDelivery::insert($array);
 
