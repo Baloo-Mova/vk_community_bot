@@ -20,6 +20,7 @@ class DeliveryTableCreate extends Migration
             $table->integer('group_id');
             $table->string('message');
             $table->integer('when_send');
+            $table->integer('funnel_id');
         });
     }
 
