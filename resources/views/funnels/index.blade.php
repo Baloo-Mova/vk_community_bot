@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        <div id="modal1" class="modal">
+        <div id="modal1" class="modal" style="overflow: visible !important;">
             <div class="modal-content">
                 <h4>Добавление воронки</h4>
                 <form action="{{ route('funnels.add') }}" method="post">
@@ -31,13 +31,24 @@
                             <input name="name" id="name" type="text" class="validate">
                             <label for="name">Имя</label>
                         </div>
+                        <div class="input-field col s12">
+                            <select name="client_group_id" class="client_group_id">
+                                <option value="" disabled selected>Выберите список</option>
+                                @forelse($client_groups as $gr)
+                                    <option value="{{ $gr->id }}">{{ $gr->name }}</option>
+                                    @empty
+                                    <option value="" disabled>Списки отсутствуют</option>
+                                @endforelse
+                            </select>
+                            <label for="client_group_id">Список</label>
+                        </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn" >Добавить</button>
                 </form>
             </div>
         </div>
 
-        <div id="modal_edit" class="modal">
+        <div id="modal_edit" class="modal" style="overflow: visible !important;">
             <div class="modal-content">
                 <h4>Редактирование воронки</h4>
                 <form action="{{ route('funnels.edit') }}" method="post">
@@ -47,6 +58,17 @@
                         <div class="input-field col s12">
                             <input name="name" id="name" type="text" class="validate edit_funnel_name">
                             <label for="name" class="edit_funnel_name_label">Имя</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <select name="client_group_id" id="client_edit_group_id" class="client_edit_group_id">
+                                <option value="" disabled selected>Выберите список</option>
+                                @forelse($client_groups as $gr)
+                                    <option value="{{ $gr->id }}">{{ $gr->name }}</option>
+                                @empty
+                                    <option value="" disabled>Списки отсутствуют</option>
+                                @endforelse
+                            </select>
+                            <label for="client_edit_group_id">Список</label>
                         </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Редактировать</button>
@@ -69,7 +91,8 @@
                     <table class="highlight">
                         <thead>
                             <th class="col s8">Имя</th>
-                            <th class="col s4">Действия</th>
+                            <th class="col s2">Список</th>
+                            <th class="col s2">Действия</th>
                         </thead>
                         <tbody>
                             @forelse($funnels as $funnel)
@@ -77,9 +100,15 @@
                                     <td class="col s8 funnels_td">
                                         <a href="{{ route('funnels.show', ['funnel_id' => $funnel]) }}" class="funnel_link">{{ $funnel->name }}</a>
                                     </td>
-                                    <td class="col s4 funnels_td">
+                                    <td class="col s2 funnels_td">
+                                        <div>
+                                            {{ $funnel->client_group_id }}
+                                        </div>
+                                    </td>
+                                    <td class="col s2 funnels_td">
                                         <a class="waves-effect waves-light funnel_edit funnel_action"
                                            data-edit-id="{{ $funnel->id }}"
+                                           data-edit-clgr="{{ $funnel->client_group_id }}"
                                            data-edit-name="{{ $funnel->name }}"
                                            href="#modal_edit">
                                             <i class="material-icons left">edit</i>
@@ -107,6 +136,8 @@
         @section('js')
             <script>
                 $(document).ready(function(){
+                    $(".client_group_id").material_select();
+                    $(".client_edit_group_id").material_select();
                     $('.modal').modal();
 
                     $('#modal_payed').modal('open',{
@@ -117,10 +148,15 @@
                 $(".funnel_edit").on("click", function () {
                     var funnel_id = $(this).data("editId"),
                         name          = $(this).data("editName");
+                        clgr          = $(this).data("editClgr");
 
                     $(".edit_funnel_id").val(funnel_id);
                     $(".edit_funnel_name_label").addClass('active');
                     $(".edit_funnel_name").val(name);
+
+                    $(".client_edit_group_id").material_select('destroy');
+                    $(".client_edit_group_id").val(clgr);
+                    $(".client_edit_group_id").material_select();
                 });
             </script>
 @stop

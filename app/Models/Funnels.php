@@ -11,6 +11,7 @@ class Funnels extends Model
     public $fillable = [
         'name',
         'group_id',
+        'client_group_id'
     ];
 
     public function times()

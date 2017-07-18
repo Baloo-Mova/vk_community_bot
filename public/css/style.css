@@ -294,7 +294,8 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     padding: 15px 0px !important;
     color: #637377;
 }
-.funnels_tds{
+.funnels_tds,
+.funnels_td div{
     padding: 15px 5px !important;
 }
 .funnels_tds .text_wrap{

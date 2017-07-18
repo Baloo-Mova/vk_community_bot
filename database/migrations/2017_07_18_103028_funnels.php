@@ -17,6 +17,7 @@ class Funnels extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->integer('group_id');
+            $table->integer('client_group_id');
         });
         Schema::create('funnels_time', function (Blueprint $table) {
             $table->increments('id');

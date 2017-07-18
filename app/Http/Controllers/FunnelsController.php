@@ -15,12 +15,15 @@ class FunnelsController extends Controller
         $group  = UserGroups::find($group_id);
         $funnels = $group->funnels;
 
+        $clientsGroups = $group->clientGroups;
+
         return view('funnels.index', [
-            "user"     => \Auth::user(),
-            "group"    => $group,
-            "group_id" => $group->id,
-            "funnels"  => $funnels,
-            "tab_name" => "funnels"
+            "user"          => \Auth::user(),
+            "group"         => $group,
+            "group_id"      => $group->id,
+            "funnels"       => $funnels,
+            "client_groups" => $clientsGroups,
+            "tab_name"      => "funnels"
         ]);
     }
 
@@ -46,6 +49,7 @@ class FunnelsController extends Controller
             return back();
         }
         $funnel->name = $name;
+        $funnel->client_group_id = $request->get('client_group_id');
         $funnel->save();
         Toastr::success('Воронка успешно изменена!', 'Успешно');
         return back();
