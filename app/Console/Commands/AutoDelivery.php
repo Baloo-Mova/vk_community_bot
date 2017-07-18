@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Core\VK;
 use App\Models\Clients;
 use App\Models\Errors;
+use App\Models\UserGroups;
 use Illuminate\Console\Command;
 use League\Flysystem\Exception;
 use malkusch\lock\mutex\FlockMutex;
@@ -63,8 +64,11 @@ class AutoDelivery extends Command
                             'can_send' => 1
                         ])->first();
                         if (isset($canSend)) {
-                            $vk->setGroup($item->group);
-                            $vk->sendMessage($item->message, $item->vk_id);
+                            $userGroup = UserGroups::where(['group_id' => $item->group_id])->whereNotNull('token')->first();
+                            if (isset($userGroup)) {
+                                $vk->setGroup($userGroup);
+                                $vk->sendMessage($item->message, $item->vk_id);
+                            }
                         }
                         echo $item->vk_id . ' ' . $item->message;
                         $item->delete();
