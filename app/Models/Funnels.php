@@ -38,6 +38,6 @@ class Funnels extends Model
 
     public function group()
     {
-        return $this->belongsTo(UserGroups::class, 'id', 'group_id');
+        return $this->belongsTo(UserGroups::class, 'group_id', 'id');
     }
 }
