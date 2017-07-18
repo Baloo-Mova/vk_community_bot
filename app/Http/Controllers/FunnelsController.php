@@ -130,17 +130,16 @@ class FunnelsController extends Controller
 
         $array = [];
         foreach ($clients as $item) {
-            dd($item->created);
             $array[] = [
                 'vk_id'           => $item->vk_id,
                 'message'         => $ftime->text,
                 'client_group_id' => $item->client_group_id,
                 'group_id'        => $group->group_id,
-                'when_send'       => $item->created->timestamp + $time,
+                'when_send'       => Carbon::createFromFormat("Y-m-d H:i:s",
+                        $item->created->timestamp)->timestamp + $time,
                 'funnel_id'       => $funnel->id
             ];
         }
-        dd($array);
 
         AutoDelivery::insert($array);
 
