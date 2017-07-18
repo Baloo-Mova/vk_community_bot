@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clients;
 use App\Models\Funnels;
 use App\Models\FunnelsTime;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use Brian2694\Toastr\Facades\Toastr;
@@ -100,7 +102,6 @@ class FunnelsController extends Controller
 
     public function addTime(Request $request)
     {
-
         $time = 0;
         $d    = $request->get('days');
         $h    = $request->get('hours');
@@ -120,6 +121,23 @@ class FunnelsController extends Controller
         $ftime->time      = $time;
         $ftime->text      = $request->get('text');
         $ftime->save();
+
+        $funnel = $ftime->funnel;
+        $group  = $funnel->group;
+
+        $clients = Clients::whereClientGroupId($funnel->client_group_id);
+
+        $array = [];
+        foreach ($clients as $item) {
+            $array[] = [
+                'vk_id'           => $item->vk_id,
+                'message'         => $ftime->text,
+                'client_group_id' => $item->client_group_id,
+                'group_id'        => $group->group_id,
+                'when_send'       => $item->created + $time,
+                'funnel_id'       => $funnel->id
+            ];
+        }
 
         Toastr::success('Время успешно добавлено!', 'Успешно');
 

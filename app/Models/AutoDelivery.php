@@ -31,4 +31,10 @@ class AutoDelivery extends Model
         'message',
         'when_send'
     ];
+
+    public function group(){
+        return $this->belongsTo(UserGroups::class,'group_id','id');
+    }
+
+
 }

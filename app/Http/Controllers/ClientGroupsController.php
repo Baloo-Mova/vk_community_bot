@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use App\Core\VK;
@@ -116,7 +117,8 @@ class ClientGroupsController extends Controller
                 'last_name'       => $item["last_name"],
                 'avatar'          => $item["photo_100"],
                 'group_id'        => $group->group_id,
-                'can_send'        => 1
+                'can_send'        => 1,
+                'created'         => Carbon::now()
             ];
         }
 

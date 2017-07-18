@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AutoDelivery;
 use App\Console\Commands\MassDelivery;
 use App\Console\Commands\MessageListener;
 use App\Console\Commands\Test;
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Test::class,
-        MassDelivery::class
+        MassDelivery::class,
+        AutoDelivery::class
     ];
 
     /**

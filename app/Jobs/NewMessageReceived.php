@@ -5,12 +5,14 @@ namespace App\Jobs;
 use App\Core\VK;
 use App\Models\Clients;
 use App\Models\UserGroups;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use GuzzleHttp\Client;
+use PhpParser\Node\Stmt\Catch_;
 
 class NewMessageReceived implements ShouldQueue
 {
@@ -106,6 +108,7 @@ class NewMessageReceived implements ShouldQueue
             $client->avatar          = $user_info["response"][0]["photo_100"];
             $client->can_send        = 1;
             $client->group_id        = $this->group_id;
+            $client->created         = Carbon::now();
             $client->save();
 
             return true;

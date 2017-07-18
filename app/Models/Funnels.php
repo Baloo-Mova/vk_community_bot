@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Funnels
  *
- * @property int $id
- * @property string $name
- * @property int $group_id
+ * @property int                                                                     $id
+ * @property string                                                                  $name
+ * @property int                                                                     $group_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FunnelsTime[] $times
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Funnels whereGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Funnels whereId($value)
@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Funnels extends Model
 {
-    public $table = 'funnels';
+    public $table      = 'funnels';
     public $timestamps = false;
-    public $fillable = [
+    public $fillable   = [
         'name',
         'group_id',
         'client_group_id'
@@ -31,7 +31,13 @@ class Funnels extends Model
         return $this->hasMany(FunnelsTime::class, 'funell_id', 'id')->orderBy('id', 'desc');
     }
 
-    public function clientGroup(){
-        return $this->hasOne(ClientGroups::class,'id','client_group_id');
+    public function clientGroup()
+    {
+        return $this->hasOne(ClientGroups::class, 'id', 'client_group_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(UserGroups::class, 'id', 'group_id');
     }
 }

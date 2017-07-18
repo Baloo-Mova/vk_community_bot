@@ -36,6 +36,7 @@ class Clients extends Model
         'first_name',
         'last_name',
         'avatar',
-        'can_send'
+        'can_send',
+        'created'
     ];
 }
