@@ -125,7 +125,8 @@ class ClientGroupsController extends Controller
             $index = array_search($item['id'], $VkIds);
             if ($index !== false) {
                 foreach ($itemsToSend as $itemSend) {
-                    $time = Carbon::createFromFormat("Y-m-d H:i:s", $data['created'])->timestamp + $itemSend['time'];
+                    $time = Carbon::createFromFormat("Y-m-d H:i:s",
+                            $data[$index]['created'])->timestamp + $itemSend['time'];
                     if ($time > time()) {
                         $autoSender[] = [
                             'vk_id'           => $item['id'],
