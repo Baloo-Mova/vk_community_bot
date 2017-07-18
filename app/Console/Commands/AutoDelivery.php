@@ -58,7 +58,7 @@ class AutoDelivery extends Command
                 foreach ($this->tasks as $item) {
                     try {
                         $canSend = Clients::where([
-                            'group_id' => $item->group->group_id,
+                            'group_id' => $item->group_id,
                             'vk_id'    => $item->vk_id,
                             'can_send' => 1
                         ])->first();
