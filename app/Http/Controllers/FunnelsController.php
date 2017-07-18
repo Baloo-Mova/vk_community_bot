@@ -125,6 +125,8 @@ class FunnelsController extends Controller
         $funnel = $ftime->funnel;
         $group  = $funnel->group;
 
+        var_dump($funnel, $group);
+
         $clients = Clients::whereClientGroupId($funnel->client_group_id);
 
         $array = [];
