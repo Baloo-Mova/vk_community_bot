@@ -135,8 +135,7 @@ class FunnelsController extends Controller
                 'message'         => $ftime->text,
                 'client_group_id' => $item->client_group_id,
                 'group_id'        => $group->group_id,
-                'when_send'       => Carbon::createFromFormat("Y-m-d H:i:s",
-                        $item->created->timestamp)->timestamp + $time,
+                'when_send'       => Carbon::createFromFormat("Y-m-d H:i:s", $item->created)->timestamp + $time,
                 'funnel_id'       => $funnel->id
             ];
         }
