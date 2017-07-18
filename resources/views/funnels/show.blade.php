@@ -87,15 +87,6 @@
                                         <!--</div>-->
                                     </td>
                                     <td class="col s3">
-                                        <a class="waves-effect waves-light time_edit funnel_action"
-                                           data-edit-id="{{ $time->id }}"
-                                           data-edit-days="{{ intval($time->time/86400) }}"
-                                           data-edit-hours="{{ intval(($time->time % 86400)/3600) }}"
-                                           data-edit-minutes="{{ intval((($time->time % 86400)%3600) / 60) }}"
-                                           data-edit-text="{{ $time->text }}"
-                                           href="#modal_edit">
-                                            <i class="material-icons left">edit</i>
-                                        </a>
                                         <a href="{{ route('funnels.delete.time', ['time_id' => $time->id]) }}"
                                            class="waves-effect waves-light funnel_action"
                                            onclick="return confirm('Вы действительно хотите удалить это время?')">
