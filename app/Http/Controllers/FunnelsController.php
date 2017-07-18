@@ -125,11 +125,12 @@ class FunnelsController extends Controller
 
         $funnel = $ftime->funnel;
         $group  = $funnel->group;
-  
+
         $clients = Clients::whereClientGroupId($funnel->client_group_id)->get();
 
         $array = [];
         foreach ($clients as $item) {
+            dd($item->created);
             $array[] = [
                 'vk_id'           => $item->vk_id,
                 'message'         => $ftime->text,
