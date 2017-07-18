@@ -103,6 +103,7 @@ class FunnelsController extends Controller
 
     public function addTime(Request $request)
     {
+
         $time = 0;
         $d    = $request->get('days');
         $h    = $request->get('hours');
@@ -111,8 +112,8 @@ class FunnelsController extends Controller
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0) {
-            Toastr::error('Неверно указано время', 'Ошибка');
+        if ($time == 0 || ! $request->has('text')) {
+            Toastr::error('Поля не заполнены', 'Ошибка');
 
             return back();
         }
@@ -136,7 +137,7 @@ class FunnelsController extends Controller
                 'client_group_id' => $item->client_group_id,
                 'group_id'        => $group->group_id,
                 'when_send'       => Carbon::createFromFormat("Y-m-d H:i:s", $item->created)->timestamp + $time,
-                'funnel_id'       => $funnel->id
+                'funnel_id'       => $ftime->id
             ];
         }
 
@@ -188,6 +189,8 @@ class FunnelsController extends Controller
             return back();
         }
         $time->delete();
+
+        AutoDelivery::where(['funnel_id' => $time_id])->delete();
         Toastr::success('Время успешно удалено!', 'Удалено');
 
         return back();
