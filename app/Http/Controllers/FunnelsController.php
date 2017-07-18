@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AutoDelivery;
 use App\Models\Clients;
 use App\Models\Funnels;
 use App\Models\FunnelsTime;
@@ -138,6 +139,8 @@ class FunnelsController extends Controller
                 'funnel_id'       => $funnel->id
             ];
         }
+
+        AutoDelivery::insert($array);
 
         Toastr::success('Время успешно добавлено!', 'Успешно');
 
