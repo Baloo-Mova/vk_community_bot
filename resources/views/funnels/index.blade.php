@@ -102,17 +102,10 @@
                                     </td>
                                     <td class="col s2 funnels_td">
                                         <div>
-                                            {{ $funnel->client_group_id }}
+                                            {{ $funnel->clientGroup->name}}
                                         </div>
                                     </td>
                                     <td class="col s2 funnels_td">
-                                        <a class="waves-effect waves-light funnel_edit funnel_action"
-                                           data-edit-id="{{ $funnel->id }}"
-                                           data-edit-clgr="{{ $funnel->client_group_id }}"
-                                           data-edit-name="{{ $funnel->name }}"
-                                           href="#modal_edit">
-                                            <i class="material-icons left">edit</i>
-                                        </a>
                                         <a href="{{ route('funnels.delete', ['funnel_id' => $funnel->id]) }}"
                                            class="waves-effect waves-light funnel_action"
                                            onclick="return confirm('Вы действительно хотите удалить эту воронку?')">

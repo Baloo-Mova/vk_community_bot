@@ -41,6 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MassDelivery[]         $massDeliveries
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSecretKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSuccessResponse($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Funnels[] $funnels
  */
 class UserGroups extends Model
 {

@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereCanSend($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereGroupId($value)
  */
 class Clients extends Model
 {

@@ -13,7 +13,7 @@ class FunnelsController extends Controller
     public function index($group_id)
     {
         $group  = UserGroups::find($group_id);
-        $funnels = $group->funnels;
+        $funnels = $group->with('clientGroup')->funnels;
 
         $clientsGroups = $group->clientGroups;
 
@@ -38,6 +38,7 @@ class FunnelsController extends Controller
 
     public function edit(Request $request)
     {
+        return ;
         $funnel = Funnels::find($request->get('funnel_id'));
         if(!isset($funnel)){
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
