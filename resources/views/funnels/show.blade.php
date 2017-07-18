@@ -35,6 +35,35 @@
             </div>
         </div>
 
+        <div id="modal_edit" class="modal">
+            <div class="modal-content">
+                <h4>Редактирование времени</h4>
+                <form action="{{ route('funnels.edit.time') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="time_id" class="edit_time_id">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input name="days" id="days" type="text" class="validate edit_days" value="0">
+                            <label for="days edit_days_label">Через дней</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input name="hours" id="hours" type="text" class="validate edit_hours" value="0">
+                            <label for="hours edit_hours_label">Через часов</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input name="minutes" id="minutes" type="text" class="validate edit_minutes" value="0">
+                            <label for="minutes edit_minutes_label">Через минут</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea id="text" name="text" class="materialize-textarea edit_text"></textarea>
+                            <label for="text" class="edit_text_label">Текст</label>
+                        </div>
+                    </div>
+                    <button class="waves-effect waves-green light-blue darken-4 btn" >Сохранить</button>
+                </form>
+            </div>
+        </div>
+
         <div class="row">
             <div id="lists" class="col s12">
                 <div class="h10"></div>
@@ -58,6 +87,15 @@
                                         <!--</div>-->
                                     </td>
                                     <td class="col s3">
+                                        <a class="waves-effect waves-light time_edit funnel_action"
+                                           data-edit-id="{{ $time->id }}"
+                                           data-edit-days="{{ intval($time->time/86400) }}"
+                                           data-edit-hours="{{ intval(($time->time % 86400)/3600) }}"
+                                           data-edit-minutes="{{ intval((($time->time % 86400)%3600) / 60) }}"
+                                           data-edit-text="{{ $time->text }}"
+                                           href="#modal_edit">
+                                            <i class="material-icons left">edit</i>
+                                        </a>
                                         <a href="{{ route('funnels.delete.time', ['time_id' => $time->id]) }}"
                                            class="waves-effect waves-light funnel_action"
                                            onclick="return confirm('Вы действительно хотите удалить это время?')">
@@ -82,6 +120,26 @@
             <script>
                 $(document).ready(function(){
                     $('.modal').modal();
+
+
+                    $(".time_edit").on("click", function () {
+                        var time_id = $(this).data("editId"),
+                            days          = $(this).data("editDays"),
+                            hours          = $(this).data("editHours"),
+                            minutes          = $(this).data("editMinutes"),
+                            text          = $(this).data("editText");
+
+                        $(".edit_time_id").val(time_id);
+                        $(".edit_days_label").addClass('active');
+                        $(".edit_days").val(days);
+                        $(".edit_hours_label").addClass('active');
+                        $(".edit_hours").val(hours);
+                        $(".edit_minutes_label").addClass('active');
+                        $(".edit_minutes").val(minutes);
+                        $(".edit_text_label").addClass('active');
+                        $(".edit_text").val(text);
+                        $('.edit_text').trigger('autoresize');
+                    });
                 });
             </script>
 @stop

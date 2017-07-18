@@ -78,6 +78,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/delete/{funnel_id}', 'FunnelsController@delete')->name('funnels.delete');
         Route::get('/delete-time/{time_id}', 'FunnelsController@deleteTime')->name('funnels.delete.time');
         Route::post('/edit', 'FunnelsController@edit')->name('funnels.edit');
+        Route::post('/edit-time', 'FunnelsController@editTime')->name('funnels.edit.time');
         Route::get('/show/{funnel_id}', 'FunnelsController@show')->name('funnels.show');
     });
 });

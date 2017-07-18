@@ -105,6 +105,35 @@ class FunnelsController extends Controller
         return back();
     }
 
+    public function editTime(Request $request)
+    {
+
+        $time = 0;
+        $d = $request->get('days');
+        $h = $request->get('hours');
+        $m = $request->get('minutes');
+        $time += intval($d) * 86400;
+        $time += intval($h) * 3600;
+        $time += intval($m) * 60;
+
+        if($time == 0){
+            Toastr::error('Неверно указано время', 'Ошибка');
+            return back();
+        }
+
+        $ftime = FunnelsTime::find($request->get('time_id'));
+        if(!isset($ftime)){
+            Toastr::error('Времени с таким ID не существует!', 'Ошибка');
+            return back();
+        }
+        $ftime->time = $time;
+        $ftime->text = $request->get('text');
+        $ftime->save();
+
+        Toastr::success('Время успешно изменено!', 'Успешно');
+        return back();
+    }
+
     public function deleteTime($time_id){
         $time = FunnelsTime::find($time_id);
         if(!isset($time)){
