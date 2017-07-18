@@ -6,6 +6,7 @@ use App\Models\AutoDelivery;
 use App\Models\Clients;
 use App\Models\Funnels;
 use App\Models\FunnelsTime;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
@@ -124,9 +125,7 @@ class FunnelsController extends Controller
 
         $funnel = $ftime->funnel;
         $group  = $funnel->group;
-
-        var_dump( $group);
-
+  
         $clients = Clients::whereClientGroupId($funnel->client_group_id)->get();
 
         $array = [];
@@ -136,7 +135,7 @@ class FunnelsController extends Controller
                 'message'         => $ftime->text,
                 'client_group_id' => $item->client_group_id,
                 'group_id'        => $group->group_id,
-                'when_send'       => $item->created + $time,
+                'when_send'       => $item->created->timestamp + $time,
                 'funnel_id'       => $funnel->id
             ];
         }
