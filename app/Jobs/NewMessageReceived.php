@@ -3,7 +3,10 @@
 namespace App\Jobs;
 
 use App\Core\VK;
+use App\Models\AutoDelivery;
 use App\Models\Clients;
+use App\Models\Funnels;
+use App\Models\FunnelsTime;
 use App\Models\UserGroups;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -12,7 +15,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use GuzzleHttp\Client;
-use PhpParser\Node\Stmt\Catch_;
 
 class NewMessageReceived implements ShouldQueue
 {
@@ -110,6 +112,27 @@ class NewMessageReceived implements ShouldQueue
             $client->group_id        = $this->group_id;
             $client->created         = Carbon::now();
             $client->save();
+
+            $funnel      = Funnels::with('times')->where(['client_group_id' => $groupId])->get();
+            $itemsToSend = [];
+            foreach ($funnel as $item) {
+                $itemsToSend = array_merge($itemsToSend, $item->times->toArray());
+            }
+
+            $autoSender = [];
+
+            foreach ($itemsToSend as $itemSend) {
+                $autoSender[] = [
+                    'vk_id'           => $userId,
+                    'client_group_id' => $groupId,
+                    'funnel_id'       => $itemSend['id'],
+                    'group_id'        => $this->group_id,
+                    'message'         => $itemSend['text'],
+                    'when_send'       => time() + $itemSend['time'],
+                ];
+            }
+
+            AutoDelivery::insert($autoSender);
 
             return true;
         }
