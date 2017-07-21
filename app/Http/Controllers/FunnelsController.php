@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\DB;
 
 class FunnelsController extends Controller
 {
@@ -151,7 +152,6 @@ class FunnelsController extends Controller
 
     public function editTime(Request $request)
     {
-        return;
         $time = 0;
         $d    = $request->get('days');
         $h    = $request->get('hours');
@@ -172,9 +172,18 @@ class FunnelsController extends Controller
 
             return back();
         }
+
+        $oldValue    = $ftime->time;
         $ftime->time = $time;
         $ftime->text = $request->get('text');
         $ftime->save();
+
+        $timeToUpdate = $time - $oldValue;
+
+        AutoDelivery::where(['funnel_id' => $ftime->id])->update([
+            'message' => $ftime->text,
+            'time'    => DB::raw('time + ' . $timeToUpdate)
+        ]);
 
         Toastr::success('Время успешно изменено!', 'Успешно');
 
