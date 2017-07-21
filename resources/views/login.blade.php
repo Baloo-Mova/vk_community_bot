@@ -1035,7 +1035,10 @@
 <footer class="text-center">
     <p>Knocker - сервис умных рассылок ВКонтакте. <Br />
         © ИП Баранова Василина Михайловна
-        ОГРНИП 315784700094696 <Br /><a href="#mailto:admin@vasilinabaranova.ru">admin@vasilinabaranova.ru</a> </p>
+        ОГРНИП 315784700094696 <Br />
+        +79111333950
+        Санкт-Петербург, пр-т Авиаконструкторов 12-58, 197350 <br>
+        <a href="#mailto:admin@vasilinabaranova.ru">admin@vasilinabaranova.ru</a> </p>
 </footer>
 <!-- End Footer Section -->
 
