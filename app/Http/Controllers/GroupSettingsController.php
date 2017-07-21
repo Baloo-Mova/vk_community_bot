@@ -36,22 +36,28 @@ class GroupSettingsController extends Controller
     {
         $user  = \Auth::user();
         $payId = $request->get('rate');
-        if ( ! isset($payId)) {
-            Toastr::error('Отсутствует обязательный (Имя тарифа) параметр!', 'Ошибка');
 
-            return back();
+        if ($payId != 0) {
+            if ( ! isset($payId)) {
+                Toastr::error('Отсутствует обязательный (Имя тарифа) параметр!', 'Ошибка');
+
+                return back();
+            }
+
+            $rate = Rates::find($payId);
+            if ( ! isset($rate)) {
+                Toastr::error('Тариф отсутствует', 'Ошибка');
+
+                return back();
+            }
+
+            $daysToAdd   = $rate->days;
+            $payment_sum = $rate->price;
+        } else {
+            $daysToAdd   = 2;
+            $payment_sum = 0;
         }
-
-        $rate = Rates::find($payId);
-        if ( ! isset($rate)) {
-            Toastr::error('Тариф отсутствует', 'Ошибка');
-
-            return back();
-        }
-
-        $daysToAdd   = $rate->days;
-        $payment_sum = $rate->price;
-        $group_id    = $request->get('group_id');
+        $group_id = $request->get('group_id');
 
         if ( ! isset($group_id)) {
             Toastr::error('Отсутствует обязательный (Id группы) параметр!', 'Ошибка');

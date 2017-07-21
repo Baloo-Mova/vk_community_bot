@@ -8,22 +8,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * App\Models\User
  *
- * @property int $id
- * @property string $name
- * @property string|null $email
- * @property string $password
- * @property string|null $remember_token
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string $vk_token
- * @property int $vk_id
- * @property int $expiresIn
- * @property string $avatar
- * @property string $FIO
- * @property string $balance
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserGroups[] $groups
+ * @property int                                                                                                            $id
+ * @property string                                                                                                         $name
+ * @property string|null                                                                                                    $email
+ * @property string                                                                                                         $password
+ * @property string|null                                                                                                    $remember_token
+ * @property \Carbon\Carbon|null                                                                                            $created_at
+ * @property \Carbon\Carbon|null                                                                                            $updated_at
+ * @property string                                                                                                         $vk_token
+ * @property int                                                                                                            $vk_id
+ * @property int                                                                                                            $expiresIn
+ * @property boolean                                                                                                        $trial_used
+ * @property string                                                                                                         $avatar
+ * @property string                                                                                                         $FIO
+ * @property string                                                                                                         $balance
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserGroups[]                                         $groups
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentLogs[] $payments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentLogs[]                                        $payments
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
@@ -69,11 +70,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function groups(){
+    public function groups()
+    {
         return $this->hasMany(UserGroups::class);
     }
 
-    public function payments(){
+    public function payments()
+    {
         return $this->hasMany(PaymentLogs::class);
     }
 
