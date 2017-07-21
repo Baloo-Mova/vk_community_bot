@@ -38,9 +38,9 @@
                             <select name="rate" id="rates" class="rates">
                                 <option value="" disabled selected>Выберите тариф</option>
                                 @if(!\Auth::user()->trial_used)
-                                    <option value="0">Тестовый</option>
+                                    <option value="0">Тестовый (2 дня) - 0 рублей</option>
                                 @endif
-                                @forelse($prices as $gr) 
+                                @forelse($prices as $gr)
                                     <option value="{{ $gr->id }}">{{ $gr->name." - ".$gr->price." рублей" }}</option>
                                 @empty
                                     <option value="" disabled>Тарифы отсутствуют</option>
