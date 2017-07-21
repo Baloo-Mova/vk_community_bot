@@ -37,12 +37,10 @@
                             <input type="hidden" name="group_id" value="{{ $group->id }}">
                             <select name="rate" id="rates" class="rates">
                                 <option value="" disabled selected>Выберите тариф</option>
-                                @forelse($prices as $gr)
-
-                                    @if(!\Auth::user()->trial_used)
+                                @if(!\Auth::user()->trial_used)
                                     <option value="0">Тестовый</option>
-                                    @endif
-
+                                @endif
+                                @forelse($prices as $gr) 
                                     <option value="{{ $gr->id }}">{{ $gr->name." - ".$gr->price." рублей" }}</option>
                                 @empty
                                     <option value="" disabled>Тарифы отсутствуют</option>
