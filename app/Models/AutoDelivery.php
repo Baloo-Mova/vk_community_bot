@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class AutoDelivery extends Model
 {
     public $table="auto_delivery";
+    public $timestamps  = false;
     public $fillable = [
         'vk_id',
         'client_group_id',
