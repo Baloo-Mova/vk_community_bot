@@ -24,6 +24,14 @@ Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
 Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
+
+    Route::group(['middleware' => ['isAdmin']], function () {
+        Route::get('/rate-list', ['uses' => 'RateController@index', 'as' => 'rate.index']);
+        Route::post('/rate-edit', ['uses' => 'RateController@update', 'as' => 'rate.edit']);
+        Route::get('/rate-delete/{id}', ['uses' => 'RateController@delete', 'as' => 'rate.delete']);
+        Route::post('/rate-add', ['uses' => 'RateController@add', 'as' => 'rate.add']);
+    });
+
     Route::get('/', "GroupsController@index")->name('groups.index');
     Route::group(['prefix' => 'group'], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');

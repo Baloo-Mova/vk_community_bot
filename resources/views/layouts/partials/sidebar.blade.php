@@ -1,13 +1,14 @@
 <ul id="slide-out" class="side-nav fixed">
     <li class="usernavitem">
-        <div class="userView center-align"><a href="#!" class="menuclosebtn white-text"><i class="material-icons">keyboard_backspace</i></a>
+        <div class="userView center-align">
+            <a href="#!" class="menuclosebtn white-text"><i class="material-icons">keyboard_backspace</i></a>
             <img class="background" src="{{ asset('img/sidebar.png') }}" alt="">
-                <a href="#" class="center-align picture">
-                    <img class="circle sidebar_logo" src="{{ asset('img/logo.svg') }}" alt="">
-                </a>
-                <a href="#">
-                    <span class="white-text name site_name_in_sidebar">Knocker</span>
-                </a>
+            <a href="#" class="center-align picture">
+                <img class="circle sidebar_logo" src="{{ asset('img/logo.svg') }}" alt="">
+            </a>
+            <a href="#">
+                <span class="white-text name site_name_in_sidebar">Knocker</span>
+            </a>
         </div>
     </li>
     <li class="{{ Request::is('/') || Request::is('group/*')
@@ -48,4 +49,14 @@
             Ваши предложения
         </a>
     </li>
+
+@if(Auth::user()->id == 2)
+    <hr/>
+    <li class="nonactive">
+        <a href="{{route('rate.index')}}" class="waves-effect waves-grey">
+            <i class="fa fa-cogs fa-2x sidebar_icon" aria-hidden="true"></i>
+            Тарифы
+        </a>
+    </li>
+@endif
 </ul>

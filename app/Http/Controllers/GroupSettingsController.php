@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rates;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
 use App\Models\BotCommunityResponse;
@@ -15,25 +16,41 @@ class GroupSettingsController extends Controller
     {
         $group = UserGroups::find($id);
 
-        if ( ! $group->checkAccess()) {
-            $group->removeControl();
-            Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
-
-            return back();
-        }
+//        if ( ! $group->checkAccess()) {
+//            $group->removeControl();
+//            Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
+//
+//            return back();
+//        }
 
         return view('groupSettings.index', [
             "user"     => \Auth::user(),
             "group_id" => $id,
             "group"    => isset($group) ? $group : [],
-            "tab_name" => "settings"
+            "tab_name" => "settings",
+            'prices'   => Rates::all()
         ]);
     }
 
     public function newSubscription(Request $request)
     {
-        $user        = \Auth::user();
-        $payment_sum = config('robokassa.community_one_month_price');
+        $user  = \Auth::user();
+        $payId = $request->get('rate');
+        if ( ! isset($payId)) {
+            Toastr::error('Отсутствует обязательный (Имя тарифа) параметр!', 'Ошибка');
+
+            return back();
+        }
+
+        $rate = Rates::find($payId);
+        if ( ! isset($rate)) {
+            Toastr::error('Тариф отсутствует', 'Ошибка');
+
+            return back();
+        }
+
+        $daysToAdd   = $rate->days;
+        $payment_sum = $rate->price;
         $group_id    = $request->get('group_id');
 
         if ( ! isset($group_id)) {
@@ -65,7 +82,7 @@ class GroupSettingsController extends Controller
         }
 
         $group->payed     = 1;
-        $group->payed_for = Carbon::now()->addDays(30);
+        $group->payed_for = Carbon::now()->addDays($daysToAdd);
         $group->save();
 
         PaymentLogs::insert([

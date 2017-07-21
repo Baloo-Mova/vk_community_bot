@@ -21,21 +21,30 @@
                 @if($group->payed == 1)
                     <div class="col s12 m4 l4 xl4">
                         <div class="group_is_payed">
-                    <span>
-                      Подписка оплачена до <br>
-                        {{ $group->payed_for }}
-                  </span>
+                            <span>
+                              Подписка оплачена до <br>
+                                {{ $group->payed_for }}
+                            </span>
                         </div>
                     </div>
                 @else
                     <div class="col s12 m6 l6 xl4">
                         <div class="group_not_payed">
                             <p>В данный момент подписка на бота не оплачена. </p>
-                            <p>Стоимость подписки {{ config('robokassa.community_one_month_price') }} руб </p>
                         </div>
                         <form action="{{ route('groupSettings.new.subscription') }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="group_id" value="{{ $group->id }}">
+                            <select name="rate" id="rates" class="rates">
+                                <option value="" disabled selected>Выберите тариф</option>
+                                @forelse($prices as $gr)
+                                    <option value="{{ $gr->id }}">{{ $gr->name }}</option>
+                                @empty
+                                    <option value="" disabled>Тарифы отсутствуют</option>
+                                @endforelse
+                            </select>
+                            <label for="client_edit_group_id">Тарифы</label>
+                            <div class="clearfix"></div>
                             <button class="btn waves-effect waves-light light-blue darken-4">Оплатить</button>
                         </form>
                     </div>
@@ -71,27 +80,29 @@
                 @endif
             </div>
 
-            </div>
         </div>
+    </div>
 
     </div>
 @endsection
 
 @section('js')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
 
-            $(".status_checkbox").on("change", function(){
+            $("#rates").material_select();
+
+            $(".status_checkbox").on("change", function () {
                 var group_id = $(this).data('groupId'),
-                    status = $(this).prop('checked');
+                    status   = $(this).prop('checked');
 
                 $.ajax({
-                    method: "get",
-                    url: "{{ url('/change-group-bot-status') }}/" + group_id + "/" + (status ? 1 : 0),
+                    method : "get",
+                    url    : "{{ url('/change-group-bot-status') }}/" + group_id + "/" + (status ? 1 : 0),
                     success: function (data) {
-                        if(status){
+                        if (status) {
                             $(".bot_status").text("бот включен");
-                        }else{
+                        } else {
                             $(".bot_status").text("бот выключен");
                         }
                     }
