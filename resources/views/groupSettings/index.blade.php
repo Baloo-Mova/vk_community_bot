@@ -38,7 +38,7 @@
                             <select name="rate" id="rates" class="rates">
                                 <option value="" disabled selected>Выберите тариф</option>
                                 @forelse($prices as $gr)
-                                    <option value="{{ $gr->id }}">{{ $gr->days." Дней - ".$gr->price." рублей" }}</option>
+                                    <option value="{{ $gr->id }}">{{ $gr->name." - ".$gr->price." рублей" }}</option>
                                 @empty
                                     <option value="" disabled>Тарифы отсутствуют</option>
                                 @endforelse
