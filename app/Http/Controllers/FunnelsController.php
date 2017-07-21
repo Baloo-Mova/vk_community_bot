@@ -181,8 +181,8 @@ class FunnelsController extends Controller
         $timeToUpdate = $time - $oldValue;
 
         AutoDelivery::where(['funnel_id' => $ftime->id])->update([
-            'message' => $ftime->text,
-            'time'    => DB::raw('time + ' . $timeToUpdate)
+            'message'   => $ftime->text,
+            'when_send' => DB::raw('time + ' . $timeToUpdate)
         ]);
 
         Toastr::success('Время успешно изменено!', 'Успешно');
