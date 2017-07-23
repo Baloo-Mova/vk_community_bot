@@ -9,6 +9,7 @@ use App\Models\BotCommunityResponse;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\PaymentLogs;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GroupSettingsController extends Controller
 {
@@ -87,8 +88,12 @@ class GroupSettingsController extends Controller
             return back();
         }
 
-        $group->payed     = 1;
-        $group->payed_for = Carbon::now()->addDays($daysToAdd);
+        $group->payed = 1;
+        if (is_null($group->payed_for)) {
+            $group->payed_for = Carbon::now()->addDays($daysToAdd);
+        } else {
+            $group->payed_for = Carbon::createFromFormat('Y-m-d H:i:s', $group->payed_for)->addDays($daysToAdd);
+        }
         $group->save();
 
         PaymentLogs::insert([

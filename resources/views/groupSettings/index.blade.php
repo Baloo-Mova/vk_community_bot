@@ -26,6 +26,20 @@
                                 {{ $group->payed_for }}
                             </span>
                         </div>
+                        <form action="{{ route('groupSettings.new.subscription') }}" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="group_id" value="{{ $group->id }}">
+                            <select name="rate" id="rates" class="rates">
+                                <option value="" disabled selected>Выберите тариф</option>
+                                @forelse($prices as $gr)
+                                    <option value="{{ $gr->id }}">{{ $gr->name." - ".$gr->price." рублей" }}</option>
+                                @empty
+                                    <option value="" disabled>Тарифы отсутствуют</option>
+                                @endforelse
+                            </select>
+                            <div class="clearfix"></div>
+                            <button class="btn waves-effect waves-light light-blue darken-4">Продлить</button>
+                        </form>
                     </div>
                 @else
                     <div class="col s12 m6 l6 xl4">
