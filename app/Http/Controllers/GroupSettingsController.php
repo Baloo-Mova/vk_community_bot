@@ -89,6 +89,10 @@ class GroupSettingsController extends Controller
         }
 
         $group->payed = 1;
+
+        if ($payId == 0) {
+            $group->trial_used = 1;
+        }
         if (is_null($group->payed_for)) {
             $group->payed_for = Carbon::now()->addDays($daysToAdd);
         } else {
