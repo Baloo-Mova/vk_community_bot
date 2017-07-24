@@ -13,8 +13,9 @@ class BalanceController extends Controller
     public function index()
     {
         $user = \Auth::user();
+
         return view('balance.index', [
-            'user' => $user,
+            'user'     => $user,
             'payments' => $user->payments
         ]);
     }
@@ -35,8 +36,8 @@ class BalanceController extends Controller
         $payment->payment_sum = $sum;
         $payment->save();
 
-        $kassa = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.demo_password1'),
-            config('robokassa.demo_password2'), true);
+        $kassa = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.password1'),
+            config('robokassa.password2'));
 
         $kassa->setInvoiceId($payment->id)->setSum($sum)->setDescription('Пополнение баланса на ' . $sum);
 
@@ -45,8 +46,8 @@ class BalanceController extends Controller
 
     public function checkResult()
     {
-        $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.demo_password1'),
-            config('robokassa.demo_password2'), true);
+        $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.password1'),
+            config('robokassa.password2'));
 
         if ($payment->validateResult($_GET)) {
             $order = PaymentLogs::find($payment->getInvoiceId());
@@ -74,8 +75,8 @@ class BalanceController extends Controller
 
     public function checkSuccess()
     {
-        $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.demo_password1'),
-            config('robokassa.demo_password2'), true);
+        $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.password1'),
+            config('robokassa.password2'));
 
         if ($payment->validateSuccess($_GET)) {
             Toastr::success('Ваш баланс пополнен на ' . $payment->getSum(), 'Успешная оплата');
