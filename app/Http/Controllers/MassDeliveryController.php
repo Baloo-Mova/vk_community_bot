@@ -91,7 +91,7 @@ class MassDeliveryController extends Controller
             $delivery->when_send = Carbon::createFromFormat("d-m-Y H:i", $then_send);
         }
 
-        dd($then_send);
+        dd($delivery);
         $delivery->save();
 
         Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . count($sendTo), 'Добавлено');
