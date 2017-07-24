@@ -96,14 +96,14 @@
                 <table class="highlight">
                     <thead>
                     <th>Сообщение</th>
-                    <th>Дата создания</th>
+                    <th>Дата отправки</th>
                     <th>Действия</th>
                     </thead>
                     <tbody>
                     @forelse($deliveries as $delivery)
                         <tr class="{{ $delivery->sended ? "teal lighten-4" : "" }}">
                             <td>{{ $delivery->message }}</td>
-                            <td>{{ $delivery->created_at }}</td>
+                            <td>{{ $delivery->when_send }}</td>
                             <td>
                                 <a href="{{ route('massDelivery.delete', ['response' => $delivery->id]) }}"
                                    class="waves-effect waves-light"
