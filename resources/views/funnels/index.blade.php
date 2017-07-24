@@ -98,10 +98,11 @@
                             @forelse($funnels as $funnel)
                                 <tr class="funnels_tr">
                                     <td class="col s8 funnels_td">
-                                        <a href="{{ route('funnels.show', ['funnel_id' => $funnel]) }}" class="funnel_link">{{ $funnel->name }}</a>
+                                        <a href="{{ route('funnels.show', ['funnel_id' => $funnel->id]) }}" class="funnel_link">{{ $funnel->name }}</a>
                                     </td>
                                     <td class="col s2 funnels_td">
                                         <div>
+                                            {{var_dump($funnel)}}
                                             {{ $funnel->clientGroup->name}}
                                         </div>
                                     </td>
