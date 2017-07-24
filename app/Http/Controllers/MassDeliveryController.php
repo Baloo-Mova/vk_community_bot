@@ -85,7 +85,7 @@ class MassDeliveryController extends Controller
         if (empty($then_send)) {
             $delivery->when_send = Carbon::now('Europe/Moscow');
         } else {
-            $delivery->when_send = Carbon::createFromFormat("Y-m-d H:i:s", $then_send);
+            $delivery->when_send = Carbon::createFromFormat("d-m-Y H:i", $then_send);
         }
         $delivery->save();
 
