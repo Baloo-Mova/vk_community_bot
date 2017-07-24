@@ -103,7 +103,7 @@
                                     <td class="col s2 funnels_td">
                                         <div>
                                             {{var_dump($funnel)}}
-                                            {{ $funnel->clientGroup->name}}
+                                            {{// $funnel->clientGroup->name}}
                                         </div>
                                     </td>
                                     <td class="col s2 funnels_td">
