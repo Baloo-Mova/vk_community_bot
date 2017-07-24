@@ -82,11 +82,16 @@ class MassDeliveryController extends Controller
         $delivery->fill($request->all());
         $delivery->rules = json_encode($result);
         $then_send       = $request->get('when_send');
+
         if (empty($then_send)) {
+            echo "1";
             $delivery->when_send = Carbon::now('Europe/Moscow');
         } else {
+            echo '2';
             $delivery->when_send = Carbon::createFromFormat("d-m-Y H:i", $then_send);
         }
+
+        dd($then_send);
         $delivery->save();
 
         Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . count($sendTo), 'Добавлено');
