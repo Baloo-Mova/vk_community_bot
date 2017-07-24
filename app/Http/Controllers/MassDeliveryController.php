@@ -83,9 +83,9 @@ class MassDeliveryController extends Controller
         $delivery->rules = json_encode($result);
         $then_send       = $request->get('when_send');
         if (empty($then_send)) {
-            $delivery->when_send = Carbon::now();
+            $delivery->when_send = Carbon::now('Europe/Moscow');
         } else {
-            $delivery->when_send = Carbon::parse($then_send)->format("y-m-d H:m:s");
+            $delivery->when_send = Carbon::parse($then_send);
         }
         $delivery->save();
 

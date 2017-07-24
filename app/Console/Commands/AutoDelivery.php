@@ -6,6 +6,7 @@ use App\Core\VK;
 use App\Models\Clients;
 use App\Models\Errors;
 use App\Models\UserGroups;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use League\Flysystem\Exception;
 use malkusch\lock\mutex\FlockMutex;
@@ -48,7 +49,7 @@ class AutoDelivery extends Command
     {
         while (true) {
             try {
-                $this->tasks = \App\Models\AutoDelivery::with('group')->where('when_send', '<', time())->get();
+                $this->tasks = \App\Models\AutoDelivery::with('group')->where('when_send', '<', Carbon::now('Europe/Moscow'))->get();
 
                 if ( ! isset($this->tasks)) {
                     sleep(10);

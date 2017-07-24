@@ -53,7 +53,7 @@ class MassDelivery extends Command
                     $this->task = \App\Models\MassDelivery::where([
                         ['reserved', '=', 0],
                         ['sended', '=', 0],
-                        ['when_send', '<', Carbon::now()]
+                        ['when_send', '<', Carbon::now('Europe/Moscow')]
                     ])->first();
 
                     if (isset($this->task)) {
