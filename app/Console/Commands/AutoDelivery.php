@@ -49,7 +49,7 @@ class AutoDelivery extends Command
     {
         while (true) {
             try {
-                $this->tasks = \App\Models\AutoDelivery::with('group')->where('when_send', '<', Carbon::now('Europe/Moscow'))->get();
+                $this->tasks = \App\Models\AutoDelivery::with('group')->where('when_send', '<', time())->get();
 
                 if ( ! isset($this->tasks)) {
                     sleep(10);
