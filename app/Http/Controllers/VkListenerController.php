@@ -19,8 +19,17 @@ class VkListenerController extends Controller
         $item          = new CallbackLog();
         $item->data    = $addThisToList;
         $item->save();
+
         try {
             $data = json_decode($request->getContent(), true);
+
+            $group = UserGroups::whereGroupId($data['group_id'])->first();
+            if (isset($group)) {
+                if ($group->payed == 0 || $group->status == 0) {
+                    echo "ok";
+                    exit();
+                }
+            }
             switch ($data['type']) {
                 case 'confirmation':
                     $group = UserGroups::whereGroupId($data['group_id'])->first();
