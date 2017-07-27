@@ -101,12 +101,14 @@ class GroupSettingsController extends Controller
         }
         $group->save();
 
-        PaymentLogs::insert([
-            "user_id"     => $user->id,
-            "description" => PaymentLogs::SubscriptionPayment,
-            "payment_sum" => $payment_sum,
-            "status"      => 1
-        ]);
+
+        $payment              = new PaymentLogs();
+        $payment->user_id     = \Auth::user()->id;
+        $payment->description = PaymentLogs::SubscriptionPayment;
+        $payment->payment_sum = $payment_sum;
+        $payment->status = 1;
+        $payment->save();
+
 
         Toastr::success('Подписка успешно оплачена', 'Оплачено');
 
