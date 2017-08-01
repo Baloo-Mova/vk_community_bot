@@ -17,12 +17,12 @@ class GroupSettingsController extends Controller
     {
         $group = UserGroups::find($id);
 
-//        if ( ! $group->checkAccess()) {
-//            $group->removeControl();
-//            Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
-//
-//            return back();
-//        }
+        if ( ! $group->checkAccess()) {
+            $group->removeControl();
+            Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
+
+            return back();
+        }
 
         return view('groupSettings.index', [
             "user"     => \Auth::user(),

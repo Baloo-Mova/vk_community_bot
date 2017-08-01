@@ -11,6 +11,7 @@ namespace App\Core;
 use App\Models\BotCommunityResponse;
 use App\Models\Errors;
 use App\Models\UserGroups;
+use App\Models\UserGroupsPivot;
 use GuzzleHttp\Client;
 use League\Flysystem\Exception;
 
@@ -280,16 +281,27 @@ class VK
         if ($adminGroups['response']['count'] > 1) {
             for ($i = 0; $i < $adminGroups['response']['count']; $i++) {
                 $group     = $adminGroups['response']['items'][$i];
-                $groupBase = UserGroups::where(['group_id' => $group['id'], 'user_id' => $this->user->id])->first();
+                $groupBase = UserGroups::where(['group_id' => $group['id']])->first();
                 if ( ! isset($groupBase)) {
                     $groupBase = new UserGroups();
                 }
 
-                $groupBase->user_id  = $this->user->id;
+                $groupBase->user_id  = 0;
                 $groupBase->name     = $group['name'];
                 $groupBase->avatar   = $group['photo_100'];
                 $groupBase->group_id = $group['id'];
                 $groupBase->save();
+
+                $pivot = UserGroupsPivot::where([
+                    'user_id' => $this->user->id,
+                    'usergroup_id' => $groupBase->id
+                ]);
+                if(!isset($pivot)){
+                    UserGroups::insert([
+                        'user_id' => $this->user->id,
+                        'usergroup_id' =>$groupBase->id
+                    ]);
+                }
             }
         }
     }

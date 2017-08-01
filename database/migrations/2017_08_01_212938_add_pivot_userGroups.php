@@ -17,6 +17,7 @@ class AddPivotUserGroups extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('usergroup_id');
+            $table->index(['user_id', 'usergroup_id']);
         });
     }
 
