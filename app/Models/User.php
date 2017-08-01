@@ -72,7 +72,7 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->hasMany(UserGroups::class);
+        return $this->belongsToMany(UserGroups::class,'user_groups_pivot','user_id','usergroup_id');
     }
 
     public function payments()

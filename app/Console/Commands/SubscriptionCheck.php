@@ -44,5 +44,8 @@ class SubscriptionCheck extends Command
             'payed_for' => null,
             'status'    => 0
         ]);
+
+
+
     }
 }

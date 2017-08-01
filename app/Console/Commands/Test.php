@@ -46,14 +46,7 @@ class Test extends Command
      */
     public function handle()
     {
-        $vk = new VK();
-        $vk->setGroup(UserGroups::find(3));
-        $result = $vk->sendMessage("adadasdad", 134123123);
-        if (empty($result)) {
-            Clients::where([
-                'vk_id'    => 134123123,
-                'group_id' => $this->task->group->group_id
-            ])->update(['can_send' => 0]);
-        }
+        $user = User::find(2);
+        dd($user->groups);
     }
 }
