@@ -278,6 +278,7 @@ class VK
     public function updateUserGroups()
     {
         $adminGroups = $this->getAdminGroups();
+        var_dump($adminGroups);
         if ($adminGroups['response']['count'] > 1) {
             for ($i = 0; $i < $adminGroups['response']['count']; $i++) {
                 $group     = $adminGroups['response']['items'][$i];
@@ -296,6 +297,7 @@ class VK
                     'user_id' => $this->user->id,
                     'usergroup_id' => $groupBase->id
                 ]);
+                var_dump($pivot);
                 if(!isset($pivot)){
                     UserGroups::insert([
                         'user_id' => $this->user->id,
