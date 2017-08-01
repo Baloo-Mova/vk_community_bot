@@ -295,10 +295,8 @@ class VK
                 $pivot = UserGroupsPivot::where([
                     'user_id'      => $this->user->id,
                     'usergroup_id' => $groupBase->id
-                ]);
-dd($pivot);
+                ])->first();
                 if ( ! isset($pivot)) {
-                    dd($this->user->id);
                     UserGroupsPivot::insert([
                         'user_id'      => $this->user->id,
                         'usergroup_id' => $groupBase->id
