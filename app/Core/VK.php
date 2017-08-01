@@ -277,6 +277,7 @@ class VK
 
     public function updateUserGroups()
     {
+        $test        = [];
         $adminGroups = $this->getAdminGroups();
         if ($adminGroups['response']['count'] > 1) {
             for ($i = 0; $i < $adminGroups['response']['count']; $i++) {
@@ -302,7 +303,11 @@ class VK
                         'usergroup_id' => $groupBase->id
                     ]);
                 }
+
+                $test[] = $groupBase->id;
             }
+
+            UserGroups::whereNotIn('usergroup_id', $test)->where(['user_id' => $this->user->id])->delete();
         }
     }
 
