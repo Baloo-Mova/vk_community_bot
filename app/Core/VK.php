@@ -296,7 +296,7 @@ class VK
                     'user_id'      => $this->user->id,
                     'usergroup_id' => $groupBase->id
                 ]);
-
+dd($pivot);
                 if ( ! isset($pivot)) {
                     dd($this->user->id);
                     UserGroupsPivot::insert([
