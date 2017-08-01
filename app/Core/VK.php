@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-           //  'proxy'  => '194.242.125.76:8000',
+            //  'proxy'  => '194.242.125.76:8000',
             'verify' => false,
         ]);
     }
@@ -278,7 +278,6 @@ class VK
     public function updateUserGroups()
     {
         $adminGroups = $this->getAdminGroups();
-        var_dump($adminGroups);
         if ($adminGroups['response']['count'] > 1) {
             for ($i = 0; $i < $adminGroups['response']['count']; $i++) {
                 $group     = $adminGroups['response']['items'][$i];
@@ -294,14 +293,14 @@ class VK
                 $groupBase->save();
 
                 $pivot = UserGroupsPivot::where([
-                    'user_id' => $this->user->id,
+                    'user_id'      => $this->user->id,
                     'usergroup_id' => $groupBase->id
                 ]);
-                var_dump($pivot);
-                if(!isset($pivot)){
-                    UserGroups::insert([
-                        'user_id' => $this->user->id,
-                        'usergroup_id' =>$groupBase->id
+
+                if ( ! isset($pivot)) {
+                    UserGroupsPivot::insert([
+                        'user_id'      => $this->user->id,
+                        'usergroup_id' => $groupBase->id
                     ]);
                 }
             }
