@@ -310,7 +310,7 @@ class VK
     {
         return $this->requestToApi('groups.get', [
             'extended' => 1,
-            'filter'   => 'editor',
+            'filter'   => 'admin',
             'fields'   => implode(',', $this->groupScope),
         ], false);
     }
