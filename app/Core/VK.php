@@ -307,7 +307,7 @@ class VK
                 $test[] = $groupBase->id;
             }
 
-            UserGroups::whereNotIn('usergroup_id', $test)->where(['user_id' => $this->user->id])->delete();
+            UserGroupsPivot::whereNotIn('usergroup_id', $test)->where(['user_id' => $this->user->id])->delete();
         }
     }
 
