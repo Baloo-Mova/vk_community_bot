@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //  'proxy'  => '194.242.125.76:8000',
+            'proxy'  => '194.242.125.76:8000',
             'verify' => false,
         ]);
     }
@@ -123,6 +123,7 @@ class VK
         ];
         $data   = $this->httpClient->get('https://oauth.vk.com/access_token?' . http_build_query($params))->getBody()->getContents();
         if (strpos($data, 'error') !== false) {
+
             return false;
         }
 
@@ -137,6 +138,7 @@ class VK
         }
 
         if ($group_id == 0) {
+
             return false;
         }
 
@@ -181,6 +183,7 @@ class VK
                     ], true);
 
                     if (isset($data['error'])) {
+
                         return false;
                     }
 
@@ -188,6 +191,7 @@ class VK
                         break;
                     }
                     if ($data['response']['state_code'] == 3 || $data['response']['state_code'] == 4) {
+
                         return false;
                     }
                     sleep(2);
@@ -198,9 +202,11 @@ class VK
                     'group_id' => $id
                 ], true);
                 if (isset($data['error'])) {
+
                     return false;
                 }
                 if ($data['response']['server_url'] != $callBaaaaaack) {
+
                     return false;
                 }
 
@@ -240,6 +246,7 @@ class VK
                     'market_comment_restore' => 0,
                     'poll_vote_new'          => 0,
                 ], true);
+
                 if ( ! isset($data['error'])) {
                     return true;
                 }

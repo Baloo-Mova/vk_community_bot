@@ -19,6 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int                                                                                                            $vk_id
  * @property int                                                                                                            $expiresIn
  * @property boolean                                                                                                        $trial_used
+ * @property boolean                                                                                                        $resubscribe_notification_send
  * @property string                                                                                                         $avatar
  * @property string                                                                                                         $FIO
  * @property string                                                                                                         $balance
@@ -58,6 +59,7 @@ class User extends Authenticatable
         'expiresIn',
         'avatar',
         'FIO',
+        'resubscribe_notification_send'
     ];
 
     /**

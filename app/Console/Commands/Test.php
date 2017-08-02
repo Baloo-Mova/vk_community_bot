@@ -46,7 +46,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $user = User::find(2);
-        dd($user->groups);
+
     }
 }

@@ -25,7 +25,7 @@ class VkListenerController extends Controller
 
             $group = UserGroups::whereGroupId($data['group_id'])->first();
             if (isset($group)) {
-                if ($group->payed == 0 || $group->status == 0) {
+                if (($group->payed == 0 || $group->status == 0) && $data['type'] != 'confirmation') {
                     echo "ok";
                     exit();
                 }

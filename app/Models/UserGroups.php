@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MassDelivery[]         $massDeliveries
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSecretKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSuccessResponse($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Funnels[] $funnels
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Funnels[]              $funnels
  */
 class UserGroups extends Model
 {
@@ -57,9 +57,9 @@ class UserGroups extends Model
         'token'
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'user_groups_pivot', 'usergroup_id', 'user_id');
     }
 
     public function activeTasks()

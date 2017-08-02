@@ -94,6 +94,7 @@ class GroupSettingsController extends Controller
             $user->trial_used = 1;
             $user->save();
         }
+
         if (is_null($group->payed_for)) {
             $group->payed_for = Carbon::now()->addDays($daysToAdd);
         } else {
@@ -109,6 +110,11 @@ class GroupSettingsController extends Controller
         $payment->status = 1;
         $payment->save();
 
+        foreach ($group->users as $user)
+        {
+            $user->resubscribe_notification_send = 0;
+            $user->save();
+        }
 
         Toastr::success('Подписка успешно оплачена', 'Оплачено');
 
