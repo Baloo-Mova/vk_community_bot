@@ -83,6 +83,11 @@ class UserGroups extends Model
         return $this->hasMany(Funnels::class, 'group_id', 'id');
     }
 
+    public function moderatorLogs()
+    {
+        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id');
+    }
+
     public function checkAccess()
     {
         $vk = new VK();

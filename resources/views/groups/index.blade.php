@@ -44,6 +44,11 @@
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Перейти к настройкам</a>
                                         </li>
                                         <li class="groups_options_card waves-effect wavev-dark">
+                                            <a href="{{ route('moderator.index', ['group_id' => $a_groups->id]) }}"
+                                               class="grey-text text-darken-2 a_non_decorated a_in_li">Модератор
+                                            </a>
+                                        </li>
+                                        <li class="groups_options_card waves-effect wavev-dark">
                                             <a href="{{ route('groups.delete.permissions', ['group_id' => $a_groups->id]) }}"
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Удалить доступ
                                             </a>

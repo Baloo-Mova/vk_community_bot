@@ -89,5 +89,10 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/edit-time', 'FunnelsController@editTime')->name('funnels.edit.time');
         Route::get('/show/{funnel_id}', 'FunnelsController@show')->name('funnels.show');
     });
+
+    Route::group(['prefix' => 'moderator'], function () {
+        Route::get('/{group_id}', ['uses' => 'ModeratorController@index', 'as' => 'moderator.index']);
+    });
+
 });
 

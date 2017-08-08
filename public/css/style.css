@@ -310,3 +310,16 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .funnels_tds:hover{
     cursor: pointer;
 }
+.add_telegram{
+    background-color: #fff;
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 20px;
+}
+.add_telegram p{
+    font-size: 18px;
+    padding-left: 10px;
+}
+.add_telegram .input_row{
+    margin-bottom: 0;
+}
