@@ -68,6 +68,11 @@ class UserGroups extends Model
             'id')->where(['bot_community_response.state' => 1]);
     }
 
+    public function actions()
+    {
+        return $this->hasMany(BotCommunityResponse::class, 'group_id', 'id');
+    }
+
     public function clientGroups()
     {
         return $this->hasMany(ClientGroups::class, 'group_id', 'id');
@@ -86,6 +91,11 @@ class UserGroups extends Model
     public function moderatorLogs()
     {
         return $this->hasMany(ModeratorLogs::class, 'group_id', 'id');
+    }
+
+    public function moderatorLogsSorted($id)
+    {
+        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id')->where(['action_id' => $id])->get();
     }
 
     public function checkAccess()

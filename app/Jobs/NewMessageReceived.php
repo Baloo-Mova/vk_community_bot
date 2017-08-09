@@ -21,6 +21,7 @@ class NewMessageReceived implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $data       = null;
+    public $moderatorLogs       = null;
     public $group_id   = null;
     public $httpClient = null;
 
@@ -29,11 +30,12 @@ class NewMessageReceived implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($data, $group_id)
+    public function __construct($data, $group_id,$ml)
     {
         $this->data     = $data;
         $this->group_id = $group_id;
         $this->queue    = "NewMessageReceived";
+        $this->moderatorLogs = $ml;
     }
 
     /**
@@ -66,8 +68,21 @@ class NewMessageReceived implements ShouldQueue
 
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
-                    if ($value['action'] == 1) {
-                        $this->addToGroup($value['group'], $userId);
+                    $this->moderatorLogs->action_id = $value
+                    switch ($value['action']){
+                        case 1:
+                            $this->moderatorLogs->action_id = 1;
+                            $this->moderatorLogs->save();
+                            $this->addToGroup($value['group'], $userId);
+                            break;
+                        case 2:
+                            $this->moderatorLogs->action_id = 2;
+                            $this->moderatorLogs->save();
+                            $this->deleteFromGroup($value['group'], $userId);
+                            break;
+                        case 3:
+                            $this->deleteFromDB($this->group_id, $userId);
+                            break;
                     }
                     $vk->setSeenMessage([$messageId], $userId);
                     $vk->sendMessage($value['response'], $userId);
@@ -138,5 +153,37 @@ class NewMessageReceived implements ShouldQueue
         }
 
         return false;
+    }
+
+    private function deleteFromGroup($groupId, $userId)
+    {
+        try{
+            Clients::where([
+                'vk_id'           => $userId,
+                'client_group_id' => $groupId
+            ])->delete();
+            return true;
+        }catch(\Exception $ex){
+            return false;
+        }
+
+    }
+
+    private function deleteFromDB($groupId, $userId)
+    {
+        try{
+
+            AutoDelivery::where(['vk_id' => $userId, 'group_id' => $groupId])->delete();
+
+            Clients::where([
+                'vk_id'           => $userId,
+                'group_id' => $groupId
+            ])->delete();
+
+            return true;
+        }catch (\Exception $ex){
+            return false;
+        }
+
     }
 }

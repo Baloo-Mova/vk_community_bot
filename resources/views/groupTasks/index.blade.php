@@ -20,12 +20,16 @@
                 </div>
             </div>
         @endif
-        <div id="modal1" class="modal">
+        <div id="modal1" class="modal" style="overflow: visible !important;">
             <div class="modal-content">
                 <h4>Добавление сценария</h4>
                 <form action="{{ route('groupTasks.add') }}" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="group_id" value="{{ $group->id }}">
+                    <div class="input-field col s12">
+                        <input name="scenario_name" id="scenario_name" type="text" class="validate">
+                        <label for="scenario_name">Имя сценария</label>
+                    </div>
                     <div class="input-field col s12">
                         <input name="key" id="key" type="text" class="validate">
                         <label for="key">Ключевое слово</label>
@@ -47,6 +51,8 @@
                         <select name="action_id" class="action_select_select">
                             <option value="" disabled selected>Выберите действие</option>
                             <option value="1">Добавить в группу</option>
+                            <option value="2">Удалить из группы</option>
+                            <option value="3">Удалить из базы</option>
                         </select>
                         <label>Действия</label>
                     </div>
@@ -67,12 +73,16 @@
             </div>
         </div>
 
-        <div id="modal2" class="modal">
+        <div id="modal2" class="modal" style="overflow: visible !important;">
             <div class="modal-content">
                 <h4>Редактирование сценария</h4>
                 <form action="{{ route('groupTasks.edit') }}" class="scenario_edit_form" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="scenario_id" class="scenario_id">
+                    <div class="input-field col s12">
+                        <input name="scenario_name" class="scenario_name" id="scenario_name" type="text" class="validate">
+                        <label for="scenario_name" class="scenario_name_label">Имя сценария</label>
+                    </div>
                     <div class="input-field col s12">
                         <input name="key" id="key" class="scenario_key" type="text" class="validate">
                         <label for="key" class="scenario_key_label">Ключевое слово</label>
@@ -94,6 +104,8 @@
                         <select name="action_id" class="action_select_edit_select">
                             <option value="" disabled class="action_select_edit_0">Выберите действие</option>
                             <option value="1" class="action_select_edit_1">Добавить в группу</option>
+                            <option value="2" class="action_select_edit_2">Удалить из группы</option>
+                            <option value="3" class="action_select_edit_3">Удалить из базы</option>
                         </select>
                         <label>Действия</label>
                     </div>
@@ -126,6 +138,7 @@
             <div class="">
                 <table class="highlight">
                     <thead>
+                    <th>Имя сценария</th>
                     <th>Ключевое слово</th>
                     <th>Ответ</th>
                     <th>Статус</th>
@@ -140,6 +153,7 @@
 
                         @forelse($responses as $resp)
                             <tr>
+                                <td>{{ $resp->scenario_name }}</td>
                                 <td>{{ $resp->key }}</td>
                                 <td>{{ $resp->response }}</td>
                                 <td>
@@ -156,6 +170,7 @@
                                 <td>
                                     <a class="waves-effect waves-light scenario_edit"
                                        data-edit-id="{{ $resp->id }}"
+                                       data-edit-scenario-name="{{ $resp->scenario_name }}"
                                        data-edit-key="{{ $resp->key }}"
                                        data-edit-response="{{ $resp->response }}"
                                        data-edit-action-id="{{ ($resp->action_id) ? $resp->action_id : -1 }}"
@@ -211,6 +226,7 @@
 
             $(".scenario_edit").on("click", function () {
                 var scenarion_id = $(this).data("editId"),
+                    scenarion_name = $(this).data("editScenarioName"),
                     key          = $(this).data("editKey"),
                     response     = $(this).data("editResponse"),
                     action_id    = $(this).data("editActionId"),
@@ -221,6 +237,8 @@
                 $(".scenario_key").val(key);
                 $(".scenario_response_label").addClass('active');
                 $(".scenario_response").val(response);
+                $(".scenario_name_label").addClass('active');
+                $(".scenario_name").val(scenarion_name);
 
                 if(action_id != -1){
                     $(".is_action_edit").prop("checked", true);

@@ -17,6 +17,21 @@
 
     <div class="page_wrapper">
 
+        <div class="preloader__wrap">
+            <div class="preloader-wrapper big active preloader__block">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         @include('layouts.partials.header')
 
         <div class=" page_content">

@@ -42,12 +42,13 @@ class GroupTasksController extends Controller
 
     public function edit(Request $request)
     {
-        $id                     = $request->get('scenario_id');
-        $response               = BotCommunityResponse::find($id);
-        $response->key          = $request->get('key');
-        $response->response     = $request->get('response');
-        $response->action_id    = $request->get('action_id');
-        $response->add_group_id = $request->get('add_group_id');
+        $id                      = $request->get('scenario_id');
+        $response                = BotCommunityResponse::find($id);
+        $response->key           = $request->get('key');
+        $response->scenario_name = $request->get('scenario_name');
+        $response->response      = $request->get('response');
+        $response->action_id     = $request->get('action_id');
+        $response->add_group_id  = $request->get('add_group_id');
         $response->save();
 
         Toastr::success('Сценарий успешно отредактирован', 'Успешно');

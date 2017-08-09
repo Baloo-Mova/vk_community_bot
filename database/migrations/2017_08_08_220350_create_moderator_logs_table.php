@@ -16,11 +16,12 @@ class CreateModeratorLogsTable extends Migration
         Schema::create('moderator_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('group_id');
-            $table->integer('action_id');
-            $table->integer('event_id');
-            $table->string('name', 200);
-            $table->timestamp('date');
-            $table->text('description');
+            $table->integer('action_id')->nullable();
+            $table->string('event_id');
+            $table->integer('vk_id');
+            $table->string('name', 200)->nullable();
+            $table->timestamp('date')->nullable();
+            $table->text('description')->nullable();
         });
     }
 

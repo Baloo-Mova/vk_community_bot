@@ -35,6 +35,7 @@ class BotCommunityResponse extends Model
     public $fillable = [
         'group_id',
         'key',
+        'scenario_name',
         'response',
         'state',
         'action_id',
