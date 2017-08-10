@@ -6,6 +6,7 @@ use App\Core\VK;
 use App\Helpers\Telegram;
 use App\Models\AutoDelivery;
 use App\Models\Clients;
+use App\Models\Errors;
 use App\Models\Funnels;
 use App\Models\FunnelsTime;
 use App\Models\ModeratorLogs;
@@ -66,6 +67,11 @@ class NewMessageReceived implements ShouldQueue
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
 
+            $err = new Errors();
+            $err->text = json_encode($res);
+            $err->url = "1";
+            $err->save();
+
             $actionId = "";
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
@@ -89,7 +95,6 @@ class NewMessageReceived implements ShouldQueue
                 }
             }
 
-            file_put_contents(storage_path('app/console.txt'), $actionId);
 
             if (!empty($actionId)) {
                 $allowTranslate = json_decode($group->moderator_events);
