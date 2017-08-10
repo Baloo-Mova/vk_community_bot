@@ -21,51 +21,6 @@ class VkListenerController extends Controller
 
     public function index(Request $request, $id)
     {
-        $events_descriptions = [
-            "message_new" => "У Вас новое сообщение \"{message}\" от пользователя {user}",
-            "message_reply" => "Новое исходящее сообщение",
-            "message_allow" => "Разрешение на получение сообщений от пользователя {user}",
-            "message_deny" => "Запрет на получение сообщений от пользователя {user}",
-
-            "photo_new" => "У Вас новая фотография от пользователя {user}",
-            "photo_comment_new" => "У Вас новый комментарий к фотографии от пользователя {user}",
-            "photo_comment_edit" => "Пользователь {user} редактировал комментарий к фотографии",
-            "photo_comment_delete" => "Пользователь {user} удалил комментарий к фотографии",
-            "photo_comment_restore" => "Пользователь {user} восстановил удаленный комментарий к фотографии",
-
-            "audio_new" => "У Вас новая аудиозапись от пользователя {user}",
-
-            "video_new" => "У Вас новая видеозапись от пользователя {user}",
-            "video_comment_new" => "У Вас новый комментарий к видеозаписи от пользователя {user}",
-            "video_comment_edit" => "Пользователь {user} редактировал комментарий к видеозаписи",
-            "video_comment_delete" => "Пользователь {user} удалил комментарий к видеозаписи",
-            "video_comment_restore" => "Пользователь {user} восстановил удаленный комментарий к видеозаписи",
-
-            "wall_post_new" => "У Вас новая запись на стене от пользователя {user}",
-            "wall_repost" => "У Вас новый репост от пользователя {user}",
-
-            "wall_reply_new" => "У Вас новый комментарий на стене от пользователя {user}",
-            "wall_reply_edit" => "Пользователь {user} редактировал комментарий на стене",
-            "wall_reply_delete" => "Пользователь {user} удалил комментарий на стене",
-            "wall_reply_restore" => "Пользователь {user} восстановил удаленный комментарий на стене",
-
-            "board_post_new" => "У Вас новое обсуждение от пользователя {user}",
-            "board_post_edit" => "Пользователь {user} редактировал обсуждение",
-            "board_post_delete" => "Пользователь {user} удалил обсуждение",
-            "board_post_restore" => "Пользователь {user} восстановил удаленное обсуждение",
-
-            "market_comment_new" => "У Вас новый новый комментарий к товару от пользователя {user}",
-            "market_comment_edit" => "Пользователь {user} редактировал комментарий к товару",
-            "market_comment_delete" => "Пользователь {user} удалил комментарий к товару",
-            "market_comment_restore" => "Пользователь {user} восстановил удаленный комментарий к товару",
-
-            "group_join" => "Пользователь {user} вступил в сообщество",
-            "group_leave" => "Пользователь {user} покинул сообщество",
-            "group_change_settings" => "Пользователь {user} изменил настройки в сообществе",
-            "poll_vote_new" => "Пользователь {user} оставил голос в публичном опросе",
-            "group_change_photo" => "Пользователь {user} изменил главную фотографию сообщества",
-            "group_officers_edit" => "Пользователь {user} изменил руководство сообщества",
-        ];
 
         $addThisToList = $request->getContent();
         $item = new CallbackLog();
@@ -90,46 +45,90 @@ class VkListenerController extends Controller
                 exit();
             }
 
-            $user_message = "";
-            try {
-                $user_message = str_replace(["{user}","{message}"], [$data['object']['user_id'], $data['object']['body']], $events_descriptions[$data['type']]);
-            } catch (\Exception $exception) {
-                $user_message = $data['type'];
+            $allowTranslate = json_decode($group->moderator_events);
+            if (in_array($data['type'], $allowTranslate)) {
+                $user_message = "";
+                switch ($data['type']) {
+                    case 'message_new':
+                        $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $data['object']['user_id'] . "\nНовое сообщение в http://vk.com/club" . $data['group_id'] . "\n" . $data['object']['body'];
+                        break;
+                    case 'audio_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовая аудиозапись \nГруппа: http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'photo_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовое фото https://vk.com/photo" . $data['object']['owner_id'] . "_" . $data['object']['id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'video_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовое видео \nГруппа: http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'group_join':
+                        $user_message = date("H:i d.m.Y") . " \nНовый пользователь http://vk.com/id" . $data['object']['user_id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'group_leave':
+                        $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $data['object']['user_id'] . "покинул группу\nГруппа: http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'wall_post_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовый пост в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'wall_reply_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовый коментарий в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'wall_reply_edit':
+                        $user_message = date("H:i d.m.Y") . " \nРедактирование коментария в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'board_post_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовое обсуждение в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'board_post_edit':
+                        $user_message = date("H:i d.m.Y") . " \nРедактирование обсуждения в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'board_post_delete':
+                        $user_message = date("H:i d.m.Y") . " \nОбсуждение удалено в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'board_post_restore':
+                        $user_message = date("H:i d.m.Y") . " \nОбсуждение восстановлено в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'photo_comment_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовый коментарий к фото в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                    case 'market_comment_new':
+                        $user_message = date("H:i d.m.Y") . " \nНовый коментарий к товару в группе http://vk.com/club" . $data['group_id'];
+                        break;
+                }
+
+                if ($group->show_in_history == 1) {
+                    $this->httpClient = new Client([
+                        'verify' => false,
+                    ]);
+
+                    $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
+                        'form_params' => [
+                            'user_ids' => $data['object']['user_id'],
+                            'fields' => 'photo_100',
+                            'v' => '5.67'
+                        ]
+                    ])->getBody()->getContents();
+
+                    $user_info = json_decode($response, true);
+                    $moderatorLogs = new ModeratorLogs();
+                    $moderatorLogs->group_id = $group->id;
+                    $moderatorLogs->event_id = $data['type'];
+                    $moderatorLogs->vk_id = $data['object']['user_id'];
+                    $moderatorLogs->date = Carbon::now();
+                    $moderatorLogs->name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
+                    $moderatorLogs->description = $user_message;
+                    $moderatorLogs->save();
+                }
+
+                if ($group->send_to_telegram == 1) {
+                    $telegram = new Telegram();
+                    $telegram->sendMessage($group->telegram, $user_message);
+                }
             }
-
-            $this->httpClient = new Client([
-                'verify' => false,
-            ]);
-
-            $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
-                'form_params' => [
-                    'user_ids' => $data['object']['user_id'],
-                    'fields' => 'photo_100',
-                    'v' => '5.67'
-                ]
-            ])->getBody()->getContents();
-
-            $user_info = json_decode($response, true);
-            $moderatorLogs = new ModeratorLogs();
-            $moderatorLogs->group_id = $group->id;
-            $moderatorLogs->action_id = 0;
-            $moderatorLogs->event_id = $data['type'];
-            $moderatorLogs->vk_id = $data['object']['user_id'];
-            $moderatorLogs->date = Carbon::now();
-            $moderatorLogs->description = $user_message;
-            $moderatorLogs->name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
-            $moderatorLogs->save();
-
-            if ($group->send_to_telegram == 1) {
-                //send to teltegaramsd $user_message;
-                $telegram = new Telegram();
-                $telegram->sendMessage($group->telegram, $user_message);
-            }
-
 
             switch ($data['type']) {
                 case 'message_new':
-                    $this->newMessageReceived($data['object'], $data['group_id'], $moderatorLogs);
+                    $this->newMessageReceived($data['object'], $data['group_id']);
                     break;
                 case 'message_allow':
                     $this->setAllow($data['object']['user_id'], $data['group_id']);
@@ -147,9 +146,9 @@ class VkListenerController extends Controller
         echo 'ok';
     }
 
-    public function newMessageReceived($data, $group_id, $moderatorLogs)
+    public function newMessageReceived($data, $group_id)
     {
-        $this->dispatch(new NewMessageReceived($data, $group_id, $moderatorLogs));
+        $this->dispatch(new NewMessageReceived($data, $group_id));
     }
 
     public function setAllow($id, $group_id)

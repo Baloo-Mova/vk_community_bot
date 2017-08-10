@@ -48,6 +48,6 @@ class Test extends Command
     public function handle()
     {
         $tg = new Telegram();
-        $tg->sendMessage('408902714',date("H:i d.m.Y")."\n новый контакт");
+        $tg->sendMessage('408902714',date("H:i d.m.Y")."\n *новый контакт*");
     }
 }

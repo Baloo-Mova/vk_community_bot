@@ -43,7 +43,7 @@ class Telegram
         }
         try {
             $request = $this->client->request("GET",
-                "https://api.telegram.org/bot" . $telegram_token . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($text));
+                "https://api.telegram.org/bot" . $telegram_token . "/sendMessage?parse_mode=Markdown&chat_id=" . $chatId . "&text=" . urlencode($text));
 
             if ($request) {
                 return true;
@@ -76,7 +76,6 @@ class Telegram
                     file_put_contents(storage_path('app/telegram.txt'), $item->update_id + 1);
                     $group = UserGroups::where(['telegram_keyword' => trim($item->message->text)])->first();
                     if (!isset($group)) {
-                        $this->sendMessage($item->message->chat->id, "Не понял вопроса...");
                         continue;
                     }
 
