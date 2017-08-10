@@ -10,7 +10,7 @@ use Brian2694\Toastr\Facades\Toastr;
 class ModeratorController extends Controller
 {
 
-    public function index($group_id, $action_id)
+    public function index($group_id)
     {
         $group = UserGroups::find($group_id);
 
@@ -28,7 +28,6 @@ class ModeratorController extends Controller
             'events' => $events,
             'events_number' => count($events),
             'logs' => $logs,
-            'action_id' => $action_id,
             'user' => \Auth::user()
         ]);
     }

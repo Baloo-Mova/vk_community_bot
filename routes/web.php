@@ -24,14 +24,13 @@ Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
 Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
-
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/rate-list', ['uses' => 'RateController@index', 'as' => 'rate.index']);
         Route::post('/rate-edit', ['uses' => 'RateController@update', 'as' => 'rate.edit']);
-        Route::get('/rate-delete/{id}', ['uses' => 'RateController@delete', 'as' => 'rate.delete']);
+        Route::get('/rate-delete/{id}', ['uses'
+        => 'RateController@delete', 'as' => 'rate.delete']);
         Route::post('/rate-add', ['uses' => 'RateController@add', 'as' => 'rate.add']);
     });
-
     Route::get('/', "GroupsController@index")->name('groups.index');
     Route::group(['prefix' => 'group'], function () {
         Route::get('/add/{id}', 'GroupsController@addGroup')->name('group.add');
@@ -40,13 +39,11 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::get('/delete-permissions/{group_id}',
             'GroupsController@deleteGroupPermissions')->name('groups.delete.permissions');
     });
-
     Route::group(['prefix' => 'group-settings'], function () {
         Route::get('/{id}', 'GroupSettingsController@index')->name('groupSettings.index');
         Route::post('/new-subscription',
             'GroupSettingsController@newSubscription')->name('groupSettings.new.subscription');
     });
-
     Route::group(['prefix' => 'client-groups'], function () {
         Route::get('/{group_id}', 'ClientGroupsController@index')->name('clientGroups.index');
         Route::post('/add-group', 'ClientGroupsController@addGroup')->name('clientGroups.add.group');
@@ -58,14 +55,12 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
             'ClientGroupsController@massDeleteClientGroup')->name('clientGroups.mass.delete.users');
         Route::get('/delete-user/{user_id}', 'ClientGroupsController@deleteUser')->name('clientGroups.delete.user');
     });
-
     Route::group(['prefix' => 'group-tasks'], function () {
         Route::get('/{group_id}', 'GroupTasksController@index')->name('groupTasks.index');
         Route::post('/add', 'GroupTasksController@add')->name('groupTasks.add');
         Route::post('/edit', 'GroupTasksController@edit')->name('groupTasks.edit');
         Route::get('/delete/{response}', 'GroupTasksController@delete')->name('groupTasks.delete');
     });
-
     Route::group(['prefix' => 'mass-delivery'], function () {
         Route::get('/{group_id}', 'MassDeliveryController@index')->name('massDelivery.index');
         Route::post('/add', 'MassDeliveryController@add')->name('massDelivery.add');
@@ -91,7 +86,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     });
 
     Route::group(['prefix' => 'moderator'], function () {
-        Route::get('/{group_id}/{id}', ['uses' => 'ModeratorController@index', 'as' => 'moderator.index']);
+        Route::get('/{group_id}', ['uses' => 'ModeratorController@index', 'as' => 'moderator.index']);
         Route::post('/moderator-settings', ['uses' => 'ModeratorController@settings', 'as' => 'moderator.settings']);
         Route::get('/sorting/{group_id}/{id}', ['uses' => 'ModeratorController@sorting', 'as' => 'moderator.sorting']);
     });
