@@ -22,11 +22,32 @@ class ModeratorController extends Controller
         $events = $group->moderator_events == null ? [] : json_decode($group->moderator_events, true);
         $logs = $group->moderatorLogs()->paginate(10);
 
+        $allEvents = [
+            'message_new' => ['title' => 'Новое сообщение',],
+            'audio_new' => ['title' => 'Новая аудиозапись',],
+            'photo_new' => ['title' => 'Новое фото',],
+            'video_new' => ['title' => 'Новое видео',],
+            'group_join' => ['title' => 'Добавление участника',],
+            'group_leave' => ['title' => 'Удаление участника',],
+            'wall_post_new' => ['title' => 'Новая запись на стене',],
+            'wall_reply_new' => ['title' => 'Новый коментарий на стене',],
+            'wall_reply_edit' => ['title' => 'Редактирование коментария на стене',],
+            'board_post_new' => ['title' => 'Новый коментарий в обсуждении',],
+            'board_post_edit' => ['title' => 'Редактирование коментария в обсуждении',],
+            'board_post_delete' => ['title' => 'Удаление коментария в обсуждении',],
+            'board_post_restore' => ['title' => 'Восстановление коментария в обсуждении',],
+            'photo_comment_new' => ['title' => 'Новый коментарий к фото',],
+            'market_comment_new' => ['title' => 'Новый коментарий к товару',],
+        ];
+
+        foreach ($allEvents as $key => $item) {
+            $allEvents[$key]['check'] = (in_array($key, $events) ? true : false);
+        }
+
         return view('moderator.index', [
             'group' => $group,
+            'allEvents' => $allEvents,
             'actions' => $group->actions,
-            'events' => $events,
-            'events_number' => count($events),
             'logs' => $logs,
             'user' => \Auth::user()
         ]);
