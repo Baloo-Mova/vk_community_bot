@@ -66,26 +66,19 @@ class NewMessageReceived implements ShouldQueue
             $messageId = $this->data['id'];
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
-
-            $err = new Errors();
-            $err->text = json_encode($res);
-            $err->url = "1";
-            $err->save();
-
+  
             $actionId = "";
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
+                    $actionId = $value['name'];
                     switch ($value['action']) {
                         case 1:
-                            $actionId = $value['name'];
                             $this->addToGroup($value['group'], $userId);
                             break;
                         case 2:
-                            $actionId = $value['name'];
                             $this->deleteFromGroup($value['group'], $userId);
                             break;
                         case 3:
-                            $actionId = $value['name'];
                             $this->deleteFromDB($this->group_id, $userId);
                             break;
                     }
