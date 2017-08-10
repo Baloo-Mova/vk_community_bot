@@ -54,7 +54,8 @@ class UserGroups extends Model
         'success_response',
         'group_id',
         'expiries',
-        'token'
+        'token',
+        'telegram_keyword'
     ];
 
     public function users()

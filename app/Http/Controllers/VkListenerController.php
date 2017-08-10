@@ -13,6 +13,7 @@ use App\Models\UserGroups;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use App\Helpers\Telegram;
 
 class VkListenerController extends Controller
 {
@@ -102,6 +103,8 @@ class VkListenerController extends Controller
 
             if ($group->send_to_telegram == 1) {
                 //send to teltegaramsd $user_message;
+                $telegram = new Telegram();
+                $telegram->sendMessage($group->id, $user_message);
             }
 
 

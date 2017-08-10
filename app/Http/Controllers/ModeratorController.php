@@ -10,15 +10,68 @@ use Brian2694\Toastr\Facades\Toastr;
 class ModeratorController extends Controller
 {
 
+    public $events_icon = [
+                            "message_new" => "fa fa-envelope-open",
+                            "message_reply" => "fa fa-envelope-open",
+                            "message_allow" => "fa fa-envelope-open",
+                            "message_deny" => "fa fa-envelope-open",
+
+                            "photo_new" => 'fa fa-picture-o',
+                            "photo_comment_new" => "fa fa-picture-o",
+                            "photo_comment_edit" => "fa fa-picture-o",
+                            "photo_comment_delete" => "fa fa-picture-o",
+                            "photo_comment_restore" => "fa fa-picture-o",
+
+                            "audio_new" => "fa fa-headphones",
+
+                            "video_new" => "fa fa-file-video-o",
+                            "video_comment_new" => "fa fa-file-video-o",
+                            "video_comment_edit" => "fa fa-file-video-o",
+                            "video_comment_delete" => "fa fa-file-video-o",
+                            "video_comment_restore" => "fa fa-file-video-o",
+
+                            "wall_post_new" => "fa fa-pencil-square-o",
+                            "wall_repost" => "fa fa-share",
+
+                            "wall_reply_new" => "fa fa-comment",
+                            "wall_reply_edit" => "fa fa-comment",
+                            "wall_reply_delete" => "fa fa-comment",
+                            "wall_reply_restore" => "fa fa-comment",
+
+                            "board_post_new" => "fa fa-comments",
+                            "board_post_edit" => "fa fa-comments",
+                            "board_post_delete" => "fa fa-comments",
+                            "board_post_restore" => "fa fa-comments",
+
+                            "market_comment_new" => "fa fa-commenting",
+                            "market_comment_edit" => "fa fa-commenting",
+                            "market_comment_delete" => "fa fa-commenting",
+                            "market_comment_restore" => "fa fa-commenting",
+
+                            "group_join" => "fa fa-user-plus",
+                            "group_leave" => "fa fa-user-times",
+                            "group_change_settings" => "fa fa-cogs",
+                            "poll_vote_new" => "fa fa-check-square-o",
+                            "group_change_photo" => "fa fa-camera-retro",
+                            "group_officers_edit" => "fa fa-list-ul",
+                        ];
+
     public function index($group_id)
     {
         $group = UserGroups::find($group_id);
+
+        if(!isset($group->telegram) && !isset($group->telegram_keyword)){
+            $group->telegram_keyword = md5(microtime(true));
+            $group->save();
+        }
+
         $events = $group->moderator_events == null ? [] : json_decode($group->moderator_events, true);
 
         return view('moderator.index', [
             'group'         => $group,
             'actions'       => $group->actions,
             'events'        => $events,
+            'events_icon'   => $this->events_icon,
             'events_number' => count($events),
             'logs'          => $group->moderatorLogs,
             'user'          => \Auth::user()
@@ -33,7 +86,7 @@ class ModeratorController extends Controller
         if(!isset($events)){
             return "error";
         }else{
-            return json_encode($events);
+            return json_encode(["data" => $events, "icons" => $this->events_icon]);
         }
     }
 

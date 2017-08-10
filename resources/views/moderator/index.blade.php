@@ -61,7 +61,7 @@
                                 @forelse($logs as $log)
                                     <tr>
                                         <td>
-                                            {{ $log->event_id }}
+                                            <i class="{{ $events_icon[$log->event_id] }}" aria-hidden="true" style="font-size: 20px;"></i>
                                         </td>
                                         <td>
                                             {{ $log->name }}
@@ -96,7 +96,7 @@
                                         <div class="modal-content">
                                             <h4>Информация</h4>
                                             <p>
-                                                Для привязки Telegram напишите @VkknockerBot боту следущее сообщение - "/start"
+                                                Для привязки Telegram, напишите <a href="https://telegram.me/share/url?url=@VkknockerBot&text={{ urlencode($group->telegram_keyword) }}" target="_blank">боту @VkknockerBot</a> следущее сообщение - {{ $group->telegram_keyword }}
                                             </p>
                                         </div>
                                     </div>
@@ -329,9 +329,10 @@
                     success: function (data) {
                         var table_data = "";
                         if(data != "error"){
-                            data.forEach(function(item, i, arr) {
+                            data.data.forEach(function(item, i, arr) {
                                 table_data += '<tr>'+
-                                                '<td>'+item.event_id+
+                                                '<td>'+
+                                                '<i class="'+data.icons[item.event_id]+'" aria-hidden="true" style="font-size: 20px;"></i>'+
                                                 '</td>'+
                                                 '<td>'+item.name+
                                                 '</td>'+

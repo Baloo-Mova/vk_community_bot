@@ -68,15 +68,17 @@ class NewMessageReceived implements ShouldQueue
 
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
-                    $this->moderatorLogs->action_id = $value
+                    $this->moderatorLogs->action_id = $value;
                     switch ($value['action']){
                         case 1:
                             $this->moderatorLogs->action_id = 1;
+                            $this->moderatorLogs->description = $this->moderatorLogs->description.'. По сценарию "Добавить в группу".';
                             $this->moderatorLogs->save();
                             $this->addToGroup($value['group'], $userId);
                             break;
                         case 2:
                             $this->moderatorLogs->action_id = 2;
+                            $this->moderatorLogs->description = $this->moderatorLogs->description.'. По сценарию "Удалить из группы".';
                             $this->moderatorLogs->save();
                             $this->deleteFromGroup($value['group'], $userId);
                             break;
