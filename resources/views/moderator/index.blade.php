@@ -54,7 +54,7 @@
                                         {{ $log->date }}
                                     </td>
                                     <td>
-                                        {{ $log->description }}
+                                        {!! str_replace("\n","<br/>",$log->description) !!}
                                     </td>
                                 </tr>
                             @empty
@@ -106,7 +106,8 @@
                                         <div class="row">
                                             <div class="col s12">
                                                 <label>Сценарии</label>
-                                                <select class="scenario_list_select" name="scenario_list[]" multiple="multiple">
+                                                <select class="scenario_list_select" name="scenario_list[]"
+                                                        multiple="multiple">
                                                     <option value="" disabled>Выберите сценарий</option>
                                                     @forelse($actions as $act)
                                                         <option value="{{ $act->id }}" {{ isset($scenario_list) && in_array($act->id, $scenario_list) ? "selected" : "" }}>{{ $act->scenario_name }}</option>
@@ -117,7 +118,8 @@
                                         </div>
                                         <div class="h10"></div>
                                         <div class="input-field">
-                                            <button type="submit" class="waves-effect waves-light btn">Сохранить</button>
+                                            <button type="submit" class="waves-effect waves-light btn">Сохранить
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -151,7 +153,8 @@
                                             <label for="ch{{$key}}">{{$value['title']}}</label>
 
                                             @if(isset($value['scenario']))
-                                                <a href="#scenario_list" style="margin-left:20px;" class="btn btn-primary">Сценарии</a>
+                                                <a href="#scenario_list" style="margin-left:20px;"
+                                                   class="btn btn-primary">Сценарии</a>
 
                                             @endif
                                         </p>
