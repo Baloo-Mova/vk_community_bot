@@ -96,7 +96,7 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col s4">
+                        <div class="col s12">
                             <form action="{{ route('moderator.settings') }}" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="group_id" value="{{ $group->id }}">
@@ -119,7 +119,6 @@
                                 <div class="row">
                                     <!-- сообщения-->
                                     <p>События:</p>
-
                                     @foreach($allEvents as $key => $value)
                                         <p>
                                             <input type="checkbox" name="event[{{$key}}]"
@@ -127,7 +126,7 @@
                                             <label for="ch{{$key}}">{{$value['title']}}</label>
 
                                             @if(isset($value['scenario']))
-                                                <button class="btn btn-primary">Сценарии</button>
+                                                <a href="#" style="margin-left:20px;" class="btn btn-primary">Сценарии</a>
                                             @endif
                                         </p>
                                     @endforeach

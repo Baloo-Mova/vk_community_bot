@@ -23,7 +23,7 @@ class ModeratorController extends Controller
         $logs = $group->moderatorLogs()->paginate(10);
 
         $allEvents = [
-            'message_new:scenario' => ['title' => 'Новое сообщение со сценарием', 'scenario'],
+            'message_new:scenario' => ['title' => 'Новое сообщение со сценарием', 'scenario'=>1],
             'message_new' => ['title' => 'Новое сообщение без сценария',],
             'audio_new' => ['title' => 'Новая аудиозапись',],
             'photo_new' => ['title' => 'Новое фото',],
@@ -44,6 +44,7 @@ class ModeratorController extends Controller
         foreach ($allEvents as $key => $item) {
             $allEvents[$key]['check'] = (in_array($key, $events) ? true : false);
         }
+
 
         return view('moderator.index', [
             'group' => $group,

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCheckInService extends Migration
+class AddScenarioToGroupT extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCheckInService extends Migration
     public function up()
     {
         Schema::table('user_groups',function(Blueprint $table){
-            $table->boolean('show_in_history');
+            $table->string('send_scenario')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddCheckInService extends Migration
     public function down()
     {
         Schema::table('user_groups',function(Blueprint $table){
-            $table->dropColumn('show_in_history');
+            $table->dropColumn('send_scenario');
         });
     }
 }

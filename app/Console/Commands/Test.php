@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Core\VK;
+use App\Helpers\Telegram;
 use App\Models\BotCommunityResponse;
 use App\Models\ClientGroups;
 use App\Models\Clients;
@@ -46,6 +47,7 @@ class Test extends Command
      */
     public function handle()
     {
-
+        $tg = new Telegram();
+        $tg->sendMessage('408902714',date("H:i d.m.Y")."\n новый контакт");
     }
 }
