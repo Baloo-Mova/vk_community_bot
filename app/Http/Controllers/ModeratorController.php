@@ -83,7 +83,7 @@ class ModeratorController extends Controller
             $group->send_to_telegram = $send_to_telegram;
         }
 
-        $group->ser
+        $group->show_in_history = $request->get('show_in_history') ? 1 : 0;
 
         $group->save();
         Toastr::success('Изсенения сохранены', 'Сохранено');
