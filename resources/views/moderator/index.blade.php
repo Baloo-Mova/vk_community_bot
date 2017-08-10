@@ -26,10 +26,10 @@
                 <ul class="tabs">
                     <ul class="tabs">
                         <li class="tab col s2">
-                            <a href="#history">История событий</a>
+                            <a class="active" href="#history">История событий</a>
                         </li>
                         <li class="tab col s2">
-                            <a class="active" href="#settings">Настройки</a>
+                            <a href="#settings">Настройки</a>
                         </li>
                     </ul>
                 </ul>
