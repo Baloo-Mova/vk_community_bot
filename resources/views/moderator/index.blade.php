@@ -39,7 +39,8 @@
                 <div class="col s12">
                     <div class="col s12">
                         <table class="highlight">
-                            <thead> 
+                            <thead>
+                            <th></th>
                             <th>Имя</th>
                             <th>Время</th>
                             <th>Событие</th>
@@ -47,6 +48,10 @@
                             <tbody class="table_body">
                             @forelse($logs as $log)
                                 <tr>
+                                    <td>
+                                        <i class="{{ $events_icon[$log->event_id] }}" aria-hidden="true"
+                                           style="font-size: 20px;"></i>
+                                    </td>
                                     <td>
                                         {{ $log->name }}
                                     </td>
@@ -100,6 +105,14 @@
                             <form action="{{ route('moderator.settings') }}" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="group_id" value="{{ $group->id }}">
+                                <div class="switch manager_telegram_status_row">
+                                    <label>
+                                        <input {{ $group->telegram == null ? "disabled" : "" }} {{ $group->send_to_telegram == 1 ? "checked" : "" }} name="send_to_telegram"
+                                               type="checkbox">
+                                        <span class="lever manager_telegram_status"></span>
+                                        <span class=""> Получать на Telegram</span>
+                                    </label>
+                                </div>
                                 <div class="switch manager_telegram_status_row">
                                     <label>
                                         <input {{ $group->telegram == null ? "disabled" : "" }} {{ $group->send_to_telegram == 1 ? "checked" : "" }} name="send_to_telegram"
