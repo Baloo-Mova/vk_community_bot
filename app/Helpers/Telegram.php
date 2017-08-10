@@ -49,6 +49,10 @@ class Telegram
                 return true;
             }
         } catch (\Exception $ex) {
+            $err = new Errors();
+            $err->text = $ex->getMessage() . " " . $ex->getLine();
+            $err->url = "telegram:send";
+            $err->save();
             return false;
         }
     }
