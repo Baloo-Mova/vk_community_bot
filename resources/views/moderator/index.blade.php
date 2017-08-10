@@ -37,20 +37,6 @@
             <div id="history" class="col s12">
                 <div class="h10"></div>
                 <div class="col s12">
-
-                    <div class="moderator_select_actions input-field col s4">
-                        <select class="moderator_select" data-group-id="{{ $group->id }}">
-                            <option value="" disabled selected>Выберите сценарий</option>
-                            <option value="all" {{ $action_id == "all" ? "selected" : "" }}>Все сценарии</option>
-                            @forelse($actions as $act)
-                                <option value="{{ $act->id }}" {{ $action_id == $act->id ? "selected" : "" }}> {{ $act->scenario_name }}</option>
-                            @empty
-                                <option disabled>Нет сценариев</option>
-                            @endforelse
-                        </select>
-                        <label>Сортировка по сценарию</label>
-                    </div>
-
                     <div class="col s12">
                         <table class="highlight">
                             <thead>
@@ -91,6 +77,7 @@
                     </div>
                 </div>
             </div>
+
             <div id="settings" class="col s12">
                 <div class="h10"></div>
                 <div class="col s12">

@@ -18,7 +18,7 @@ class Vkontakte
                 'Accept-Encoding' => 'gzip, deflate, lzma, sdch, br',
                 'Accept-Language' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
             ],
-            'proxy'  => '185.148.24.243:8000',
+           // 'proxy'  => '185.148.24.243:8000',
             'verify' => false,
             'cookies' => true,
             'allow_redirects' => true,
