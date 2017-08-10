@@ -69,7 +69,6 @@ class NewMessageReceived implements ShouldQueue
             $actionId = "";
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
-                    $this->moderatorLogs->action_id = $value;
                     switch ($value['action']) {
                         case 1:
                             $actionId = $value['name'];

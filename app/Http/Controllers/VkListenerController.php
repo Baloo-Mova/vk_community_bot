@@ -97,25 +97,28 @@ class VkListenerController extends Controller
                 }
 
                 if ($group->show_in_history == 1) {
-                    $this->httpClient = new Client([
-                        'verify' => false,
-                    ]);
+                    $name = "";
+                    if (isset($data['object']['user_id'])) {
+                        $this->httpClient = new Client([
+                            'verify' => false,
+                        ]);
+                        $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
+                            'form_params' => [
+                                'user_ids' => $data['object']['user_id'],
+                                'fields' => 'photo_100',
+                                'v' => '5.67'
+                            ]
+                        ])->getBody()->getContents();
 
-                    $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
-                        'form_params' => [
-                            'user_ids' => $data['object']['user_id'],
-                            'fields' => 'photo_100',
-                            'v' => '5.67'
-                        ]
-                    ])->getBody()->getContents();
-
-                    $user_info = json_decode($response, true);
+                        $user_info = json_decode($response, true);
+                        $name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
+                    }
                     $moderatorLogs = new ModeratorLogs();
                     $moderatorLogs->group_id = $group->id;
                     $moderatorLogs->event_id = $data['type'];
                     $moderatorLogs->vk_id = $data['object']['user_id'];
                     $moderatorLogs->date = Carbon::now();
-                    $moderatorLogs->name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
+                    $moderatorLogs->name = $name;
                     $moderatorLogs->description = $user_message;
                     $moderatorLogs->save();
                 }
