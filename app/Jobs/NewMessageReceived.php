@@ -93,7 +93,7 @@ class NewMessageReceived implements ShouldQueue
             if (!empty($actionId)) {
                 $allowTranslate = json_decode($group->moderator_events);
                 if (in_array('message_new:scenario', $allowTranslate)) {
-                    $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $userId . "\nНовое сообщение в http://vk.com/club" . $this->group_id . "\nСценарий: " . $actionId . "\n" . $body;
+
                     if ($group->show_in_history == 1) {
                         $this->httpClient = new Client([
                             'verify' => false,
@@ -114,11 +114,13 @@ class NewMessageReceived implements ShouldQueue
                         $moderatorLogs->vk_id = $userId;
                         $moderatorLogs->date = Carbon::now();
                         $moderatorLogs->name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
+                        $user_message = "Пользователь <a href=\"http://vk.com/id" . $userId . "\">http://vk.com/id" . $userId . "</a> <br/>Отправил сообщение которое активировало сценарий: <b>" . $actionId . "</b>";
                         $moderatorLogs->description = $user_message;
                         $moderatorLogs->save();
                     }
                     if ($group->send_to_telegram == 1) {
                         $telegram = new Telegram();
+                        $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $userId . "\nОтправил сообщение активировашее сценарий: " . $actionId;
                         $telegram->sendMessage($group->telegram, $user_message);
                     }
                 }
