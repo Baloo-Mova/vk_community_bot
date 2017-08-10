@@ -22,8 +22,8 @@ class VkListenerController extends Controller
     public function index(Request $request, $id)
     {
         $events_descriptions = [
-            "message_new" => "У Вас новое сообщение от пользователя {user}",
-            "message_reply" => "Новое исходящее сообщение от пользователя {user}",
+            "message_new" => "У Вас новое сообщение \"{message}\" от пользователя {user}",
+            "message_reply" => "Новое исходящее сообщение",
             "message_allow" => "Разрешение на получение сообщений от пользователя {user}",
             "message_deny" => "Запрет на получение сообщений от пользователя {user}",
 
@@ -92,11 +92,11 @@ class VkListenerController extends Controller
 
             $user_message = "";
             try {
-                $user_message = str_replace("{user}", $data['object']['user_id'], $events_descriptions[$data['type']]);
+                $user_message = str_replace(["{user}","{message}"], [$data['object']['user_id'], $data['object']['body']], $events_descriptions[$data['type']]);
             } catch (\Exception $exception) {
                 $user_message = $data['type'];
             }
-            
+
             $this->httpClient = new Client([
                 'verify' => false,
             ]);
