@@ -26,10 +26,10 @@
                 <ul class="tabs">
                     <ul class="tabs">
                         <li class="tab col s2">
-                            <a class="active" href="#history">История событий</a>
+                            <a href="#history">История событий</a>
                         </li>
                         <li class="tab col s2">
-                            <a href="#settings">Настройки</a>
+                            <a class="active" href="#settings">Настройки</a>
                         </li>
                     </ul>
                 </ul>
@@ -97,6 +97,31 @@
                     @endif
                     <div class="row">
                         <div class="col s12">
+                            <div id="scenario_list" class="modal">
+                                <div class="modal-content">
+                                    <form action="{{ route('moderator.scenarion.list') }}" method="post">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="group_id" value="{{ $group->id }}">
+
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <label>Сценарии</label>
+                                                <select class="scenario_list_select" name="scenario_list[]" multiple="multiple">
+                                                    <option value="" disabled>Выберите сценарий</option>
+                                                    @forelse($actions as $act)
+                                                        <option value="{{ $act->id }}" {{ isset($scenario_list) && in_array($act->id, $scenario_list) ? "selected" : "" }}>{{ $act->scenario_name }}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="h10"></div>
+                                        <div class="input-field">
+                                            <button type="submit" class="waves-effect waves-light btn">Сохранить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <form action="{{ route('moderator.settings') }}" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="group_id" value="{{ $group->id }}">
@@ -126,7 +151,8 @@
                                             <label for="ch{{$key}}">{{$value['title']}}</label>
 
                                             @if(isset($value['scenario']))
-                                                <a href="#" style="margin-left:20px;" class="btn btn-primary">Сценарии</a>
+                                                <a href="#scenario_list" style="margin-left:20px;" class="btn btn-primary">Сценарии</a>
+
                                             @endif
                                         </p>
                                     @endforeach
@@ -149,6 +175,7 @@
             <script>
                 $(document).ready(function () {
                     $(".moderator_select").material_select();
+                    $(".scenario_list_select").select2();
                     $('.modal').modal();
 
                     $('#modal_payed').modal('open', {

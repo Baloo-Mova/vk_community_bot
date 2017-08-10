@@ -88,6 +88,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['prefix' => 'moderator'], function () {
         Route::get('/{group_id}', ['uses' => 'ModeratorController@index', 'as' => 'moderator.index']);
         Route::post('/moderator-settings', ['uses' => 'ModeratorController@settings', 'as' => 'moderator.settings']);
+        Route::post('/scenario-list', ['uses' => 'ModeratorController@scenarioList', 'as' => 'moderator.scenarion.list']);
     });
 
 });

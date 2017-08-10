@@ -350,3 +350,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 .text-center{
     text-align: center;
 }
+.h10{
+    height: 10px;
+}
