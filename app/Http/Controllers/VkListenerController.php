@@ -133,7 +133,7 @@ class VkListenerController extends Controller
                             $user_message = date("H:i d.m.Y") . " \n*Новая аудиозапись* \nГруппа: http://vk.com/club" . $data['group_id'];
                             break;
                         case 'photo_new':
-                            $user_message = date("H:i d.m.Y") . " \n*Новое фото* https://vk.com/photo" . $data['object']['owner_id'] . "_" . $data['object']['id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
+                            $user_message = date("H:i d.m.Y") . " \n*Новое фото* \nГруппа: http://vk.com/club" . $data['group_id'];
                             break;
                         case 'video_new':
                             $user_message = date("H:i d.m.Y") . " \n*Новое видео* \nГруппа: http://vk.com/club" . $data['group_id'];
