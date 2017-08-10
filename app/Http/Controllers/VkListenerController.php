@@ -86,7 +86,7 @@ class VkListenerController extends Controller
             }
 
             $user_message = str_replace("{user}", $data['object']['user_id'], $events_descriptions[$data['type']]);
-            
+
             $this->httpClient = new Client([
                 'verify' => false,
             ]);
@@ -113,7 +113,7 @@ class VkListenerController extends Controller
             if ($group->send_to_telegram == 1) {
                 //send to teltegaramsd $user_message;
                 $telegram = new Telegram();
-                $telegram->sendMessage($group->id, $user_message);
+                $telegram->sendMessage($group->telegram, $user_message);
             }
 
 

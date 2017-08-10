@@ -2,8 +2,10 @@
 
 namespace App\Helpers;
 
+use App\Models\Errors;
 use GuzzleHttp\Client;
 use App\Models\UserGroups;
+use Illuminate\Support\Facades\Storage;
 
 class Telegram
 {
@@ -28,37 +30,25 @@ class Telegram
         ]);
     }
 
-    public function sendMessage($group_id, $text)
+    public function sendMessage($chatId, $text)
     {
-        if (!isset($group_id) || !isset($text)) {
+        if (!isset($chatId) || !isset($text)) {
             return false;
         }
 
-        $group = UserGroups::find($group_id);
-
-        if (!isset($group)) {
-            return false;
-        }
-
-        $chat_id = $group->telegram;
         $telegram_token = config('telegram.token');
 
         if (!isset($telegram_token)) {
             return false;
         }
+        try {
+            $request = $this->client->request("GET",
+                "https://api.telegram.org/bot" . $telegram_token . "/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($text));
 
-        if (isset($chat_id)) {
-            try {
-                $request = $this->client->request("GET",
-                    "https://api.telegram.org/bot" . $telegram_token . "/sendMessage?chat_id=" . $chat_id->chat_id . "&text=" . urlencode($text));
-
-                if ($request) {
-                    return true;
-                }
-            } catch (\Exception $ex) {
-                return false;
+            if ($request) {
+                return true;
             }
-        } else {
+        } catch (\Exception $ex) {
             return false;
         }
     }
@@ -66,8 +56,12 @@ class Telegram
     public function getUpdates()
     {
         try {
-            $request = $this->client->request("GET",
-                "https://api.telegram.org/bot" . $this->bot->bot_key . "/getUpdates?offset=" . $this->bot->offset);
+            if (!file_exists(storage_path('app/telegram.txt'))) {
+                file_put_contents(storage_path('app/telegram.txt'), '0');
+            }
+            $url = "https://api.telegram.org/bot" . config('telegram.token') . "/getUpdates?offset=" . file_get_contents(storage_path('app/telegram.txt'));
+
+            $request = $this->client->request("GET", $url);
             $data = json_decode($request->getBody()->getContents());
 
             if (!empty($data) && $data->ok) {
@@ -79,22 +73,24 @@ class Telegram
             if (count($results) > 0) {
                 $users = [];
                 foreach ($results as $item) {
-
-                    $group = UserGroups::where(['telegram_keyword' => $item->message->text])->first();
-
+                    file_put_contents(storage_path('app/telegram.txt'), $item->update_id + 1);
+                    $group = UserGroups::where(['telegram_keyword' => trim($item->message->text)])->first();
                     if (!isset($group)) {
+                        $this->sendMessage($item->message->chat->id, "Не понял вопроса...");
                         continue;
                     }
 
                     $group->telegram = $item->message->chat->id;
                     $group->save();
 
-                    $this->client->request("GET",
-                        "https://api.telegram.org/bot" . config('telegram.token') . "/sendMessage?chat_id=" . $item->message->chat->id . "&text=Вы успешно привязали Telegram к группе: \"" . $group->name . "\"");
-
+                    $this->sendMessage($item->message->chat->id, "Вы успешно привязали Telegram к группе: \"" . $group->name . "\"");
                 }
             }
         } catch (\Exception $ex) {
+            $err = new Errors();
+            $err->text = $ex->getMessage() . " " . $ex->getLine();
+            $err->url = "telegram:updates";
+            $err->save();
         }
     }
 }

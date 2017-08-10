@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Errors;
 use Illuminate\Console\Command;
 use App\Helpers\Telegram;
 
@@ -38,15 +39,17 @@ class TelegramUpdates extends Command
      */
     public function handle()
     {
-        try{
-            $telegram = new Telegram();
-            while(true){
+        $telegram = new Telegram();
+        while (true) {
+            try {
                 $telegram->getUpdates();
                 sleep(3);
+            } catch (\Exception $ex) {
+                $err = new Errors();
+                $err->text = $ex->getMessage() . " " . $ex->getLine();
+                $err->url = "telegram";
+                $err->save();
             }
-        }catch(\Exception $ex){
-            return $ex;
         }
-
     }
 }
