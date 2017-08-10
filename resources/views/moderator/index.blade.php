@@ -54,7 +54,7 @@
                                         {{ $log->date }}
                                     </td>
                                     <td>
-                                        {!! str_replace("\n","<br/>",$log->description) !!}
+                                        {!! $log->description !!}
                                     </td>
                                 </tr>
                             @empty

@@ -50,7 +50,7 @@ class VkListenerController extends Controller
                 $user_message = "";
                 switch ($data['type']) {
                     case 'message_new':
-                        $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $data['object']['user_id'] . "\nНовое сообщение в http://vk.com/club" . $data['group_id'] . "\n" . $data['object']['body'];
+                        $user_message = "Пользователь <a href=\"http://vk.com/id" . $data['object']['user_id'] . "\">http://vk.com/id" . $data['object']['user_id'] . "</a> <br/> Отправил сообщение " . $data['object']['body'];
                         break;
                     case 'audio_new':
                         $user_message = date("H:i d.m.Y") . " \nНовая аудиозапись \nГруппа: http://vk.com/club" . $data['group_id'];
@@ -121,6 +121,54 @@ class VkListenerController extends Controller
                 }
 
                 if ($group->send_to_telegram == 1) {
+                    $user_message = "";
+                    switch ($data['type']) {
+                        case 'message_new':
+                            $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $data['object']['user_id'] . "\n*Новое сообщение* в http://vk.com/club" . $data['group_id'] . "\n" . $data['object']['body'];
+                            break;
+                        case 'audio_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовая аудиозапись \nГруппа: http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'photo_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовое фото https://vk.com/photo" . $data['object']['owner_id'] . "_" . $data['object']['id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'video_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовое видео \nГруппа: http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'group_join':
+                            $user_message = date("H:i d.m.Y") . " \nНовый пользователь http://vk.com/id" . $data['object']['user_id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'group_leave':
+                            $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $data['object']['user_id'] . "покинул группу\nГруппа: http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'wall_post_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовый пост в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'wall_reply_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовый коментарий в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'wall_reply_edit':
+                            $user_message = date("H:i d.m.Y") . " \nРедактирование коментария в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'board_post_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовое обсуждение в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'board_post_edit':
+                            $user_message = date("H:i d.m.Y") . " \nРедактирование обсуждения в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'board_post_delete':
+                            $user_message = date("H:i d.m.Y") . " \nОбсуждение удалено в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'board_post_restore':
+                            $user_message = date("H:i d.m.Y") . " \nОбсуждение восстановлено в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'photo_comment_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовый коментарий к фото в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                        case 'market_comment_new':
+                            $user_message = date("H:i d.m.Y") . " \nНовый коментарий к товару в группе http://vk.com/club" . $data['group_id'];
+                            break;
+                    }
                     $telegram = new Telegram();
                     $telegram->sendMessage($group->telegram, $user_message);
                 }
