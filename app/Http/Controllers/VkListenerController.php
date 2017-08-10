@@ -69,19 +69,28 @@ class VkListenerController extends Controller
 
         try {
             $data = json_decode($request->getContent(), true);
-
             $group = UserGroups::whereGroupId($data['group_id'])->first();
-            if (isset($group)) {
-                if (($group->payed == 0 || $group->status == 0) && $data['type'] != 'confirmation') {
-                    echo "ok";
-                    exit();
-                }
+            if (!isset($group)) {
+                echo "ok";
+                exit();
+            }
+
+            if ($data['type'] == 'confirmation') {
+                echo $group->success_response;
+                exit();
+            }
+
+            if ($group->payed == 0 || $group->status == 0) {
+                echo "ok";
+                exit();
             }
 
             $user_message = str_replace("{user}", $data['object']['user_id'], $events_descriptions[$data['type']]);
+            
             $this->httpClient = new Client([
                 'verify' => false,
             ]);
+
             $response = $this->httpClient->post('https://api.vk.com/method/users.get', [
                 'form_params' => [
                     'user_ids' => $data['object']['user_id'],
@@ -109,13 +118,6 @@ class VkListenerController extends Controller
 
 
             switch ($data['type']) {
-                case 'confirmation':
-                    $group = UserGroups::whereGroupId($data['group_id'])->first();
-                    if (isset($group)) {
-                        echo $group->success_response;
-                        exit();
-                    }
-                    break;
                 case 'message_new':
                     $this->newMessageReceived($data['object'], $data['group_id'], $moderatorLogs);
                     break;
