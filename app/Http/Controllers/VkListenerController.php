@@ -45,7 +45,7 @@ class VkListenerController extends Controller
                 exit();
             }
 
-            $allowTranslate = json_decode($group->moderator_events,true);
+            $allowTranslate = json_decode($group->moderator_events, true);
             if (in_array($data['type'], $allowTranslate)) {
                 $user_message = "";
                 switch ($data['type']) {
@@ -116,7 +116,7 @@ class VkListenerController extends Controller
                     $moderatorLogs = new ModeratorLogs();
                     $moderatorLogs->group_id = $group->id;
                     $moderatorLogs->event_id = $data['type'];
-                    $moderatorLogs->vk_id = $data['object']['user_id'];
+                    $moderatorLogs->vk_id = isset($data['object']['user_id']) ? $data['object']['user_id'] : (isset($data['object']['from_id']) ? $data['object']['from_id'] : "");
                     $moderatorLogs->date = Carbon::now();
                     $moderatorLogs->name = $name;
                     $moderatorLogs->description = $user_message;
