@@ -119,11 +119,16 @@
                                 <div class="row">
                                     <!-- сообщения-->
                                     <p>События:</p>
+
                                     @foreach($allEvents as $key => $value)
                                         <p>
                                             <input type="checkbox" name="event[{{$key}}]"
                                                    id="ch{{$key}}" {{ $value['check'] ? "checked" : ""  }}/>
                                             <label for="ch{{$key}}">{{$value['title']}}</label>
+
+                                            @if(isset($value['scenario']))
+                                                <button class="btn btn-primary">Сценарии</button>
+                                            @endif
                                         </p>
                                     @endforeach
                                 </div>

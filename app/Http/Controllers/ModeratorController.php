@@ -23,7 +23,8 @@ class ModeratorController extends Controller
         $logs = $group->moderatorLogs()->paginate(10);
 
         $allEvents = [
-            'message_new' => ['title' => 'Новое сообщение',],
+            'message_new:scenario' => ['title' => 'Новое сообщение со сценарием', 'scenario'],
+            'message_new' => ['title' => 'Новое сообщение без сценария',],
             'audio_new' => ['title' => 'Новая аудиозапись',],
             'photo_new' => ['title' => 'Новое фото',],
             'video_new' => ['title' => 'Новое видео',],
@@ -53,22 +54,6 @@ class ModeratorController extends Controller
         ]);
     }
 
-    public function sorting($group_id, $id)
-    {
-        $group = UserGroups::find($group_id);
-        if ($id == "all") {
-            $events = $group->moderatorLogs;
-        } else {
-            $events = $group->moderatorLogsSorted($id);
-        }
-
-        if (!isset($events)) {
-            return "error";
-        } else {
-            return json_encode(["data" => $events, "icons" => $this->events_icon]);
-        }
-    }
-
     public function settings(Request $request)
     {
         $events = $request->get('event');
@@ -87,19 +72,7 @@ class ModeratorController extends Controller
             return back();
         }
 
-        $events_str = '{';
-        $position = 0;
-
-        foreach ($events as $key => $ev) {
-            if ($position == 0) {
-                $events_str .= '"' . $key . '":1';
-            } else {
-                $events_str .= ',"' . $key . '":1';
-            }
-            $position = 1;
-        }
-        $events_str .= '}';
-        $group->moderator_events = $events_str;
+        $group->moderator_events = json_encode(array_keys($events));
         if ($group->telegram != null && $group->send_to_telegram != $send_to_telegram) {
             $group->send_to_telegram = $send_to_telegram;
         }
