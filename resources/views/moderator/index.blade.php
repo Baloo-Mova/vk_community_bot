@@ -46,7 +46,7 @@
                             </thead>
                             <tbody class="table_body">
                             @forelse($logs as $log)
-                                <tr> 
+                                <tr>
                                     <td>
                                         {{ $log->name }}
                                     </td>
@@ -110,10 +110,10 @@
                                 </div>
                                 <div class="switch manager_telegram_status_row">
                                     <label>
-                                        <input {{ $group->telegram == null ? "disabled" : "" }} {{ $group->send_to_telegram == 1 ? "checked" : "" }} name="send_to_telegram"
+                                        <input {{ $group->show_in_history == 1 ? "checked" : "" }} name="show_in_history"
                                                type="checkbox">
                                         <span class="lever manager_telegram_status"></span>
-                                        <span class=""> Получать на Telegram</span>
+                                        <span class=""> Отображать в истории</span>
                                     </label>
                                 </div>
                                 <div class="row">

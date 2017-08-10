@@ -53,6 +53,7 @@ class ModeratorController extends Controller
         $events = $request->get('event');
         $group_id = $request->get('group_id');
         $send_to_telegram = $request->get('send_to_telegram') ? 1 : 0;
+
         $group = UserGroups::find($group_id);
 
         if (!isset($events) || !isset($group_id)) {
@@ -81,6 +82,9 @@ class ModeratorController extends Controller
         if ($group->telegram != null && $group->send_to_telegram != $send_to_telegram) {
             $group->send_to_telegram = $send_to_telegram;
         }
+
+        $group->ser
+
         $group->save();
         Toastr::success('Изсенения сохранены', 'Сохранено');
         return back();

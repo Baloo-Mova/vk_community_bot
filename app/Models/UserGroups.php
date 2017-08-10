@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string                                                                           $name
  * @property string|null                                                                      $avatar
  * @property int                                                                              $group_id
+ * @property int                                                                              $show_in_history
  * @property int|null                                                                         $expiries
  * @property string|null                                                                      $token
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereAvatar($value)
@@ -55,7 +56,8 @@ class UserGroups extends Model
         'group_id',
         'expiries',
         'token',
-        'telegram_keyword'
+        'telegram_keyword',
+        'show_in_history'
     ];
 
     public function users()
