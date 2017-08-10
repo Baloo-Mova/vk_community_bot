@@ -96,7 +96,7 @@
                                         <div class="modal-content">
                                             <h4>Информация</h4>
                                             <p>
-                                                Для привязки Telegram, напишите <a href="https://telegram.me/share/url?url=@VkknockerBot&text={{ urlencode($group->telegram_keyword) }}" target="_blank">боту @VkknockerBot</a> следущее сообщение - {{ $group->telegram_keyword }}
+                                                Для привязки Telegram, напишите нашему боту @VkknockerBot следущее сообщение - {{ $group->telegram_keyword }}
                                             </p>
                                         </div>
                                     </div>
