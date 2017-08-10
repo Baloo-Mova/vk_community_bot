@@ -45,14 +45,53 @@ class ModeratorController extends Controller
             $allEvents[$key]['check'] = (in_array($key, $events) ? true : false);
         }
 
-
         return view('moderator.index', [
             'group' => $group,
             'allEvents' => $allEvents,
             'actions' => $group->actions,
             'logs' => $logs,
+            'scenario_list' => isset($group->send_scenario) ? json_decode($group->send_scenario) : null,
             'user' => \Auth::user()
         ]);
+    }
+
+    public function scenarioList(Request $request)
+    {
+        $group_id = $request->get('group_id');
+        $list = $request->get('scenario_list');
+
+        if (!isset($group_id)) {
+            Toastr::error('Пропущен обязательный параметр', 'Ошибка');
+            return back();
+        }
+
+        $group = UserGroups::find($group_id);
+        if (!isset($group)) {
+            Toastr::error('Группа не найдена', 'Ошибка');
+            return back();
+        }
+
+        if(count($list) == 0){
+            $group->send_scenario = null;
+            $group->save();
+            Toastr::success('Список сценариев успешно сохранен!', 'Сохранено');
+            return back();
+        }
+
+
+        $scenario_list = [];
+
+        foreach ($list as $l){
+            $scenario_list[] = $l;
+        }
+
+        if(count($scenario_list) > 0){
+            $group->send_scenario = json_encode($scenario_list);
+            $group->save();
+        }
+
+        Toastr::success('Список сценариев успешно сохранен!', 'Сохранено');
+        return back();
     }
 
     public function settings(Request $request)
