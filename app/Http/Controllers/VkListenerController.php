@@ -90,8 +90,13 @@ class VkListenerController extends Controller
                 exit();
             }
 
-            $user_message = str_replace("{user}", $data['object']['user_id'], $events_descriptions[$data['type']]);
-
+            $user_message = "";
+            try {
+                $user_message = str_replace("{user}", $data['object']['user_id'], $events_descriptions[$data['type']]);
+            } catch (\Exception $exception) {
+                $user_message = $data['type'];
+            }
+            
             $this->httpClient = new Client([
                 'verify' => false,
             ]);
