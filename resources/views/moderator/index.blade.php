@@ -40,18 +40,13 @@
                     <div class="col s12">
                         <table class="highlight">
                             <thead>
-                            <th></th>
                             <th>Имя</th>
                             <th>Время</th>
                             <th>Событие</th>
                             </thead>
                             <tbody class="table_body">
                             @forelse($logs as $log)
-                                <tr>
-                                    <td>
-                                        <i class="{{ $events_icon[$log->event_id] }}" aria-hidden="true"
-                                           style="font-size: 20px;"></i>
-                                    </td>
+                                <tr> 
                                     <td>
                                         {{ $log->name }}
                                     </td>
