@@ -44,7 +44,7 @@
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Перейти к настройкам</a>
                                         </li>
                                         <li class="groups_options_card waves-effect wavev-dark">
-                                            <a href="{{ route('moderator.index', ['group_id' => $a_groups->id]) }}"
+                                            <a href="{{ route('moderator.index', ['group_id' => $a_groups->id, "action_id" => "all"]) }}"
                                                class="grey-text text-darken-2 a_non_decorated a_in_li">Модератор
                                             </a>
                                         </li>

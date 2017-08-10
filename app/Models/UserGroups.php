@@ -96,7 +96,7 @@ class UserGroups extends Model
 
     public function moderatorLogsSorted($id)
     {
-        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id')->where(['action_id' => $id])->get();
+        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id')->where(['action_id' => $id])->paginate(10);
     }
 
     public function checkAccess()

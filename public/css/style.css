@@ -343,3 +343,10 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     top: 40%;
     left: 40%;
 }
+.pagination .active span{
+    padding: 0px 10px;
+    color: #fff;
+}
+.text-center{
+    text-align: center;
+}

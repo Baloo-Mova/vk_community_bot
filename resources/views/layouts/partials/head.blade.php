@@ -1,5 +1,5 @@
-<!-- Styles -->
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<!-- Styles
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
 <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
 <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">

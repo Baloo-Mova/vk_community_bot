@@ -41,8 +41,9 @@
                     <div class="moderator_select_actions input-field col s4">
                         <select class="moderator_select" data-group-id="{{ $group->id }}">
                             <option value="" disabled selected>Выберите сценарий</option>
+                            <option value="all" {{ $action_id == "all" ? "selected" : "" }}>Все сценарии</option>
                             @forelse($actions as $act)
-                                <option value="{{ $act->id }}"> {{ $act->scenario_name }}</option>
+                                <option value="{{ $act->id }}" {{ $action_id == $act->id ? "selected" : "" }}> {{ $act->scenario_name }}</option>
                             @empty
                                 <option disabled>Нет сценариев</option>
                             @endforelse
@@ -84,6 +85,9 @@
                             @endforelse
                             </tbody>
                         </table>
+                        <div class="col s12 text-center">
+                            {{ $logs->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -358,37 +362,10 @@
                         }
                     );
 
-                    $(".moderator_select").on("change", function () {
+                    $(".moderator_select .initialized").on("change", function () {
                         var scenario_id = $(this).val(),
                             group_id = $(this).data("groupId");
-                        $(".preloader__wrap").show();
-                        $.ajax({
-                            method: "get",
-                            url: "{{ url('/moderator/sorting') }}/" + group_id + "/" + scenario_id,
-                            success: function (data) {
-                                var table_data = "";
-                                if (data != "error") {
-                                    data.data.forEach(function (item, i, arr) {
-                                        table_data += '<tr>' +
-                                            '<td>' +
-                                            '<i class="' + data.icons[item.event_id] + '" aria-hidden="true" style="font-size: 20px;"></i>' +
-                                            '</td>' +
-                                            '<td>' + item.name +
-                                            '</td>' +
-                                            '<td>' + item.date +
-                                            '</td>' +
-                                            '<td>' + item.description +
-                                            '</td>' +
-                                            '</tr>';
-                                    });
-                                }
-                                $(".table_body").html(table_data);
-                                setTimeout(function () {
-                                    $(".preloader__wrap").hide()
-                                }, 200);
-                            },
-                            dataType: 'json'
-                        });
+                        window.location = "{{ url('/moderator') }}/" + group_id + "/" + scenario_id ;
                     });
 
 

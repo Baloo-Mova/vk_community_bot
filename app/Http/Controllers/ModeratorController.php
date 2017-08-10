@@ -56,7 +56,7 @@ class ModeratorController extends Controller
                             "group_officers_edit" => "fa fa-list-ul",
                         ];
 
-    public function index($group_id)
+    public function index($group_id, $action_id)
     {
         $group = UserGroups::find($group_id);
 
@@ -67,13 +67,21 @@ class ModeratorController extends Controller
 
         $events = $group->moderator_events == null ? [] : json_decode($group->moderator_events, true);
 
+        if ($action_id == "all"){
+            $logs =  $group->moderatorLogs()->paginate(10);
+        }else{
+            $logs =  $group->moderatorLogsSorted($action_id);
+        }
+
+
         return view('moderator.index', [
             'group'         => $group,
             'actions'       => $group->actions,
             'events'        => $events,
             'events_icon'   => $this->events_icon,
             'events_number' => count($events),
-            'logs'          => $group->moderatorLogs,
+            'logs'          => $logs,
+            'action_id'     => $action_id,
             'user'          => \Auth::user()
         ]);
     }
@@ -81,7 +89,11 @@ class ModeratorController extends Controller
     public function sorting($group_id, $id)
     {
         $group = UserGroups::find($group_id);
-        $events = $group->moderatorLogsSorted($id);
+        if ($id == "all"){
+            $events = $group->moderatorLogs;
+        }else{
+            $events = $group->moderatorLogsSorted($id);
+        }
 
         if(!isset($events)){
             return "error";
