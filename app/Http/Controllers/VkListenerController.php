@@ -22,7 +22,7 @@ class VkListenerController extends Controller
     public function index(Request $request, $id)
     {
         $events_descriptions = [
-            "message_new" => "У Вас новое сообщение {message} от пользователя {user}",
+            "message_new" => "У Вас новое сообщение \"{message}\" от пользователя {user}",
             "message_reply" => "Новое исходящее сообщение",
             "message_allow" => "Разрешение на получение сообщений от пользователя {user}",
             "message_deny" => "Запрет на получение сообщений от пользователя {user}",
