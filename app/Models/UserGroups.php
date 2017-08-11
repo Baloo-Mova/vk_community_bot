@@ -93,7 +93,7 @@ class UserGroups extends Model
 
     public function moderatorLogs()
     {
-        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id');
+        return $this->hasMany(ModeratorLogs::class, 'group_id', 'id')->orderByDesc('date');
     }
 
     public function checkAccess()
