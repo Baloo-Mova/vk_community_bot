@@ -55,6 +55,7 @@ class NewMessageReceived implements ShouldQueue
             $res = $task->mapWithKeys(function ($item) {
                 return [
                     $item['key'] => [
+                        'id' => $item['id'],
                         'name' => $item['scenario_name'],
                         'response' => $item['response'],
                         'action' => $item['action_id'],
@@ -66,11 +67,17 @@ class NewMessageReceived implements ShouldQueue
             $messageId = $this->data['id'];
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
+            $activeScenario = json_encode($group->send_scenario, true);
+            if (!isset($activeScenario)) {
+                $activeScenario = [];
+            }
 
             $actionId = "";
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
-                    $actionId = $value['name'];
+                    if (in_array($value['id'], $activeScenario)) {
+                        $actionId = $value['name'];
+                    }
                     switch ($value['action']) {
                         case 1:
                             $this->addToGroup($value['group'], $userId);
@@ -91,7 +98,7 @@ class NewMessageReceived implements ShouldQueue
 
             if (!empty($actionId)) {
                 $allowTranslate = json_decode($group->moderator_events, true);
-                if(!isset($allowTranslate)){
+                if (!isset($allowTranslate)) {
                     $allowTranslate = [];
                 }
                 if (in_array('message_new:scenario', $allowTranslate)) {
@@ -115,13 +122,13 @@ class NewMessageReceived implements ShouldQueue
                         $moderatorLogs->vk_id = $userId;
                         $moderatorLogs->date = Carbon::now();
                         $moderatorLogs->name = $user_info["response"][0]["first_name"] . ' ' . $user_info["response"][0]["last_name"];
-                        $user_message = "Пользователь <a href=\"http://vk.com/id" . $userId . "\">http://vk.com/id" . $userId . "</a> <br/>Отправил сообщение которое активировало сценарий: <b>" . $actionId . "</b>";
+                        $user_message = "Пользователь <a href=\"http://vk.com/id" . $userId . "\">http://vk.com/id" . $userId . "</a> <br/>Отправил сообщение которое активировало сценарий: <b>" . $actionId . "</b> ";
                         $moderatorLogs->description = $user_message;
                         $moderatorLogs->save();
                     }
                     if ($group->send_to_telegram == 1) {
                         $telegram = new Telegram();
-                        $user_message = date("H:i d.m.Y") . " \nПользователь http://vk.com/id" . $userId . "\nОтправил сообщение активировашее сценарий: " . $actionId;
+                        $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $userId . "\n*Отправил сообщение* активировавшее сценарий: *" . $actionId . "* \nГруппа: http://vk.com/club" . $group->id;
                         $telegram->sendMessage($group->telegram, $user_message);
                     }
                 }
