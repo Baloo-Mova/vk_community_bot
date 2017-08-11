@@ -67,7 +67,7 @@ class NewMessageReceived implements ShouldQueue
             $messageId = $this->data['id'];
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
-            $activeScenario = json_encode($group->send_scenario, true);
+            $activeScenario = json_decode($group->send_scenario, true);
             if (!isset($activeScenario)) {
                 $activeScenario = [];
             }
