@@ -46,6 +46,9 @@ class VkListenerController extends Controller
             }
 
             $allowTranslate = json_decode($group->moderator_events, true);
+            if(!isset($allowTranslate)){
+                $allowTranslate = [];
+            }
             if (in_array($data['type'], $allowTranslate)) {
                 $user_message = "";
                 switch ($data['type']) {
