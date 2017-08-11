@@ -68,7 +68,7 @@ class VkListenerController extends Controller
                         $user_message = "Новый пользователь <a href='http://vk.com/id" . $data['object']['user_id'] . "'>http://vk.com/id" . $data['object']['user_id'] . "</a> <br/>Группа: <a href=\"http://vk.com/club" . $data['group_id'] . "\">http://vk.com/club" . $data['group_id'] . "</a>";
                         break;
                     case 'group_leave':
-                        $user_message = "Пользователь <a href='http://vk.com/id" . $data['object']['user_id'] . "'>http://vk.com/id" . $data['object']['user_id'] . "</a> <br/>Покинул группа: <a href=\"http://vk.com/club" . $data['group_id'] . "\">http://vk.com/club" . $data['group_id'] . "</a>";
+                        $user_message = "Пользователь <a href='http://vk.com/id" . $data['object']['user_id'] . "'>http://vk.com/id" . $data['object']['user_id'] . "</a> <br/>Покинул группу: <a href=\"http://vk.com/club" . $data['group_id'] . "\">http://vk.com/club" . $data['group_id'] . "</a>";
                         break;
                     case 'wall_post_new':
                         $user_message = "Новый пост <br/>Группа: <a href=\"http://vk.com/club" . $data['group_id'] . "\">http://vk.com/club" . $data['group_id'] . "</a>";
