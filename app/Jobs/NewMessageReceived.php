@@ -128,7 +128,7 @@ class NewMessageReceived implements ShouldQueue
                     }
                     if ($group->send_to_telegram == 1) {
                         $telegram = new Telegram();
-                        $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $userId . "\n*Отправил сообщение* активировавшее сценарий: *" . $actionId . "* \nГруппа: http://vk.com/club" . $group->id;
+                        $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $userId . "\n*Отправил сообщение* активировавшее сценарий: *" . $actionId . "* \nГруппа: http://vk.com/club" . $group->group_id;
                         $telegram->sendMessage($group->telegram, $user_message);
                     }
                 }
