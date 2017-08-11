@@ -145,7 +145,7 @@ class VkListenerController extends Controller
                             $user_message = date("H:i d.m.Y") . " \n*Новый пользователь* http://vk.com/id" . $data['object']['user_id'] . "\nГруппа: http://vk.com/club" . $data['group_id'];
                             break;
                         case 'group_leave':
-                            $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $data['object']['user_id'] . "покинул группу\nГруппа: http://vk.com/club" . $data['group_id'];
+                            $user_message = date("H:i d.m.Y") . " \n*Пользователь* http://vk.com/id" . $data['object']['user_id'] . " покинул группу\nГруппа: http://vk.com/club" . $data['group_id'];
                             break;
                         case 'wall_post_new':
                             $user_message = date("H:i d.m.Y") . " \n*Новый пост* в группе http://vk.com/club" . $data['group_id'];
