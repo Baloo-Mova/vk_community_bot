@@ -120,7 +120,7 @@ class ModeratorController extends Controller
         $group->show_in_history = $request->get('show_in_history') ? 1 : 0;
 
         $group->save();
-        Toastr::success('Изсенения сохранены', 'Сохранено');
+        Toastr::success('Изменения сохранены', 'Сохранено');
         return back();
     }
 
