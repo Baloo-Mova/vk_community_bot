@@ -90,7 +90,7 @@ class NewMessageReceived implements ShouldQueue
 
 
             if (!empty($actionId)) {
-                $allowTranslate = json_decode($group->moderator_events);
+                $allowTranslate = json_decode($group->moderator_events, true);
                 if (in_array('message_new:scenario', $allowTranslate)) {
                     if ($group->show_in_history == 1) {
                         $this->httpClient = new Client([
