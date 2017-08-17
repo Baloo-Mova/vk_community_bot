@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            'proxy' => '91.241.46.63:8000',
+            //'proxy' => '91.241.46.63:8000',
             'verify' => false,
         ]);
     }
@@ -48,7 +48,7 @@ class VK
     }
 
     public function checkAccess()
-    { 
+    {
         $callBaaaaaack = env('APP_URL') . "/vk-tells-us/" . $this->group->group_id;
         $data = $this->getCallbackServers();
         if (isset($data['error'])) {
