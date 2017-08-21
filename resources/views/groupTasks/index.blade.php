@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="container-fluid">
-    @section('contentheader_title')
-        Сценарий ответов
-    @endsection
+    <div class="container-fluid">
+        @section('contentheader_title')
+            Сценарий ответов
+        @endsection
 
         @if(!$group->payed)
             <div id="modal_payed" class="modal">
@@ -13,7 +13,8 @@
                     <div class="group_not_payed">
                         <p>В данный момент подписка на бота не оплачена. </p>
                         <a href="{{ route('groupSettings.index', ['bot_id' => $group->id]) }}"
-                           class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к оплате</a>
+                           class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Перейти к
+                            оплате</a>
                         <a href="{{ route('groups.index') }}"
                            class="btn waves-effect waves-light light-blue darken-4 groups_back_button">Назад</a>
                     </div>
@@ -21,7 +22,7 @@
             </div>
         @endif
         <div id="modal1" class="modal" style="overflow: visible !important;">
-            <div class="modal-content">
+            <div class="modal-content" style="overflow-y: auto;height: 450px;">
                 <h4>Добавление сценария</h4>
                 <form action="{{ route('groupTasks.add') }}" method="post">
                     {{ csrf_field() }}
@@ -80,7 +81,8 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="scenario_id" class="scenario_id">
                     <div class="input-field col s12">
-                        <input name="scenario_name" class="scenario_name" id="scenario_name" type="text" class="validate">
+                        <input name="scenario_name" class="scenario_name" id="scenario_name" type="text"
+                               class="validate">
                         <label for="scenario_name" class="scenario_name_label">Имя сценария</label>
                     </div>
                     <div class="input-field col s12">
@@ -88,7 +90,8 @@
                         <label for="key" class="scenario_key_label">Ключевое слово</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="response" name="response" class="materialize-textarea scenario_response"></textarea>
+                        <textarea id="response" name="response"
+                                  class="materialize-textarea scenario_response"></textarea>
                         <label for="response" class="scenario_response_label">Ответ</label>
                     </div>
                     <div class="switch">
@@ -114,7 +117,8 @@
                         <select name="add_group_id" class="group_select_edit_select">
                             <option value="" disabled class="group_select_edit_-1">Выберите группу</option>
                             @forelse($client_groups as $clg)
-                                <option value="{{ $clg->id }}" class="group_select_edit_{{ $clg->id }}">{{ $clg->name }}</option>
+                                <option value="{{ $clg->id }}"
+                                        class="group_select_edit_{{ $clg->id }}">{{ $clg->name }}</option>
                             @empty
                                 <option value="" disabled>У Вас нет Групп пользователей</option>
                             @endforelse
@@ -126,111 +130,114 @@
             </div>
         </div>
 
-    <div class="row">
-        <div class="col s12">
-            <ul class="tabs">
-                @include('layouts.partials.groups-maintabs')
-            </ul>
-        </div>
-        <div id="task" class="col s12">
-            <div class="h10"></div>
-            <a href="#modal1" class="waves-effect waves-light light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Добавить сценарий</a>
-            <div class="">
-                <table class="highlight">
-                    <thead>
-                    <th>Имя сценария</th>
-                    <th>Ключевое слово</th>
-                    <th>Ответ</th>
-                    <th>Статус</th>
-                    <th>Действия</th>
-                    </thead>
-                    <tbody>
-                    @if(!$group->payed)
-                        <tr>
-                            <td class="text-center" colspan="4">Нет записей</td>
-                        </tr>
-                    @else
-
-                        @forelse($responses as $resp)
-                            <tr>
-                                <td>{{ $resp->scenario_name }}</td>
-                                <td>{{ $resp->key }}</td>
-                                <td>{{ $resp->response }}</td>
-                                <td>
-                                    <div class="switch">
-                                        <label>
-                                            <input {{ $resp->state == 1 ? 'checked' : '' }}
-                                                   class="resp_checkbox"
-                                                   data-response-id="{{$resp->id}}"
-                                                   type="checkbox">
-                                            <span class="lever"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a class="waves-effect waves-light scenario_edit"
-                                       data-edit-id="{{ $resp->id }}"
-                                       data-edit-scenario-name="{{ $resp->scenario_name }}"
-                                       data-edit-key="{{ $resp->key }}"
-                                       data-edit-response="{{ $resp->response }}"
-                                       data-edit-action-id="{{ ($resp->action_id) ? $resp->action_id : -1 }}"
-                                       data-edit-add-group-id="{{ ($resp->add_group_id) ? $resp->add_group_id : -1 }}"
-                                       href="#modal2">
-                                        <i class="material-icons left">edit</i>
-                                    </a>
-                                    <a href="{{ route('groupTasks.delete', ['response' => $resp->id]) }}"
-                                       class="waves-effect waves-light"
-                                       onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
-                                        <i class="material-icons left">delete</i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    @include('layouts.partials.groups-maintabs')
+                </ul>
+            </div>
+            <div id="task" class="col s12">
+                <div class="h10"></div>
+                <a href="#modal1"
+                   class="waves-effect waves-light light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Добавить
+                    сценарий</a>
+                <div class="">
+                    <table class="highlight">
+                        <thead>
+                        <th>Имя сценария</th>
+                        <th>Ключевое слово</th>
+                        <th>Ответ</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                        </thead>
+                        <tbody>
+                        @if(!$group->payed)
                             <tr>
                                 <td class="text-center" colspan="4">Нет записей</td>
                             </tr>
-                        @endforelse
-                    @endif
-                    </tbody>
-                </table>
+                        @else
+
+                            @forelse($responses as $resp)
+                                <tr>
+                                    <td>{{ $resp->scenario_name }}</td>
+                                    <td>{{ $resp->key }}</td>
+                                    <td>{{ $resp->response }}</td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input {{ $resp->state == 1 ? 'checked' : '' }}
+                                                       class="resp_checkbox"
+                                                       data-response-id="{{$resp->id}}"
+                                                       type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a class="waves-effect waves-light scenario_edit"
+                                           data-edit-id="{{ $resp->id }}"
+                                           data-edit-scenario-name="{{ $resp->scenario_name }}"
+                                           data-edit-key="{{ $resp->key }}"
+                                           data-edit-response="{{ $resp->response }}"
+                                           data-edit-action-id="{{ ($resp->action_id) ? $resp->action_id : -1 }}"
+                                           data-edit-add-group-id="{{ ($resp->add_group_id) ? $resp->add_group_id : -1 }}"
+                                           href="#modal2">
+                                            <i class="material-icons left">edit</i>
+                                        </a>
+                                        <a href="{{ route('groupTasks.delete', ['response' => $resp->id]) }}"
+                                           class="waves-effect waves-light"
+                                           onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
+                                            <i class="material-icons left">delete</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="text-center" colspan="4">Нет записей</td>
+                                </tr>
+                            @endforelse
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @stop
 
 @section('js')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.modal').modal();
             $('.action_select_select').material_select();
             $('.group_select_select').material_select();
             $('.action_select_edit_select').material_select();
             $('.group_select_edit_select').material_select();
 
-            $('#modal_payed').modal('open',{
+            $('#modal_payed').modal('open', {
                     dismissible: false
                 }
             );
 
-            $(".resp_checkbox").on("change", function(){
+            $(".resp_checkbox").on("change", function () {
                 var resp_id = $(this).data('responseId'),
                     status = $(this).prop('checked');
 
                 $.ajax({
                     method: "get",
                     url: "{{ url('/change-response-status') }}/" + resp_id + "/" + (status ? 1 : 0),
-                    success: function (data) {}
+                    success: function (data) {
+                    }
                 });
             });
 
             $(".scenario_edit").on("click", function () {
                 var scenarion_id = $(this).data("editId"),
                     scenarion_name = $(this).data("editScenarioName"),
-                    key          = $(this).data("editKey"),
-                    response     = $(this).data("editResponse"),
-                    action_id    = $(this).data("editActionId"),
-                    group_id     = $(this).data("editAddGroupId");
+                    key = $(this).data("editKey"),
+                    response = $(this).data("editResponse"),
+                    action_id = $(this).data("editActionId"),
+                    group_id = $(this).data("editAddGroupId");
 
                 $(".scenario_id").val(scenarion_id);
                 $(".scenario_key_label").addClass('active');
@@ -240,7 +247,7 @@
                 $(".scenario_name_label").addClass('active');
                 $(".scenario_name").val(scenarion_name);
 
-                if(action_id != -1){
+                if (action_id != -1) {
                     $(".is_action_edit").prop("checked", true);
                     $(".action_select_edit").css("display", "block");
                     $(".group_select_edit").css("display", "block");
@@ -251,7 +258,7 @@
                     $('.action_select_edit_select').material_select();
                     $('.group_select_edit_select').material_select();
 
-                }else{
+                } else {
                     $(".is_action_edit").prop("checked", false);
                     $(".action_select_edit").css("display", "none");
                     $(".group_select_edit").css("display", "none");
@@ -264,13 +271,13 @@
                 }
             });
 
-            $(".is_action").on("change", function(){
+            $(".is_action").on("change", function () {
                 var state = $(this).prop("checked");
 
-                if(state){
+                if (state) {
                     $(".action_select").css("display", "block");
                     $(".group_select").css("display", "none");
-                }else{
+                } else {
                     $('.action_select_select').material_select('destroy');
                     $('.group_select_select').material_select('destroy');
                     $(".action_select_select").val(0);
@@ -286,13 +293,13 @@
                 $(".group_select").css("display", "block");
             });
 
-            $(".is_action_edit").on("change", function(){
+            $(".is_action_edit").on("change", function () {
                 var state = $(this).prop("checked");
 
-                if(state){
+                if (state) {
                     $(".action_select_edit").css("display", "block");
                     $(".group_select_edit").css("display", "none");
-                }else{
+                } else {
                     $('.action_select_edit_select').material_select('destroy');
                     $('.group_select_edit_select').material_select('destroy');
                     $(".action_select_edit_select").val(0);
