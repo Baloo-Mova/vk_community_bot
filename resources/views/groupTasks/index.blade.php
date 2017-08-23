@@ -21,8 +21,8 @@
                 </div>
             </div>
         @endif
-        <div id="modal1" class="modal" style="overflow: visible !important;">
-            <div class="modal-content" style="overflow-y: auto;height: 450px;">
+        <div id="modal1" class="modal" style="overflow: visible !important; padding: 20px 0px;">
+            <div class="modal-content modal__content" style="overflow-y: auto;">
                 <h4>Добавление сценария</h4>
                 <form action="{{ route('groupTasks.add') }}" method="post">
                     {{ csrf_field() }}
@@ -74,8 +74,8 @@
             </div>
         </div>
 
-        <div id="modal2" class="modal" style="overflow: visible !important;">
-            <div class="modal-content">
+        <div id="modal2" class="modal" style="overflow: visible !important; padding: 20px 0px;">
+            <div class="modal-content modal__content">
                 <h4>Редактирование сценария</h4>
                 <form action="{{ route('groupTasks.edit') }}" class="scenario_edit_form" method="post">
                     {{ csrf_field() }}
@@ -203,6 +203,21 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('css')
+    <style>
+        @media screen and (max-width: 400px){
+            .modal__content{
+                height: 370px;
+            }
+        }
+        @media screen and (min-width: 400px){
+            .modal__content{
+                height: 450px;
+            }
+        }
+    </style>
 @stop
 
 @section('js')
