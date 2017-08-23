@@ -75,7 +75,7 @@
         </div>
 
         <div id="modal2" class="modal" style="overflow: visible !important; padding: 20px 0px;">
-            <div class="modal-content modal__content">
+            <div class="modal-content modal__content" style="overflow-y: auto;">
                 <h4>Редактирование сценария</h4>
                 <form action="{{ route('groupTasks.edit') }}" class="scenario_edit_form" method="post">
                     {{ csrf_field() }}
