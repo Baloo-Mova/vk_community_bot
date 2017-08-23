@@ -17,7 +17,7 @@ class GroupSettingsController extends Controller
     {
         $group = UserGroups::find($id);
 
-        if ( ! $group->checkAccess()) {
+        if (!$group->checkAccess()) {
             $group->removeControl();
             Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
 
@@ -25,42 +25,42 @@ class GroupSettingsController extends Controller
         }
 
         return view('groupSettings.index', [
-            "user"     => \Auth::user(),
+            "user" => \Auth::user(),
             "group_id" => $id,
-            "group"    => isset($group) ? $group : [],
+            "group" => isset($group) ? $group : [],
             "tab_name" => "settings",
-            'prices'   => Rates::all()
+            'prices' => Rates::all()
         ]);
     }
 
     public function newSubscription(Request $request)
     {
-        $user  = \Auth::user();
+        $user = \Auth::user();
         $payId = $request->get('rate');
 
         if ($payId != 0) {
-            if ( ! isset($payId)) {
+            if (!isset($payId)) {
                 Toastr::error('Отсутствует обязательный (Имя тарифа) параметр!', 'Ошибка');
 
                 return back();
             }
 
             $rate = Rates::find($payId);
-            if ( ! isset($rate)) {
+            if (!isset($rate)) {
                 Toastr::error('Тариф отсутствует', 'Ошибка');
 
                 return back();
             }
 
-            $daysToAdd   = $rate->days;
+            $daysToAdd = $rate->days;
             $payment_sum = $rate->price;
         } else {
-            $daysToAdd   = 2;
+            $daysToAdd = 2;
             $payment_sum = 0;
         }
         $group_id = $request->get('group_id');
 
-        if ( ! isset($group_id)) {
+        if (!isset($group_id)) {
             Toastr::error('Отсутствует обязательный (Id группы) параметр!', 'Ошибка');
 
             return back();
@@ -74,14 +74,14 @@ class GroupSettingsController extends Controller
 
         $get_money = $user->decrement('balance', $payment_sum);
 
-        if ( ! $get_money) {
+        if (!$get_money) {
             Toastr::error('На Вашем балансе недостаточно средств', 'Ошибка');
 
             return back();
         }
 
         $group = UserGroups::where(['id' => $group_id])->first();
-        if ( ! isset($group)) {
+        if (!isset($group)) {
             $user->increment('balance', $payment_sum);
             Toastr::error('Группа не найдена', 'Ошибка');
 
@@ -103,15 +103,14 @@ class GroupSettingsController extends Controller
         $group->save();
 
 
-        $payment              = new PaymentLogs();
-        $payment->user_id     = \Auth::user()->id;
+        $payment = new PaymentLogs();
+        $payment->user_id = \Auth::user()->id;
         $payment->description = PaymentLogs::SubscriptionPayment;
         $payment->payment_sum = $payment_sum;
         $payment->status = 1;
         $payment->save();
 
-        foreach ($group->users as $user)
-        {
+        foreach ($group->users as $user) {
             $user->resubscribe_notification_send = 0;
             $user->save();
         }
