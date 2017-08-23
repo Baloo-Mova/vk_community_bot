@@ -47,6 +47,12 @@ class Test extends Command
      */
     public function handle()
     {
+        $user = User::find(1);
+        $vk = new VK();
+        $vk->setUser($user);
+        $group = UserGroups::find(2);
+        $vk->setGroup($group);
 
+      dd($vk->getCallbackServers());
     }
 }

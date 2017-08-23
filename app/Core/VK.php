@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy' => '194.28.209.107:8000',
+            //'proxy' => '194.28.209.36:8000',
             'verify' => false,
         ]);
     }
@@ -176,7 +176,6 @@ class VK
                 $this->setGroup($group);
 
                 $data = $this->getCallbackServers();
-                dd($data);
                 if (isset($data['error'])) {
                     return false;
                 }
