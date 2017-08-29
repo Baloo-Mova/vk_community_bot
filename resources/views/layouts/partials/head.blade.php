@@ -7,7 +7,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700" rel="stylesheet">
 <!--Import Google Icon Font-->
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- morris CSS -->
 <link href="{{ asset('css/morris.css') }}" rel="stylesheet">
 <!-- jvectormap CSS -->

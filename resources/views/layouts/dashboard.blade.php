@@ -49,7 +49,7 @@
         @yield('css')
 
         <script type="text/javascript" src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
-        <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
         {!! Toastr::message() !!}
         <script src="{{ asset('js/materialize.min.js') }}"></script>
         <script src="{{ asset('js/select2.min.js') }}"></script>
