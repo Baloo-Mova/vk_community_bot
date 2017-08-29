@@ -231,8 +231,24 @@ class VkListenerController extends Controller
 
     public function appGate(Request $request)
     {
+        $data = $request->all();
 
-        dd($request->all());
+        if($data['sign'] != $this->genSign($data)){
+            return "Тут ничего нету";
+        }
+
         return view('vk.gate');
+    }
+
+    public function genSign($data)
+    {
+        $sign = "";
+        foreach ($data as $key => $param) {
+            if ($key == 'hash' || $key == 'sign') continue;
+            $sign .= $param;
+        }
+        $secret = env('COMMUNITY_APP_SECRET_KEY');
+        $sig = $secret ? hash_hmac('sha256', $sign, $secret) : "";
+        return $sig;
     }
 }
