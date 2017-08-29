@@ -490,9 +490,9 @@
             </div>
             <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6 text-center">
                 <div class="screenshots-slider owl-carousel owl-theme">
-                    <div class="item"><img src="http://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
-                    <div class="item"><img src="http://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
-                    <div class="item"><img src="http://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
+                    <div class="item"><img src="https://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
+                    <div class="item"><img src="https://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
+                    <div class="item"><img src="https://via.placeholder.com/265x470" class="img-responsive" alt=""></div>
                 </div>
             </div>
         </div>
@@ -633,7 +633,7 @@
                 <div class="space-50"></div>
             </div>
             <div class="col-md-12 text-center">
-                <a href="http://www.youtube.com/watch?v=XSGBVzeBUbk" data-lity>
+                <a href="https://www.youtube.com/watch?v=XSGBVzeBUbk" data-lity>
                     <img src="{{ asset('img/icon-14.png') }}" class="img-responsive center-block" alt="">
                 </a>
             </div>
@@ -656,7 +656,7 @@
                 <div class="team-slider owl-carousel owl-theme">
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -675,7 +675,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -694,7 +694,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -713,7 +713,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -732,7 +732,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -751,7 +751,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -770,7 +770,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -789,7 +789,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -808,7 +808,7 @@
                     </div>
                     <div class="item">
                         <div class="person">
-                            <img src="http://via.placeholder.com/420x525" class="img-responsive" alt="">
+                            <img src="https://via.placeholder.com/420x525" class="img-responsive" alt="">
                             <div class="person-info overlay">
                                 <div class="info-bottom">
                                     <h4>Jonh Doe</h4>
@@ -940,7 +940,7 @@
 </section>
 <!-- End FAQ Section -->
 <!-- Start Contact Section -->
-<section id="contact" class="padding-100 hidden" style="background-image: url('http://via.placeholder.com/1920x1396'); background-size: cover; background-position: 50% 50%;background-attachment: fixed;">
+<section id="contact" class="padding-100 hidden" style="background-image: url('https://via.placeholder.com/1920x1396'); background-size: cover; background-position: 50% 50%;background-attachment: fixed;">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
