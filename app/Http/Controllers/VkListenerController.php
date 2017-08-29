@@ -46,7 +46,7 @@ class VkListenerController extends Controller
             }
 
             $allowTranslate = json_decode($group->moderator_events, true);
-            if(!isset($allowTranslate)){
+            if (!isset($allowTranslate)) {
                 $allowTranslate = [];
             }
             if (in_array($data['type'], $allowTranslate)) {
@@ -227,5 +227,12 @@ class VkListenerController extends Controller
             $err->url = $ex->getLine();
             $err->save();
         }
+    }
+
+    public function appGate(Request $request)
+    {
+
+        dd($request->all());
+        return view('vk.gate');
     }
 }

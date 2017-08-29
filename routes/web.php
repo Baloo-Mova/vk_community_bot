@@ -11,6 +11,10 @@
 |
 */
 
+
+
+
+
 Route::get('/login', "HomeController@login")->name('login');
 Route::post('/logout', "HomeController@logout")->name('logout');
 Route::get('/social_login/', 'SocialController@login')->name('vk_login');
@@ -22,6 +26,8 @@ Route::get('/change-group-bot-status/{group_id}/{status}',
     ["uses" => "GroupsController@changeGroupBotStatus", "as" => "change.group.bot.status"]);
 Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
 Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
+
+Route::get('/vk-app-gate/',['uses'=>'VkListenerController@appGate','as'=>'vk.app.listener']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['middleware' => ['isAdmin']], function () {
