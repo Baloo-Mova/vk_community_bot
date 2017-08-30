@@ -19,6 +19,12 @@
             Подключенные группы
         </a>
     </li>
+    <li class="">
+        <a href="https://vk.com/add_community_app?aid={{env('COMMUNITY_APP_ID','')}}" class="waves-effect waves-grey">
+            <i class="fa fa-users  fa-2x sidebar_icon" aria-hidden="true"></i>
+            Добавить приложение групп
+        </a>
+    </li>
     <li class="{{ Request::is('balance') || Request::is('balance/*') ? 'active' : '' }}">
         <a href="{{ route('balance.index') }}" class="waves-effect waves-grey">
             <i class="fa fa-credit-card-alt  fa-2x sidebar_icon" aria-hidden="true"></i>
