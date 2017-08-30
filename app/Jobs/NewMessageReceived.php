@@ -202,6 +202,7 @@ class NewMessageReceived implements ShouldQueue
     private function deleteFromGroup($groupId, $userId)
     {
         try {
+            AutoDelivery::where(['vk_id' => $userId, 'client_group_id' => $groupId])->delete();
             Clients::where([
                 'vk_id' => $userId,
                 'client_group_id' => $groupId

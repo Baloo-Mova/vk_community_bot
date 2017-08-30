@@ -344,7 +344,7 @@ class VkListenerController extends Controller
 
         AutoDelivery::insert($autoSender);
 
-        return view('vk.success', ['Message' => 'Спасибо за подписку !', 'backUrl' => $backUrl]);
+        return view('vk.success', ['Message' => 'Спасибо за подписку !', 'list' => [], 'backUrl' => $backUrl]);
     }
 
     public function cancelApp(Request $request, $to)
@@ -359,7 +359,7 @@ class VkListenerController extends Controller
         if ($data['sign'] != $this->genSign($data)) {
             return view('vk.error', ['backUrl' => $backUrl]);
         }
-
+        AutoDelivery::where(['vk_id' => $data['viewer_id'], 'client_group_id' => $to])->delete();
         $client = Clients::where([['vk_id', '=', $data['viewer_id']], ['client_group_id', '=', $to], ['group_id', '=', $data['group_id']]])->first();
 
         if (!isset($client)) {
