@@ -126,7 +126,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
 
         if (is_null($this->httpClient)) {
             $this->httpClient = new Client([
-                'proxy'  => '194.28.210.3:8000',
+               // 'proxy'  => '194.28.210.3:8000',
                 'verify' => false,
             ]);
         }
