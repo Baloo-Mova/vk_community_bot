@@ -69,6 +69,18 @@
             </div>
         </div>
 
+        <div id="modal_link" class="modal">
+            <div class="modal-content">
+                <h4>Ссылка на подписку</h4>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="name" type="text" class="validate client_group_link">
+                        <label for="name" class="client_group_link_label">Ссылка</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
@@ -128,7 +140,6 @@
                                     </form>
                                 </div>
                             </div>
-
                             <tr>
                                 <td class="col s8 table_td">
                                     <a href="{{ route('clientGroups.group', ['group_id' => $group->id]) }}">{{ $group->name }}</a>
@@ -137,7 +148,7 @@
                                     <a class="waves-effect waves-light group_edit"
                                        data-edit-id="{{ $group->id }}"
                                        data-edit-name="{{ $group->name }}"
-                                       data-need-show="{{$group->show_in_list}}"
+                                       data-need-show="{{ $group->show_in_list }}"
                                        href="#modal_edit">
                                         <i class="material-icons left">edit</i>
                                     </a>
@@ -155,6 +166,12 @@
                                        class="waves-effect waves-light"
                                        title="Удалить пользователей">
                                         <i class="material-icons left">remove_circle</i>
+                                    </a>
+                                    <a href="#modal_link"
+                                       class="waves-effect waves-light link_group"
+                                       data-link="{{"https://vk.com/app".env('COMMUNITY_APP_ID')."_-".$real_group_id."#".$group->id}}"
+                                       title="Ссылка на подписку">
+                                        <i class="material-icons left">link</i>
                                     </a>
                                 </td>
                             </tr>
@@ -185,12 +202,17 @@
                         var state = $(this).prop("checked");
                     });
 
+                    $(".link_group").on('click', function () {
+                        $('.client_group_link').val($(this).data('link'));
+                        $(".client_group_link_label").addClass('active');
+                    });
+
                     $(".group_edit").on("click", function () {
                         var group_id = $(this).data("editId"),
                             name = $(this).data("editName"),
                             checked = $(this).data('needShow');
 
-                        $('.need_show_in_app_edit').prop('checked',checked);
+                        $('.need_show_in_app_edit').prop('checked', checked);
                         $(".edit_group_id").val(group_id);
                         $(".edit_group_name_label").addClass('active');
                         $(".edit_group_name").val(name);

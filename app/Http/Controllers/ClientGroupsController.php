@@ -24,6 +24,7 @@ class ClientGroupsController extends Controller
             "user"     => \Auth::user(),
             "group"    => $group,
             "group_id" => $group_id,
+            "real_group_id" => $group->group_id,
             "groups"   => isset($groups) ? $groups : [],
             "tab_name" => "lists"
         ]);
