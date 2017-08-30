@@ -28,16 +28,14 @@
 <body>
 
 <div class="wrap">
-    @if(isset($list))
-        <ul class="collection with-header">
-            <li class="collection-header">
-                <h5>{{$Message}}</h5>
-            </li>
-            @foreach($list as $item)
-                <li class="collection-item"><h5>{{$item}}</h5></li>
-            @endforeach
-        </ul>
-    @endif
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>{{$Message}}</h5>
+        </li>
+        @foreach($list as $item)
+            <li class="collection-item"><h5>{{$item}}</h5></li>
+        @endforeach
+    </ul>
     @if(isset($backUrl))
         <a href="{{$backUrl}}"> Назад </a>
     @endif
