@@ -320,7 +320,7 @@ class VkListenerController extends Controller
         $client->last_name = $cachedUser->sname;
         $client->avatar = $cachedUser->photo;
         $client->can_send = 1;
-        $client->group_id = $this->group_id;
+        $client->group_id = $data['group_id'];
         $client->created = Carbon::now();
         $client->save();
 
