@@ -38,6 +38,33 @@
             width: 150px;
         }
     </style>
+
+    <script src="https://vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        var subscribeToId;
+
+        function subscribe() {
+            location.href = "{{url('/vk-app-subscribe/')}}/" + subscribeToId + "?backUrl=" + encodeURIComponent(location.href);
+        }
+
+        function unsubscribe(id) {
+            location.href = "{{url('/vk-app-cancel/')}}/" + id + "?backUrl=" + encodeURIComponent(location.href);
+        }
+
+        function click(id) {
+            subscribeToId = id;
+            @if($permission)
+            subscribe();
+            @else
+            VK.callMethod("showAllowMessagesFromCommunityBox");
+            @endif
+        }
+
+        VK.addCallback("onAllowMessagesFromCommunity", function () {
+            subscribe();
+        });
+    </script>
 </head>
 <body>
 
@@ -48,12 +75,12 @@
                 <span class="collection-text">{{$item['name']}}</span>
                 <div class="secondary-content">
                     @if(!isset($item['client_id']))
-                        <button class="special-button waves-effect waves-light light-blue darken-4 btn btn-small"
+                        <button class="special-button subscribe waves-effect waves-light light-blue darken-4 btn btn-small"
                                 onclick="click('{{$item['id']}}')">
                             Подписатся
                         </button>
                     @else
-                        <button class="special-button waves-effect waves-light red darken-4 btn btn-small"
+                        <button class="special-button unsubscribe waves-effect waves-light red darken-4 btn btn-small"
                                 onclick="unsubscribe('{{$item['id']}}')">
                             Отписатся
                         </button>
@@ -67,33 +94,7 @@
         @endforelse
     </ul>
 </div>
-<script src="https://vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
 <script src="{{ asset('js/materialize.min.js')  }}"></script>
-
-<script type="text/javascript">
-
-    var subscribeToId;
-    function subscribe() {
-        location.href = "{{url('/vk-app-subscribe/')}}/" + subscribeToId + "?backUrl=" + encodeURIComponent(location.href);
-    }
-
-    function unsubscribe(id) {
-        location.href = "{{url('/vk-app-cancel/')}}/" + id + "?backUrl=" + encodeURIComponent(location.href);
-    }
-
-    function click(id) {
-        subscribeToId = id;
-        @if($permission)
-        subscribe();
-        @else
-        VK.callMethod("showAllowMessagesFromCommunityBox");
-        @endif
-    }
-
-    VK.addCallback("onAllowMessagesFromCommunity", function () {
-        subscribe();
-    });
-</script>
 </body>
 </html>
