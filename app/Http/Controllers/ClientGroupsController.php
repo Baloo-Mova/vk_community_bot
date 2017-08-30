@@ -32,6 +32,7 @@ class ClientGroupsController extends Controller
     public function addGroup(Request $request)
     {
         $clGroup = new ClientGroups();
+        $clGroup->show_in_list = isset($request->need_show) ? true: false;
         $clGroup->fill($request->all());
         $clGroup->save();
 
@@ -61,6 +62,7 @@ class ClientGroupsController extends Controller
 
             return back();
         }
+        $clGroups->show_in_list = isset($request->need_show) ? true: false;
         $clGroups->name = $request->get('name');
         $clGroups->save();
         Toastr::success('Список успешно отредактирован!', 'Успешно');

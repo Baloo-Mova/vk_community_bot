@@ -39,4 +39,8 @@ class Clients extends Model
         'can_send',
         'created'
     ];
+
+    public function clientGroup(){
+        return $this->hasOne(ClientGroups::class, 'id','client_group_id');
+    }
 }

@@ -28,6 +28,8 @@ Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
 Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
 
 Route::get('/vk-app-gate/',['uses'=>'VkListenerController@appGate','as'=>'vk.app.listener']);
+Route::get('/vk-app-subscribe/{to}',['uses'=>'VkListenerController@subscribeApp','as'=>'vk.app.subscribe']);
+Route::get('/vk-app-cancel/{to}',['uses'=>'VkListenerController@cancelApp','as'=>'vk.app.cancel']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['middleware' => ['isAdmin']], function () {

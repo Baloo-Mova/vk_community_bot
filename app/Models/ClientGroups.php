@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\ClientGroups
  *
  * @property int    $id
+ * @property boolean    $show_in_list
  * @property string $group_id
  * @property string $name
  * @property string $auto_add_key
@@ -26,7 +27,8 @@ class ClientGroups extends Model
     public $fillable   = [
         'group_id',
         'name',
-        'auto_add_key'
+        'auto_add_key',
+        'show_in_list'
     ];
 
     public function users()

@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Core\VK;
 use App\Jobs\NewMessageReceived;
+use App\Models\AutoDelivery;
 use App\Models\CallbackLog;
+use App\Models\ClientGroups;
 use App\Models\Clients;
 use App\Models\Errors;
+use App\Models\Funnels;
 use App\Models\ModeratorLogs;
 use App\Models\User;
+use App\Models\UserCache;
 use App\Models\UserGroups;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use App\Helpers\Telegram;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class VkListenerController extends Controller
 {
@@ -232,23 +239,136 @@ class VkListenerController extends Controller
     public function appGate(Request $request)
     {
         $data = $request->all();
-
-        if($data['sign'] != $this->genSign($data)){
-            return "Тут ничего нету";
+        if ($data['sign'] != $this->genSign($data)) {
+            return view('vk.error', ['backUrl' => null]);
         }
 
-        return view('vk.gate');
+        $userCache = UserCache::where('vk_id', '=', $data['viewer_id'])->first();
+        if (!isset($userCache)) {
+            $userData = json_decode($data['api_result'], true)['response'][0];
+            $userCache = new UserCache();
+            $userCache->when_remove = Carbon::now()->addHours(5);
+            $userCache->vk_id = $data['viewer_id'];
+            $userCache->fname = $userData['first_name'];
+            $userCache->sname = $userData['last_name'];
+            $userCache->photo = $userData['photo_200'];
+            $userCache->save();
+        }
+
+        $havePermission = Clients::where(['vk_id' => $data['viewer_id'], 'group_id' => $data['group_id'], 'can_send' => 1])->first();
+        $havePermission = isset($havePermission);
+
+
+        if (empty($request->hash)) {
+            $list = ClientGroups::where([['client_groups.show_in_list', '=', 1], ['user_groups.group_id', '=', $data['group_id']]])
+                ->join('user_groups', 'user_groups.id', '=', 'client_groups.group_id')
+                ->leftJoin('clients', function (JoinClause $join) use ($data) {
+                    $join->on('client_groups.id', '=', 'clients.client_group_id')->where('clients.vk_id', '=', $data['viewer_id']);
+                })
+                ->get(['client_groups.name', 'client_groups.id', 'clients.id as client_id'])->toArray();
+        } else {
+            $list = ClientGroups::where([['client_groups.id', '=', $request->hash], ['user_groups.group_id', '=', $data['group_id']]])
+                ->join('user_groups', 'user_groups.id', '=', 'client_groups.group_id')
+                ->leftJoin('clients', function (JoinClause $join) use ($data) {
+                    $join->on('client_groups.id', '=', 'clients.client_group_id')->where('clients.vk_id', '=', $data['viewer_id']);
+                })
+                ->get(['client_groups.name', 'client_groups.id', 'clients.id as client_id'])->toArray();
+        }
+        return view('vk.gate', [
+            'permission' => $havePermission,
+            'list' => $list
+        ]);
     }
 
     public function genSign($data)
     {
         $sign = "";
         foreach ($data as $key => $param) {
-            if ($key == 'hash' || $key == 'sign') continue;
+            if ($key == 'hash' || $key == 'sign' || $key == 'api_result') continue;
             $sign .= $param;
         }
         $secret = env('COMMUNITY_APP_SECRET_KEY');
         $sig = $secret ? hash_hmac('sha256', $sign, $secret) : "";
         return $sig;
+    }
+
+
+    public function subscribeApp(Request $request, $to)
+    {
+        $backUrl = $request->get('backUrl');
+        $parts = parse_url($backUrl);
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $data);
+        } else {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+        if ($data['sign'] != $this->genSign($data)) {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+
+        $groupTo = ClientGroups::find($to);
+        if (!isset($groupTo)) {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+
+        $cachedUser = UserCache::where('vk_id', '=', $data['viewer_id'])->first();
+
+        $client = new Clients();
+        $client->client_group_id = $groupTo->id;
+        $client->vk_id = $cachedUser->vk_id;
+        $client->first_name = $cachedUser->fname;
+        $client->last_name = $cachedUser->sname;
+        $client->avatar = $cachedUser->photo;
+        $client->can_send = 1;
+        $client->group_id = $this->group_id;
+        $client->created = Carbon::now();
+        $client->save();
+
+        $funnel = Funnels::with('times')->where(['client_group_id' => $groupTo->id])->get();
+        $itemsToSend = [];
+        foreach ($funnel as $item) {
+            $itemsToSend = array_merge($itemsToSend, $item->times->toArray());
+        }
+
+        $autoSender = [];
+        foreach ($itemsToSend as $itemSend) {
+            $autoSender[] = [
+                'vk_id' => $cachedUser->vk_id,
+                'client_group_id' => $groupTo->id,
+                'funnel_id' => $itemSend['id'],
+                'group_id' => $data['group_id'],
+                'message' => $itemSend['text'],
+                'when_send' => time() + $itemSend['time'],
+            ];
+        }
+
+        AutoDelivery::insert($autoSender);
+
+        return view('vk.success', ['Message' => 'Спасибо за подписку !', 'backUrl' => $backUrl]);
+    }
+
+    public function cancelApp(Request $request, $to)
+    {
+        $backUrl = $request->get('backUrl');
+        $parts = parse_url($backUrl);
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $data);
+        } else {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+        if ($data['sign'] != $this->genSign($data)) {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+
+        $client = Clients::where([['vk_id', '=', $data['viewer_id']], ['client_group_id', '=', $to], ['group_id', '=', $data['group_id']]])->first();
+
+        if (!isset($client)) {
+            return view('vk.error', ['backUrl' => $backUrl]);
+        }
+
+        $text = $client->clientGroup->name;
+        $client->delete();
+
+        return view('vk.success', ['list' => ['"' . $text . '"'], 'Message' => 'Вы успешно отписались от группы: ', 'backUrl' => $backUrl]);
     }
 }
