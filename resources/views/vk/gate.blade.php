@@ -52,8 +52,9 @@
             location.href = "{{url('/vk-app-cancel/')}}/" + id + "?backUrl=" + encodeURIComponent(location.href);
         }
 
-        function click(id) {
+        function prepareData(id) {
             subscribeToId = id;
+
             @if($permission)
             subscribe();
             @else
@@ -64,6 +65,7 @@
         VK.addCallback("onAllowMessagesFromCommunity", function () {
             subscribe();
         });
+
     </script>
 </head>
 <body>
@@ -76,7 +78,7 @@
                 <div class="secondary-content">
                     @if(!isset($item['client_id']))
                         <button class="special-button subscribe waves-effect waves-light light-blue darken-4 btn btn-small"
-                                onclick="click('{{$item['id']}}')">
+                                onclick="prepareData('{{$item['id']}}')">
                             Подписатся
                         </button>
                     @else
