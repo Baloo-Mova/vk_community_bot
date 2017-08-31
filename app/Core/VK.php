@@ -54,6 +54,9 @@ class VK
         if (isset($data['error'])) {
             return false;
         }
+        if (!isset($data['response'])) {
+            return false;
+        }
         foreach ($data['response']['items'] as $item) {
             if ($item['url'] == $callBaaaaaack) {
                 if ($item['status'] == 'ok') {

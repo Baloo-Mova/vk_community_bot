@@ -78,6 +78,10 @@
                         <label for="name" class="client_group_link_label">Ссылка</label>
                     </div>
                 </div>
+                <div class="alertWarning">
+                    Eсли Вы не добавили приложение в группу через кнопку "Подключить приложение групп", ссылка работать
+                    не будет!
+                </div>
             </div>
         </div>
 
@@ -185,38 +189,50 @@
                 </div>
             </div>
         </div>
+    </div>
+@stop
 
-        @stop
+@section('css')
+    <style>
+        .alertWarning {
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #faebcc;
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+        }
+    </style>
+@stop
 
-        @section('js')
-            <script>
-                $(document).ready(function () {
-                    $('.modal').modal();
+@section('js')
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
 
-                    $('#modal_payed').modal('open', {
-                            dismissible: false
-                        }
-                    );
+            $('#modal_payed').modal('open', {
+                    dismissible: false
+                }
+            );
 
-                    $(".need_show_in_app").on("change", function () {
-                        var state = $(this).prop("checked");
-                    });
+            $(".need_show_in_app").on("change", function () {
+                var state = $(this).prop("checked");
+            });
 
-                    $(".link_group").on('click', function () {
-                        $('.client_group_link').val($(this).data('link'));
-                        $(".client_group_link_label").addClass('active');
-                    });
+            $(".link_group").on('click', function () {
+                $('.client_group_link').val($(this).data('link'));
+                $(".client_group_link_label").addClass('active');
+            });
 
-                    $(".group_edit").on("click", function () {
-                        var group_id = $(this).data("editId"),
-                            name = $(this).data("editName"),
-                            checked = $(this).data('needShow');
+            $(".group_edit").on("click", function () {
+                var group_id = $(this).data("editId"),
+                    name = $(this).data("editName"),
+                    checked = $(this).data('needShow');
 
-                        $('.need_show_in_app_edit').prop('checked', checked);
-                        $(".edit_group_id").val(group_id);
-                        $(".edit_group_name_label").addClass('active');
-                        $(".edit_group_name").val(name);
-                    });
-                });
-            </script>
+                $('.need_show_in_app_edit').prop('checked', checked);
+                $(".edit_group_id").val(group_id);
+                $(".edit_group_name_label").addClass('active');
+                $(".edit_group_name").val(name);
+            });
+        });
+    </script>
 @stop
