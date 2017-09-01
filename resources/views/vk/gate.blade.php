@@ -84,7 +84,7 @@
                     @else
                         <button class="special-button unsubscribe waves-effect waves-light red darken-4 btn btn-small"
                                 onclick="unsubscribe('{{$item['id']}}')">
-                            Отписатся
+                            Отписаться
                         </button>
                     @endif
                 </div>
