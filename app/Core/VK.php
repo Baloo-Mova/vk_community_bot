@@ -130,7 +130,7 @@ class VK
             'code' => $code
         ];
         $data = $this->httpClient->get('https://oauth.vk.com/access_token?' . http_build_query($params))->getBody()->getContents();
-        dd($data);
+
         if (strpos($data, 'error') !== false) {
             return false;
         }
@@ -146,7 +146,10 @@ class VK
         }
 
         if ($group_id == 0) {
+            return false;
+        }
 
+        if ($result[$tokenName] == false) {
             return false;
         }
 
