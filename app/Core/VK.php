@@ -240,9 +240,13 @@ class VK
                         'server_id' => $group->server_id
                     ], true);
 
-                    if (empty($result) || (isset($result['response']['items'][0]['status']) && $result['response']['items'][0]['status'] != 'ok')) {
-                        $this->testArray = $result;
-                        return false;
+                    foreach ($result['response']['items'] as $item) {
+                        if ($item['url'] == $callBaaaaaack) {
+                            if ($item['status'] != 'ok') {
+                                $this->testArray = $result;
+                                return false;
+                            }
+                        }
                     }
                 }
 
@@ -287,9 +291,11 @@ class VK
                     $this->testArray = $data;
                     return false;
                 }
+
                 if (!isset($data['error'])) {
                     return true;
                 }
+
                 return false;
             }
         } catch (\Exception $ex) {
