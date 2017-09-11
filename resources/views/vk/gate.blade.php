@@ -79,12 +79,12 @@
                     @if(!isset($item['client_id']))
                         <button class="special-button subscribe waves-effect waves-light light-blue darken-4 btn btn-small"
                                 onclick="prepareData('{{$item['id']}}')">
-                            Подписатся
+                            Подписаться
                         </button>
                     @else
                         <button class="special-button unsubscribe waves-effect waves-light red darken-4 btn btn-small"
                                 onclick="unsubscribe('{{$item['id']}}')">
-                            Отписатся
+                            Отписаться
                         </button>
                     @endif
                 </div>
