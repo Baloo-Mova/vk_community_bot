@@ -170,6 +170,8 @@ class VK
         ], true);
     }
 
+    public $testArray = null;
+
     public function setCallbackServer($id)
     {
         try {
@@ -180,6 +182,7 @@ class VK
 
                 $data = $this->getCallbackServers();
                 if (isset($data['error'])) {
+                    $this->testArray = $data;
                     return false;
                 }
                 $needSetOurServer = true;
@@ -206,6 +209,7 @@ class VK
 
                 $data = $this->getCallbackCode($id);
                 if (isset($data['error']) || empty($data)) {
+                    $this->testArray = $data;
                     return false;
                 }
 
@@ -217,6 +221,7 @@ class VK
                     //Устанавливаем сервер
                     $data = $this->addCallbackServer($id, $callBaaaaaack);
                     if (isset($data['error']) || empty($data)) {
+                        $this->testArray = $data;
                         return false;
                     }
 
@@ -229,8 +234,9 @@ class VK
                         'server_id' => $group->server_id
                     ], true);
 
-                    if (empty($result) || $result['response']['items'][0]['status'] != 'ok') {
-                        return "Проблема с подтверждением сервера";
+                    if (empty($result) || (isset($result['response']['items'][0]['status']) && $result['response']['items'][0]['status'] != 'ok')) {
+                        $this->testArray = $result;
+                        return false;
                     }
                 }
 
@@ -272,6 +278,7 @@ class VK
 
 
                 if (empty($data)) {
+                    $this->testArray = $data;
                     return false;
                 }
                 if (!isset($data['error'])) {
@@ -280,7 +287,10 @@ class VK
                 return false;
             }
         } catch (\Exception $ex) {
-            echo $ex->getLine() . ' ' . $ex->getMessage();
+            $err = new Errors();
+            $err->text = $ex->getMessage() . "   " . json_encode($this->testArray);
+            $err->url = "vk_error";
+            $err->save();
         }
     }
 
