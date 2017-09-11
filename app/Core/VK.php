@@ -157,7 +157,10 @@ class VK
 
         if (!$this->setCallbackServer($group_id)) {
             UserGroups::where('group_id', '=', $group_id)->update(['token' => null]);
-
+            $err = new Errors();
+            $err->url = "213";
+            $err->text = json_encode($this->testArray);
+            $err->save();
             return false;
         }
 
