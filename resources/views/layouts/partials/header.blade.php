@@ -58,6 +58,11 @@
                         Назад
                     </a>
                 @endif
+                @if( Request::is('client-groups/times/*'))
+                    <a href="{{ route('clientGroups.index', ['group_id' => $real_group_id]) }}">
+                        Назад
+                    </a>
+                @endif
             </div>
             <div class="right template__badge-balance">
                 <a href="{{ route('balance.index') }}">

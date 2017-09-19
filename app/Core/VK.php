@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy' => '194.28.210.3:8000',
+            'proxy' => '194.28.208.59:8000',
             'verify' => false,
         ]);
     }
@@ -387,12 +387,13 @@ class VK
         ])['response'];
     }
 
-    public function massSend($message, $to)
+    public function massSend($message, $to, $media = '')
     {
         return $this->requestToApi('messages.send', [
             'user_ids' => implode(',', $to),
             'random_id' => intval(microtime(true) * 1000),
-            'message' => $message
+            'message' => $message,
+            'attachment' => $media
         ], true);
     }
 
@@ -413,12 +414,13 @@ class VK
         ], true);
     }
 
-    public function sendMessage($message, $userId)
+    public function sendMessage($message, $userId, $media = '')
     {
         return $this->requestToApi('messages.send', [
             'user_id' => $userId,
             'random_id' => intval(microtime(true) * 1000),
-            'message' => $message
+            'message' => $message,
+            'attachments' => $media
         ], true);
     }
 

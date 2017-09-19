@@ -177,6 +177,12 @@
                                        title="Ссылка на подписку">
                                         <i class="material-icons left">link</i>
                                     </a>
+
+                                    <a href="{{route('client.group.times', ['id'=>$group->id])}}"
+                                       class="waves-effect waves-light link_group"
+                                       title="Ссылка на подписку">
+                                        <i class="material-icons left">timer</i>
+                                    </a>
                                 </td>
                             </tr>
                         @empty

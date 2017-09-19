@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                 $group_id
  * @property string              $rules
  * @property string              $message
+ * @property string              $media
  * @property int                 $reserved
  * @property int                 $sended
  * @property \Carbon\Carbon|null $created_at
@@ -37,7 +38,8 @@ class MassDelivery extends Model
         'message',
         'reserved',
         'sended',
-        'when_send'
+        'when_send',
+        'media'
     ];
     protected $table      = 'mass_delivery';
 

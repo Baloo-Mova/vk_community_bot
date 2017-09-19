@@ -62,15 +62,15 @@ class MassDelivery extends Command
                     }
                 });
 
-                if ( ! isset($this->task)) {
+                if (!isset($this->task)) {
                     sleep(10);
                     continue;
                 }
 
                 $rules = json_decode($this->task->rules, true);
-                $good  = array_column(Clients::whereIn('client_group_id',
+                $good = array_column(Clients::whereIn('client_group_id',
                     $rules['in'])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
-                $bad   = array_column(Clients::whereIn('client_group_id',
+                $bad = array_column(Clients::whereIn('client_group_id',
                     $rules['not'])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
 
                 $sendTo = array_diff($good, $bad);
@@ -81,12 +81,12 @@ class MassDelivery extends Command
 
                 foreach ($sendTo as $item) {
                     try {
-                        if (empty($vk->massSend($this->task->message, $item))) {
+                        if (empty($vk->massSend($this->task->message, $item,$this->task->media))) {
                             foreach ($item as $oneItem) {
                                 $result = $vk->sendMessage($this->task->message, $oneItem);
                                 if (empty($result)) {
                                     Clients::where([
-                                        'vk_id'    => $oneItem,
+                                        'vk_id' => $oneItem,
                                         'group_id' => $this->task->group->group_id
                                     ])->update(['can_send' => 0]);
                                 }
@@ -95,21 +95,21 @@ class MassDelivery extends Command
                         }
                         sleep(5);
                     } catch (\Exception $ex) {
-                        $error       = new Errors();
+                        $error = new Errors();
                         $error->text = $ex->getMessage() . '   ' . $ex->getLine();
-                        $error->url  = 'MassDeliverySEND';
+                        $error->url = 'MassDeliverySEND';
                         $error->save();
                     }
                 }
 
-                $this->task->sended   = 1;
+                $this->task->sended = 1;
                 $this->task->reserved = 0;
                 $this->task->save();
                 sleep(2);
             } catch (\Exception $ex) {
-                $error       = new Errors();
+                $error = new Errors();
                 $error->text = $ex->getMessage() . '   ' . $ex->getLine();
-                $error->url  = 'MassDelivery';
+                $error->url = 'MassDelivery';
                 $error->save();
             } finally {
                 if (isset($this->task)) {

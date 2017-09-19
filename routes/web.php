@@ -11,10 +11,6 @@
 |
 */
 
-
-
-
-
 Route::get('/login', "HomeController@login")->name('login');
 Route::post('/logout', "HomeController@logout")->name('logout');
 Route::get('/social_login/', 'SocialController@login')->name('vk_login');
@@ -27,9 +23,9 @@ Route::get('/change-group-bot-status/{group_id}/{status}',
 Route::get('/in-work-page', "HomeController@inWorkPage")->name('inwork');
 Route::post('/vk-tells-us/{id}', ['uses' => 'VkListenerController@index', 'as' => 'vk.tells.us.post']);
 
-Route::get('/vk-app-gate/',['uses'=>'VkListenerController@appGate','as'=>'vk.app.listener']);
-Route::get('/vk-app-subscribe/{to}',['uses'=>'VkListenerController@subscribeApp','as'=>'vk.app.subscribe']);
-Route::get('/vk-app-cancel/{to}',['uses'=>'VkListenerController@cancelApp','as'=>'vk.app.cancel']);
+Route::get('/vk-app-gate/', ['uses' => 'VkListenerController@appGate', 'as' => 'vk.app.listener']);
+Route::get('/vk-app-subscribe/{to}', ['uses' => 'VkListenerController@subscribeApp', 'as' => 'vk.app.subscribe']);
+Route::get('/vk-app-cancel/{to}', ['uses' => 'VkListenerController@cancelApp', 'as' => 'vk.app.cancel']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['middleware' => ['isAdmin']], function () {
@@ -62,6 +58,13 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/mass-delete-users',
             'ClientGroupsController@massDeleteClientGroup')->name('clientGroups.mass.delete.users');
         Route::get('/delete-user/{user_id}', 'ClientGroupsController@deleteUser')->name('clientGroups.delete.user');
+
+        Route::group(['prefix' => 'times'], function () {
+            Route::get('/{id}')->name('client.group.times')->uses('ClientGroupTimes@index');
+            Route::post('/add')->name('client.group.times.add')->uses('ClientGroupTimes@add');
+            Route::post('/edit')->name('client.group.times.edit')->uses('ClientGroupTimes@edit');
+            Route::get('/delete/{id}')->name('client.group.times.delete')->uses('ClientGroupTimes@delete');
+        });
     });
     Route::group(['prefix' => 'group-tasks'], function () {
         Route::get('/{group_id}', 'GroupTasksController@index')->name('groupTasks.index');

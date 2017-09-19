@@ -46,6 +46,10 @@
                         <input type="hidden" name="group_id" value="{{ $group_id }}">
                         <input type="hidden" name="rules" value="test_rules">
                         <div class="input-field col s12">
+                            <input id="media" name="media" class="validate" type="text">
+                            <label for="media">Вложения</label>
+                        </div>
+                        <div class="input-field col s12">
                             <textarea id="message" name="message" class="materialize-textarea"></textarea>
                             <label for="message">Текст</label>
                         </div>
@@ -90,6 +94,9 @@
                         </div>
                         <button class="waves-effect waves-green light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Сохранить</button>
                     </form>
+                </div>
+                <div class="col m6 l8 hide-on-med-and-down">
+                    <img src="{{asset('/img/howto.png')}}" class="responsive-img">
                 </div>
             </div>
             <div id="list" class="col s12 tab_content_custom">
@@ -138,6 +145,7 @@
                         dismissible: false
                     }
                 );
+
                 $(".in_select").select2();
                 $(".not_in_select").select2();
 

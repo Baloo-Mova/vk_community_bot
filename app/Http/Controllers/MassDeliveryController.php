@@ -13,6 +13,7 @@ class MassDeliveryController extends Controller
 {
     public function index($group_id)
     {
+
         $userGroup      = UserGroups::find($group_id);
         $massDeliveries = $userGroup->massdeliveries;
         $groups         = $userGroup->clientGroups;
