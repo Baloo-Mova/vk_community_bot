@@ -48,6 +48,7 @@ class NewMessageReceived implements ShouldQueue
      */
     public function handle()
     {
+
         $group = UserGroups::whereGroupId($this->group_id)->first();
 
         if (isset($group->token)) {
@@ -85,11 +86,10 @@ class NewMessageReceived implements ShouldQueue
             }
 
             $list = ListRules::where([
-                ['from', '>', Carbon::now()],
-                ['to', '<', Carbon::now()],
+                ['from', '<', Carbon::now()],
+                ['to', '>', Carbon::now()],
                 ['group_id', '=', $group->id]
             ])->get();
-
 
             foreach ($list as $item) {
                 $this->addToGroup($item->client_group_id, $userId);
