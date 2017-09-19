@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientGroupTimesAdd;
 use App\Models\ClientGroups;
 use App\Models\ListRules;
+use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,6 +40,44 @@ class ClientGroupTimes extends Controller
 
     public function edit(Request $request)
     {
+        $list_id = $request->get('client_group_id');
+        $name = $request->get('name');
+        $from = $request->get('from');
+        $to = $request->get('to');
 
+        if(!isset($list_id)){
+            Toastr::error("Отсутствует обязательный параметр!");
+            return back();
+        }
+
+        $list = ListRules::where(['client_group_id' => $list_id])->first();
+        if(!isset($list)){
+            Toastr::error("Временной отрезок с таким ID не найден!");
+            return back();
+        }
+
+        $list->name = $name;
+        $list->from = \Carbon\Carbon::parse($from)->toDateTimeString();
+        $list->to = \Carbon\Carbon::parse($to)->toDateTimeString();
+        $list->save();
+
+        Toastr::success("Изменения успешно внесены!");
+        return back();
     }
+
+    public function delete($id)
+    {
+        $list = ListRules::find($id);
+
+        if(!isset($list)){
+            Toastr::error("Временной отрезок с таким ID не найден!");
+            return back();
+        }
+
+        $list->delete();
+
+        Toastr::success("Удаление прошло успешно");
+        return back();
+    }
+
 }

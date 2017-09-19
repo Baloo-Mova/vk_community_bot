@@ -18,16 +18,16 @@
                             <label for="name">Имя</label>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 datetime1">
                             <input name="from" id="from" class="when_send" type="text" data-field="datetime" readonly>
-                            <label for="from" class="when_send">Дата рассылки</label>
-                            <div id="dtBox"></div>
+                            <label for="from" class="when_send">Дата сообщения с</label>
+                            <div id="dtBox1"></div>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 datetime2">
                             <input name="to" id="to" class="when_send" type="text" data-field="datetime" readonly>
-                            <label for="to" class="when_send">Дата рассылки</label>
-                            <div id="dtBox"></div>
+                            <label for="to" class="when_send">Дата сообщения по</label>
+                            <div id="dtBox2"></div>
                         </div>
                     </div>
 
@@ -46,19 +46,19 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input name="name" id="name" type="text" class="validate name">
-                            <label for="name">Имя</label>
+                            <label for="name" class="name_send_edit">Имя</label>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 datetime3">
                             <input name="from" id="from" class="from" type="text" data-field="datetime" readonly>
-                            <label for="from" class="when_send">Дата рассылки</label>
-                            <div id="dtBox"></div>
+                            <label for="from" class="from_send_edit">Дата сообщения с</label>
+                            <div id="dtBox3"></div>
                         </div>
 
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 datetime4">
                             <input name="to" id="to" class="to" type="text" data-field="datetime" readonly>
-                            <label for="to" class="when_send">Дата рассылки</label>
-                            <div id="dtBox"></div>
+                            <label for="to" class="to_send_edit">Дата сообщения по</label>
+                            <div id="dtBox4"></div>
                         </div>
                     </div>
                     <button class="waves-effect waves-green light-blue darken-4 btn">Редактировать</button>
@@ -97,8 +97,8 @@
                                     <a class="waves-effect waves-light group_edit"
                                        data-id="{{ $time->id }}"
                                        data-name="{{$time->name }}"
-                                       data-from="{{  substr($time->from,0,strlen($time->from) - 3) }}"
-                                       data-to="{{  substr($time->to,0,strlen($time->to) - 3) }}"
+                                       data-from="{{  \Carbon\Carbon::parse(substr($time->from,0,strlen($time->from) - 3))->format("d-m-Y H:i") }}"
+                                       data-to="{{  \Carbon\Carbon::parse(substr($time->to,0,strlen($time->to) - 3))->format("d-m-Y H:i") }}"
                                        href="#modal_edit">
                                         <i class="material-icons left">edit</i>
                                     </a>
@@ -134,7 +134,20 @@
         $(function () {
             $('.modal').modal();
 
-            $("#dtBox").DateTimePicker({
+            $("#dtBox1").DateTimePicker({
+                "parentElement": ".datetime1",
+                "language": "ru"
+            });
+            $("#dtBox2").DateTimePicker({
+                "parentElement": ".datetime2",
+                "language": "ru"
+            });
+            $("#dtBox3").DateTimePicker({
+                "parentElement": ".datetime3",
+                "language": "ru"
+            });
+            $("#dtBox4").DateTimePicker({
+                "parentElement": ".datetime4",
                 "language": "ru"
             });
 
@@ -142,13 +155,16 @@
             $(".group_edit").on("click", function () {
                 var id = $(this).data("id"),
                     name = $(this).data("name"),
-                    to = $(this).data("from"),
-                    from = $(this).data('to');
+                    from = $(this).data("from"),
+                    to = $(this).data('to');
 
                 $('.time_edit_id').val(id);
                 $(".name").val(name);
                 $(".from").val(from);
                 $(".to").val(to);
+                $(".to_send_edit").addClass('active');
+                $(".from_send_edit").addClass('active');
+                $(".name_send_edit").addClass('active');
             });
 
         });
