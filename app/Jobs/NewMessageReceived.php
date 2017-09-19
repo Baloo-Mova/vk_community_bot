@@ -9,6 +9,7 @@ use App\Models\Clients;
 use App\Models\Errors;
 use App\Models\Funnels;
 use App\Models\FunnelsTime;
+use App\Models\ListRules;
 use App\Models\ModeratorLogs;
 use App\Models\UserGroups;
 use Carbon\Carbon;
@@ -37,6 +38,7 @@ class NewMessageReceived implements ShouldQueue
         $this->data = $data;
         $this->group_id = $group_id;
         $this->queue = "NewMessageReceived";
+
     }
 
     /**
@@ -47,11 +49,14 @@ class NewMessageReceived implements ShouldQueue
     public function handle()
     {
         $group = UserGroups::whereGroupId($this->group_id)->first();
+
         if (isset($group->token)) {
             $vk = new VK();
             $vk->setGroup($group);
 
             $task = $group->activeTasks;
+
+
             $res = $task->mapWithKeys(function ($item) {
                 return [
                     $item['key'] => [
@@ -64,12 +69,30 @@ class NewMessageReceived implements ShouldQueue
                 ];
             });
 
+
             $messageId = $this->data['id'];
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
             $activeScenario = json_decode($group->send_scenario, true);
             if (!isset($activeScenario)) {
                 $activeScenario = [];
+            }
+
+            if (array_key_exists('*', $res->toArray())) {
+                if (isset($res["*"]['group'])) {
+                    $this->addToGroup($res["*"]['group'], $userId);
+                }
+            }
+
+            $list = ListRules::where([
+                ['from', '>', Carbon::now()],
+                ['to', '<', Carbon::now()],
+                ['group_id', '=', $group->id]
+            ])->get();
+
+
+            foreach ($list as $item) {
+                $this->addToGroup($item->client_group_id, $userId);
             }
 
             $actionId = "";

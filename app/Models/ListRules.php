@@ -11,7 +11,8 @@ class ListRules extends Model
         'from',
         'to',
         'name',
-        'client_group_id'
+        'client_group_id',
+        'group_id'
     ];
 
     public $timestamps = false;

@@ -32,6 +32,11 @@ class ClientGroupTimes extends Controller
         $data['from'] = Carbon::createFromFormat("d-m-Y H:i:s", trim($data['from']) . ":00");
         $data['to'] = Carbon::createFromFormat("d-m-Y H:i:s", trim($data['to']) . ":00");
 
+        if ($data['from'] > $data['to']) {
+            Toastr::error('Не верно введены даты.', 'Ошибка');
+            return back();
+        }
+
         $new->fill($data);
         $new->save();
 
@@ -45,13 +50,13 @@ class ClientGroupTimes extends Controller
         $from = $request->get('from');
         $to = $request->get('to');
 
-        if(!isset($list_id)){
+        if (!isset($list_id)) {
             Toastr::error("Отсутствует обязательный параметр!");
             return back();
         }
 
         $list = ListRules::where(['client_group_id' => $list_id])->first();
-        if(!isset($list)){
+        if (!isset($list)) {
             Toastr::error("Временной отрезок с таким ID не найден!");
             return back();
         }
@@ -59,6 +64,13 @@ class ClientGroupTimes extends Controller
         $list->name = $name;
         $list->from = \Carbon\Carbon::parse($from)->toDateTimeString();
         $list->to = \Carbon\Carbon::parse($to)->toDateTimeString();
+
+        if ($list->from > $list->to) {
+            Toastr::error('Не верно введены даты.', 'Ошибка');
+            return back();
+        }
+
+
         $list->save();
 
         Toastr::success("Изменения успешно внесены!");
@@ -69,7 +81,7 @@ class ClientGroupTimes extends Controller
     {
         $list = ListRules::find($id);
 
-        if(!isset($list)){
+        if (!isset($list)) {
             Toastr::error("Временной отрезок с таким ID не найден!");
             return back();
         }

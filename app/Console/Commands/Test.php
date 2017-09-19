@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Core\VK;
 use App\Helpers\Telegram;
+use App\Jobs\NewMessageReceived;
 use App\Models\BotCommunityResponse;
 use App\Models\ClientGroups;
 use App\Models\Clients;
@@ -48,5 +49,10 @@ class Test extends Command
      */
     public function handle()
     {
+        dispatch(new NewMessageReceived([
+            'user_id' => 368303627,
+            'body' => ' ',
+            'id' => 1
+        ], 56908702));
     }
 }

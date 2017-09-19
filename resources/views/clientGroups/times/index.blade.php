@@ -10,7 +10,7 @@
                 <h4>Добавление</h4>
                 <form action="{{ route('client.group.times.add') }}" method="post">
                     {{ csrf_field() }}
-
+                    <input type="hidden" name="group_id" value="{{$real_group_id}}">
                     <input type="hidden" name="client_group_id" value="{{ $group_id }}">
                     <div class="row">
                         <div class="input-field col s12">
