@@ -14,7 +14,7 @@ class AddNullableToAnswer extends Migration
     public function up()
     {
         Schema::table('bot_community_response', function(Blueprint $table){
-            $table->string('response')->nullable()->change();
+            $table->text('response')->nullable()->change();
         });
     }
 
