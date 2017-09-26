@@ -42,7 +42,13 @@ class BotCommunityResponse extends Model
         'add_group_id'
     ];
 
-    public function group(){
-        return $this->belongsTo(UserGroups::class,'group_id','id');
+    public function group()
+    {
+        return $this->belongsTo(UserGroups::class, 'group_id', 'id');
+    }
+
+    public function timeList()
+    {
+        return $this->hasMany(BotCommunityTime::class, 'bot_community_response_id', 'id');
     }
 }

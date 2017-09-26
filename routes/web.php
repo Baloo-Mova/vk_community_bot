@@ -71,6 +71,13 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
         Route::post('/add', 'GroupTasksController@add')->name('groupTasks.add');
         Route::post('/edit', 'GroupTasksController@edit')->name('groupTasks.edit');
         Route::get('/delete/{response}', 'GroupTasksController@delete')->name('groupTasks.delete');
+
+        Route::group(['prefix' => 'times'], function () {
+            Route::get('/{id}')->name('group.task.times')->uses('GroupTasksTimeController@index');
+            Route::post('/add')->name('group.task.times.add')->uses('GroupTasksTimeController@add');
+            Route::post('/edit')->name('group.task.times.edit')->uses('GroupTasksTimeController@edit');
+            Route::get('/delete/{id}')->name('group.task.times.delete')->uses('GroupTasksTimeController@delete');
+        });
     });
     Route::group(['prefix' => 'mass-delivery'], function () {
         Route::get('/{group_id}', 'MassDeliveryController@index')->name('massDelivery.index');

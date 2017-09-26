@@ -54,10 +54,7 @@ class NewMessageReceived implements ShouldQueue
         if (isset($group->token)) {
             $vk = new VK();
             $vk->setGroup($group);
-
             $task = $group->activeTasks;
-
-
             $res = $task->mapWithKeys(function ($item) {
                 return [
                     $item['key'] => [
@@ -65,7 +62,8 @@ class NewMessageReceived implements ShouldQueue
                         'name' => $item['scenario_name'],
                         'response' => $item['response'],
                         'action' => $item['action_id'],
-                        'group' => $item['add_group_id']
+                        'group' => $item['add_group_id'],
+                        'times' => $item->timeList
                     ]
                 ];
             });
@@ -102,6 +100,21 @@ class NewMessageReceived implements ShouldQueue
             $actionId = "";
             foreach ($res as $key => $value) {
                 if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
+                    $canRun = true;
+                    if ($value['times']->count() > 0) {
+                        $canRun = false;
+                        foreach ($value['times'] as $time) {
+                            if ((time() < strtotime($time['to'])) && (time() > strtotime($time['from']))) {
+                                $canRun = true;
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (!$canRun) {
+                        continue;
+                    }
+
                     if (in_array($value['id'], $activeScenario)) {
                         $actionId = $value['name'];
                     }

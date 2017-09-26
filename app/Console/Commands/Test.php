@@ -49,6 +49,10 @@ class Test extends Command
      */
     public function handle()
     {
-        echo env('PROXY', null) != null ? '1':'0';
+        dispatch(new NewMessageReceived([
+            'user_id' => 134923343,
+            'body' => '1',
+            'id' => 1
+        ], 149682680));
     }
 }

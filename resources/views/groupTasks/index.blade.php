@@ -189,6 +189,11 @@
                                            onclick="return confirm('Вы действительно хотите удалить этот сценарий?')">
                                             <i class="material-icons left">delete</i>
                                         </a>
+                                        <a href="{{route('group.task.times', ['id'=>$resp->id])}}"
+                                           class="waves-effect waves-light link_group"
+                                           title="Ссылка на подписку">
+                                            <i class="material-icons left">timer</i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

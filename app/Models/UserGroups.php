@@ -69,7 +69,7 @@ class UserGroups extends Model
     public function activeTasks()
     {
         return $this->hasMany(BotCommunityResponse::class, 'group_id',
-            'id')->where(['bot_community_response.state' => 1]);
+            'id')->where(['bot_community_response.state' => 1])->with('timeList');
     }
 
     public function actions()
