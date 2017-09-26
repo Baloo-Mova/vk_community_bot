@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $client_group_id
  * @property int $group_id
  * @property string $message
+ * @property string $media
  * @property int $when_send
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereClientGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereGroupId($value)
@@ -30,7 +31,8 @@ class AutoDelivery extends Model
         'client_group_id',
         'group_id',
         'message',
-        'when_send'
+        'when_send',
+        'media'
     ];
 
     public function group(){

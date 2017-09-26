@@ -51,7 +51,7 @@ class AutoDelivery extends Command
             try {
                 $this->tasks = \App\Models\AutoDelivery::with('group')->where('when_send', '<', time())->get();
 
-                if ( ! isset($this->tasks)) {
+                if (!isset($this->tasks)) {
                     sleep(10);
                     continue;
                 }
@@ -61,30 +61,30 @@ class AutoDelivery extends Command
                     try {
                         $canSend = Clients::where([
                             'group_id' => $item->group_id,
-                            'vk_id'    => $item->vk_id,
+                            'vk_id' => $item->vk_id,
                             'can_send' => 1
                         ])->first();
                         if (isset($canSend)) {
                             $userGroup = UserGroups::where(['group_id' => $item->group_id])->whereNotNull('token')->first();
                             if (isset($userGroup)) {
                                 $vk->setGroup($userGroup);
-                                $vk->sendMessage($item->message, $item->vk_id);
+                                $vk->sendMessage($item->message, $item->vk_id, $item->media);
                             }
                         }
-                        echo $item->vk_id . ' ' . $item->message;
+
                         $item->delete();
                     } catch (\Exception $ex) {
-                        $err       = new Errors();
+                        $err = new Errors();
                         $err->text = $ex->getMessage();
-                        $err->url  = $ex->getLine();
+                        $err->url = $ex->getLine();
                         $err->save();
                     }
                 }
                 sleep(5);
             } catch (\Exception $exception) {
-                $err       = new Errors();
+                $err = new Errors();
                 $err->text = $exception->getMessage();
-                $err->url  = $exception->getLine();
+                $err->url = $exception->getLine();
                 $err->save();
             }
         }

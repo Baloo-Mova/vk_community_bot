@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $funell_id
  * @property int $time
  * @property string $text
+ * @property string $media
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereFunellId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereText($value)
@@ -24,7 +25,8 @@ class FunnelsTime extends Model
     public $fillable = [
         'funell_id',
         'time',
-        'text'
+        'text',
+        'media'
     ];
 
     public function funnel(){

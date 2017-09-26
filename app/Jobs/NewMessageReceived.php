@@ -85,14 +85,18 @@ class NewMessageReceived implements ShouldQueue
                 }
             }
 
-            $list = ListRules::where([
-                ['from', '<', Carbon::now()],
-                ['to', '>', Carbon::now()],
-                ['group_id', '=', $group->id]
-            ])->get();
+            $clientIsset = Clients::where(['group_id' => $this->group_id, 'vk_id' => $userId])->first();
 
-            foreach ($list as $item) {
-                $this->addToGroup($item->client_group_id, $userId);
+            if (!isset($clientIsset)) {
+                $list = ListRules::where([
+                    ['from', '<', Carbon::now()],
+                    ['to', '>', Carbon::now()],
+                    ['group_id', '=', $group->id]
+                ])->get();
+
+                foreach ($list as $item) {
+                    $this->addToGroup($item->client_group_id, $userId);
+                }
             }
 
             $actionId = "";
@@ -210,6 +214,7 @@ class NewMessageReceived implements ShouldQueue
                     'funnel_id' => $itemSend['id'],
                     'group_id' => $this->group_id,
                     'message' => $itemSend['text'],
+                    'media' => $itemSend['media'],
                     'when_send' => time() + $itemSend['time'],
                 ];
             }

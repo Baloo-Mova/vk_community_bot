@@ -17,24 +17,24 @@ class FunnelsController extends Controller
 {
     public function index($group_id)
     {
-        $group   = UserGroups::find($group_id);
+        $group = UserGroups::find($group_id);
         $funnels = $group->funnels;
 
         $clientsGroups = $group->clientGroups;
 
         return view('funnels.index', [
-            "user"          => \Auth::user(),
-            "group"         => $group,
-            "group_id"      => $group->id,
-            "funnels"       => $funnels,
+            "user" => \Auth::user(),
+            "group" => $group,
+            "group_id" => $group->id,
+            "funnels" => $funnels,
             "client_groups" => $clientsGroups,
-            "tab_name"      => "funnels"
+            "tab_name" => "funnels"
         ]);
     }
 
     public function add(Request $request)
     {
-        if ( ! $request->has('client_group_id') || ! $request->has('name')) {
+        if (!$request->has('client_group_id') || !$request->has('name')) {
             Toastr::error('Заполнены не все данные', 'Ошибка');
 
             return back();
@@ -51,18 +51,18 @@ class FunnelsController extends Controller
     {
         return;
         $funnel = Funnels::find($request->get('funnel_id'));
-        if ( ! isset($funnel)) {
+        if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
 
             return back();
         }
         $name = $request->get('name');
-        if ( ! isset($name)) {
+        if (!isset($name)) {
             Toastr::error('Пожалуйста, укажите новое имя воронки!', 'Ошибка');
 
             return back();
         }
-        $funnel->name            = $name;
+        $funnel->name = $name;
         $funnel->client_group_id = $request->get('client_group_id');
         $funnel->save();
         Toastr::success('Воронка успешно изменена!', 'Успешно');
@@ -73,7 +73,7 @@ class FunnelsController extends Controller
     public function delete($funnel_id)
     {
         $funnel = Funnels::find($funnel_id);
-        if ( ! isset($funnel)) {
+        if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
 
             return back();
@@ -88,7 +88,7 @@ class FunnelsController extends Controller
     public function show($funnel_id)
     {
         $funnel = Funnels::find($funnel_id);
-        if ( ! isset($funnel)) {
+        if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
 
             return back();
@@ -96,9 +96,9 @@ class FunnelsController extends Controller
         $times = $funnel->times;
 
         return view('funnels.show', [
-            "times"  => isset($times) ? $times : [],
+            "times" => isset($times) ? $times : [],
             "funnel" => $funnel,
-            "user"   => \Auth::user()
+            "user" => \Auth::user()
         ]);
     }
 
@@ -106,27 +106,28 @@ class FunnelsController extends Controller
     {
 
         $time = 0;
-        $d    = $request->get('days');
-        $h    = $request->get('hours');
-        $m    = $request->get('minutes');
+        $d = $request->get('days');
+        $h = $request->get('hours');
+        $m = $request->get('minutes');
         $time += intval($d) * 86400;
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0 || ! $request->has('text')) {
+        if ($time == 0 || !$request->has('text')) {
             Toastr::error('Поля не заполнены', 'Ошибка');
 
             return back();
         }
 
-        $ftime            = new FunnelsTime();
+        $ftime = new FunnelsTime();
         $ftime->funell_id = $request->get('funnel_id');
-        $ftime->time      = $time;
-        $ftime->text      = $request->get('text');
+        $ftime->time = $time;
+        $ftime->text = $request->get('text');
+        $ftime->media = $request->get('media');
         $ftime->save();
 
         $funnel = $ftime->funnel;
-        $group  = $funnel->group;
+        $group = $funnel->group;
 
         $clients = Clients::whereClientGroupId($funnel->client_group_id)->where('created', '>',
             Carbon::createFromTimestamp(time() - $time))->get();
@@ -134,12 +135,13 @@ class FunnelsController extends Controller
         $array = [];
         foreach ($clients as $item) {
             $array[] = [
-                'vk_id'           => $item->vk_id,
-                'message'         => $ftime->text,
+                'vk_id' => $item->vk_id,
+                'message' => $ftime->text,
+                'media' => $ftime->media,
                 'client_group_id' => $item->client_group_id,
-                'group_id'        => $group->group_id,
-                'when_send'       => Carbon::createFromFormat("Y-m-d H:i:s", $item->created)->timestamp + $time,
-                'funnel_id'       => $ftime->id
+                'group_id' => $group->group_id,
+                'when_send' => Carbon::createFromFormat("Y-m-d H:i:s", $item->created)->timestamp + $time,
+                'funnel_id' => $ftime->id
             ];
         }
 
@@ -153,9 +155,9 @@ class FunnelsController extends Controller
     public function editTime(Request $request)
     {
         $time = 0;
-        $d    = $request->get('days');
-        $h    = $request->get('hours');
-        $m    = $request->get('minutes');
+        $d = $request->get('days');
+        $h = $request->get('hours');
+        $m = $request->get('minutes');
         $time += intval($d) * 86400;
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
@@ -167,13 +169,13 @@ class FunnelsController extends Controller
         }
 
         $ftime = FunnelsTime::find($request->get('time_id'));
-        if ( ! isset($ftime)) {
+        if (!isset($ftime)) {
             Toastr::error('Времени с таким ID не существует!', 'Ошибка');
 
             return back();
         }
 
-        $oldValue    = $ftime->time;
+        $oldValue = $ftime->time;
         $ftime->time = $time;
         $ftime->text = $request->get('text');
         $ftime->save();
@@ -181,7 +183,7 @@ class FunnelsController extends Controller
         $timeToUpdate = $time - $oldValue;
 
         AutoDelivery::where(['funnel_id' => $ftime->id])->update([
-            'message'   => $ftime->text,
+            'message' => $ftime->text,
             'when_send' => DB::raw('when_send + ' . $timeToUpdate)
         ]);
 
@@ -193,7 +195,7 @@ class FunnelsController extends Controller
     public function deleteTime($time_id)
     {
         $time = FunnelsTime::find($time_id);
-        if ( ! isset($time)) {
+        if (!isset($time)) {
             Toastr::error('Времени с таким ID не существует!', 'Ошибка');
 
             return back();

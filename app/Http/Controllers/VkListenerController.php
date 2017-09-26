@@ -339,6 +339,7 @@ class VkListenerController extends Controller
                 'funnel_id' => $itemSend['id'],
                 'group_id' => $data['group_id'],
                 'message' => $itemSend['text'],
+                'media' => $itemSend['media'],
                 'when_send' => time() + $itemSend['time'],
             ];
         }

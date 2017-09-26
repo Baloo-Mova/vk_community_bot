@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            //'proxy' => '194.28.208.59:8000',
+            'proxy' => env('PROXY', null) != null ? '194.28.210.3:8000' : '',
             'verify' => false,
         ]);
     }
@@ -420,7 +420,7 @@ class VK
             'user_id' => $userId,
             'random_id' => intval(microtime(true) * 1000),
             'message' => $message,
-            'attachments' => $media
+            'attachment' => $media
         ], true);
     }
 

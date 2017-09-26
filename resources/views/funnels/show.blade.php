@@ -29,8 +29,12 @@
                             <textarea id="text" name="text" class="materialize-textarea"></textarea>
                             <label for="text">Текст</label>
                         </div>
+                        <div class="input-field col s12">
+                            <input id="media" name="media" type="text" class="validate">
+                            <label for="media">Медиа</label>
+                        </div>
                     </div>
-                    <button class="waves-effect waves-green light-blue darken-4 btn" >Добавить</button>
+                    <button class="waves-effect waves-green light-blue darken-4 btn">Добавить</button>
                 </form>
             </div>
         </div>
@@ -58,8 +62,12 @@
                             <textarea id="text" name="text" class="materialize-textarea edit_text"></textarea>
                             <label for="text" class="edit_text_label">Текст</label>
                         </div>
+                        <div class="input-field col s12">
+                            <input id="media" name="media" class="validate edit_media" type="text">
+                            <label for="media" class="edit_media_label">Медиа</label>
+                        </div>
                     </div>
-                    <button class="waves-effect waves-green light-blue darken-4 btn" >Сохранить</button>
+                    <button class="waves-effect waves-green light-blue darken-4 btn">Сохранить</button>
                 </form>
             </div>
         </div>
@@ -71,43 +79,44 @@
                 <div class="mt20">
                     <table class="highlight">
                         <thead>
-                            <th class="col s3">Время</th>
-                            <th class="col s6">Текст</th>
-                            <th class="col s3">Действия</th>
+                        <th class="col s3">Время</th>
+                        <th class="col s6">Текст</th>
+                        <th class="col s3">Действия</th>
                         </thead>
                         <tbody>
-                            @forelse($times as $time)
-                                <tr>
-                                    <td class="col s3 funnels_tds">
-                                        {{ sprintf('%02d дня %02d часов %02d минут', $time->time/86400, ($time->time % 86400)/3600, (($time->time % 86400)%3600) / 60) }}
-                                    </td>
-                                    <td class="col s6 funnels_tds">
-                                        <!--<div class="text_wrap">-->
-                                            {{ $time->text }}
-                                        <!--</div>-->
-                                    </td>
-                                    <td class="col s3">
-                                        <a class="waves-effect waves-light time_edit funnel_action"
-                                           data-edit-id="{{ $time->id }}"
-                                           data-edit-days="{{ intval($time->time/86400) }}"
-                                           data-edit-hours="{{ intval(($time->time % 86400)/3600) }}"
-                                           data-edit-minutes="{{ intval((($time->time % 86400)%3600) / 60) }}"
-                                           data-edit-text="{{ $time->text }}"
-                                           href="#modal_edit">
-                                            <i class="material-icons left">edit</i>
-                                        </a>
-                                        <a href="{{ route('funnels.delete.time', ['time_id' => $time->id]) }}"
-                                           class="waves-effect waves-light funnel_action"
-                                           onclick="return confirm('Вы действительно хотите удалить это время?')">
-                                            <i class="material-icons left">delete</i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td class="text-center" colspan="3">Нет результатов</td>
-                                </tr>
-                            @endforelse
+                        @forelse($times as $time)
+                            <tr>
+                                <td class="col s3 funnels_tds">
+                                    {{ sprintf('%02d дня %02d часов %02d минут', $time->time/86400, ($time->time % 86400)/3600, (($time->time % 86400)%3600) / 60) }}
+                                </td>
+                                <td class="col s6 funnels_tds">
+                                    <!--<div class="text_wrap">-->
+                                {{ $time->text }}
+                                <!--</div>-->
+                                </td>
+                                <td class="col s3">
+                                    <a class="waves-effect waves-light time_edit funnel_action"
+                                       data-edit-id="{{ $time->id }}"
+                                       data-edit-days="{{ intval($time->time/86400) }}"
+                                       data-edit-hours="{{ intval(($time->time % 86400)/3600) }}"
+                                       data-edit-minutes="{{ intval((($time->time % 86400)%3600) / 60) }}"
+                                       data-edit-text="{{ $time->text }}"
+                                       data-edit-media="{{ $time->media }}"
+                                       href="#modal_edit">
+                                        <i class="material-icons left">edit</i>
+                                    </a>
+                                    <a href="{{ route('funnels.delete.time', ['time_id' => $time->id]) }}"
+                                       class="waves-effect waves-light funnel_action"
+                                       onclick="return confirm('Вы действительно хотите удалить это время?')">
+                                        <i class="material-icons left">delete</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td class="text-center" colspan="3">Нет результатов</td>
+                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -118,16 +127,17 @@
 
         @section('js')
             <script>
-                $(document).ready(function(){
+                $(document).ready(function () {
                     $('.modal').modal();
 
 
                     $(".time_edit").on("click", function () {
                         var time_id = $(this).data("editId"),
-                            days          = $(this).data("editDays"),
-                            hours          = $(this).data("editHours"),
-                            minutes          = $(this).data("editMinutes"),
-                            text          = $(this).data("editText");
+                            days = $(this).data("editDays"),
+                            hours = $(this).data("editHours"),
+                            minutes = $(this).data("editMinutes"),
+                            media = $(this).data("editMedia"),
+                            text = $(this).data("editText");
 
                         $(".edit_time_id").val(time_id);
                         $(".edit_days_label").addClass('active');
@@ -137,6 +147,8 @@
                         $(".edit_minutes_label").addClass('active');
                         $(".edit_minutes").val(minutes);
                         $(".edit_text_label").addClass('active');
+                        $(".edit_media").val(media);
+                        $(".edit_media_label").addClass('active');
                         $(".edit_text").val(text);
                         $('.edit_text').trigger('autoresize');
                     });

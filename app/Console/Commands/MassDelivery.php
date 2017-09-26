@@ -81,9 +81,9 @@ class MassDelivery extends Command
 
                 foreach ($sendTo as $item) {
                     try {
-                        if (empty($vk->massSend($this->task->message, $item,$this->task->media))) {
+                        if (empty($vk->massSend($this->task->message, $item, $this->task->media))) {
                             foreach ($item as $oneItem) {
-                                $result = $vk->sendMessage($this->task->message, $oneItem);
+                                $result = $vk->sendMessage($this->task->message, $oneItem, $this->task->media);
                                 if (empty($result)) {
                                     Clients::where([
                                         'vk_id' => $oneItem,
