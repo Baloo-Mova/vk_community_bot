@@ -65,6 +65,7 @@
                 @endif
             </div>
             <div class="right template__badge-balance">
+                <span class="lime badge darken-3 white-text">Promo: {{$user->promo_balance}} р.</span>
                 <a href="{{ route('balance.index') }}">
                     <span class="teal lighten-2 badge white-text">{{ $user->balance }} р.</span>
                 </a>

@@ -1,11 +1,12 @@
-.main_page{
+.main_page {
     width: 100%;
     height: 100vh;
     background: url("../img/bg.jpg");
     background-size: cover;
     text-align: center;
 }
-.login-button{
+
+.login-button {
     margin-top: 20%;
 }
 
@@ -52,12 +53,12 @@ body {
     width: auto;
 }
 
-.page_title{
+.page_title {
     font-size: 25px;
     margin: 20px 0px 20px 20px;
 }
 
-.tabs{
+.tabs {
     background-color: transparent;
 }
 
@@ -65,35 +66,39 @@ body {
     color: #3F51B5;
     text-decoration: none;
 }
+
 .tabs .indicator {
     background-color: #3F51B5;
 }
+
 .tabs .tab a {
     color: #637377;
 }
 
-.side-nav{
+.side-nav {
     width: 290px;
 }
 
 .card.small {
     height: 160px;
 }
-.groups_options_card a{
+
+.groups_options_card a {
     width: 100px;
     font-size: 15px;
 }
+
 .groups_options_card,
-.groups_options_card_ul{
+.groups_options_card_ul {
     width: 100%;
 }
 
-.groups_options_card{
+.groups_options_card {
     /*padding: 5px 30px; */
     text-align: left;
 }
 
-.groups_options_card_wrap{
+.groups_options_card_wrap {
     padding: 0px !important;
 }
 
@@ -101,40 +106,47 @@ body {
     font-size: 18px;
 }
 
-.groups_options_card_title{
+.groups_options_card_title {
     padding: 3px 20px;
 }
 
-.header_user:hover{
+.header_user:hover {
     text-decoration: none;
     color: #fff;
 }
-.header_user_menu_item:hover{
+
+.header_user_menu_item:hover {
     text-decoration: none;
 }
-.user_dropdown_ul{
+
+.user_dropdown_ul {
     top: 70px !important;
 }
-.contentheader_badge{
+
+.contentheader_badge {
     float: none !important;
     color: #fff !important;
 }
-.group_avatar_in_card{
+
+.group_avatar_in_card {
     width: 50px;
 }
+
 .group_name_in_card,
-.group_link_in_card{
+.group_link_in_card {
     white-space: nowrap; /* Запрещаем перенос строк */
     overflow: hidden; /* Обрезаем все, что не помещается в область */
     text-overflow: ellipsis; /* Добавляем многоточие */
     width: 90%;
 }
-.group_link_in_card{
+
+.group_link_in_card {
     padding: 5px 0px;
     margin: 0;
     width: 80%;
 }
-.group_menu_activator_in_card:hover{
+
+.group_menu_activator_in_card:hover {
     cursor: pointer;
 }
 
@@ -142,92 +154,127 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     border-bottom: 1px solid #3F51B5;
     box-shadow: 0 1px 0 0 #3F51B5;
 }
-input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
+
+input:not([type]):focus:not([readonly]) + label, input[type=text]:not(.browser-default):focus:not([readonly]) + label, input[type=password]:not(.browser-default):focus:not([readonly]) + label, input[type=email]:not(.browser-default):focus:not([readonly]) + label, input[type=url]:not(.browser-default):focus:not([readonly]) + label, input[type=time]:not(.browser-default):focus:not([readonly]) + label, input[type=date]:not(.browser-default):focus:not([readonly]) + label, input[type=datetime]:not(.browser-default):focus:not([readonly]) + label, input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label, input[type=tel]:not(.browser-default):focus:not([readonly]) + label, input[type=number]:not(.browser-default):focus:not([readonly]) + label, input[type=search]:not(.browser-default):focus:not([readonly]) + label, textarea.materialize-textarea:focus:not([readonly]) + label {
     color: #3F51B5;
 }
-.tab_content_custom{
+
+.tab_content_custom {
     padding-top: 20px !important;
 }
-.a_non_decorated:hover{
+
+.a_non_decorated:hover {
     text-decoration: none !important;
 }
+
 .modal, .modal-backdrop {
     bottom: inherit;
 }
+
 .modal-content {
     border-radius: 0px;
 }
-.switch label input[type=checkbox]:checked+.lever:after {
+
+.switch label input[type=checkbox]:checked + .lever:after {
     background-color: #3F51B5;
 }
-.switch label input[type=checkbox]:checked+.lever {
+
+.switch label input[type=checkbox]:checked + .lever {
     background-color: #828AB2;
 }
-.btn:hover{
+
+.btn:hover {
     color: #fff;
 }
+
 .update_user_groups_button {
 }
-.update_badge{
+
+.update_badge {
     background-color: #F5F8FA !important;
     margin: 0px !important;
     height: 26px !important;
 }
-.a_in_li{
+
+.a_in_li {
     display: block;
     width: 100% !important;
     padding: 2px 30px !important;
 }
-.group_is_payed{
-    border: 1px solid #00796b ;
+
+.group_is_payed {
+    border: 1px solid #00796b;
     padding: 10px 10px;
     background-color: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     color: #00897b;
 }
-.group_not_payed{
+
+.promo {
+    position:  absolute;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #00796b;
+    background-color: #fff;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    color: #00897b;
+}
+
+.group_not_payed {
     border: 1px solid red;
     padding: 10px 10px;
     background-color: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     color: red;
     margin-bottom: 10px;
 }
-.group_not_payed p:last-child{
+
+.group_not_payed p:last-child {
     margin: 0;
 }
-.bot_settings_title{
+
+.bot_settings_title {
     font-size: 16px;
     font-weight: bold;
     margin: 10px 0px 10px 10px;
 }
-.groups_back_button{
+
+.groups_back_button {
     margin: 10px 0px;
 }
-.mt10{
+
+.mt10 {
     margin-top: 10px;
 }
-.mt20{
+
+.mt20 {
     margin-top: 20px;
 }
-.mb10{
+
+.mb10 {
     margin-bottom: 10px;
 }
-.table_td{
+
+.table_td {
     padding: 15px 5px !important;
 }
-.textarea6{
+
+.textarea6 {
     max-height: 120px !important;
     overflow-y: auto;
     padding: 10px !important;
 }
-.side-nav li{
+
+.side-nav li {
     text-align: left;
 }
+
 .side-nav li > a {
     color: rgba(0, 0, 0, 0.87);
     display: block;
@@ -236,120 +283,147 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
     height: 60px;
     padding: 5px 32px;
 }
-.side-nav li > a > p{
+
+.side-nav li > a > p {
     margin: 0;
     padding: 0;
     height: 20px;
 }
+
 .action_select,
 .group_select,
 .action_select_edit,
-.group_select_edit{
+.group_select_edit {
     display: none;
 }
-.h10{
+
+.h10 {
     height: 10px;
 }
-.when_send_wrap{
+
+.when_send_wrap {
     display: none;
 }
-.template__badge-balance{
+
+.template__badge-balance {
     padding-top: 8px;
 }
-.template__badge-balance span{
+
+.template__badge-balance span {
     border-radius: 3px;
 }
-.site_name_in_sidebar{
+
+.site_name_in_sidebar {
     font-size: 25px !important;
 }
-.bots_card{
+
+.bots_card {
     cursor: pointer;
 }
-.sidebar_icon{
+
+.sidebar_icon {
     color: #fff !important;
 }
+
 .side-nav a:hover,
-.nav-wrapper a:hover{
+.nav-wrapper a:hover {
     text-decoration: none;
     color: #fff;
 }
-.sidebar_logo{
+
+.sidebar_logo {
     width: 150px !important;
     height: 150px !important;
     -webkit-box-shadow: 0px 9px 18px 0px rgba(50, 50, 50, 0.41);
-    -moz-box-shadow:    0px 9px 18px 0px rgba(50, 50, 50, 0.41);
-    box-shadow:         0px 9px 18px 0px rgba(50, 50, 50, 0.41);
+    -moz-box-shadow: 0px 9px 18px 0px rgba(50, 50, 50, 0.41);
+    box-shadow: 0px 9px 18px 0px rgba(50, 50, 50, 0.41);
 }
-.nonactive{
+
+.nonactive {
     background: transparent !important;
 }
-.funnel_action{
+
+.funnel_action {
     padding: 15px 0px !important;
     color: #637377;
 }
-.funnel_link{
+
+.funnel_link {
     display: block;
     width: 100%;
     height: 100%;
     padding: 15px 0px !important;
     color: #637377;
 }
+
 .funnels_tds,
-.funnels_td div{
+.funnels_td div {
     padding: 15px 5px !important;
 }
-.funnels_tds .text_wrap{
+
+.funnels_tds .text_wrap {
     max-height: 50px;
     overflow: hidden;
 }
+
 .funnel_link:hover,
-.funnel_action:hover{
+.funnel_action:hover {
     color: #2196F3;
 }
+
 .funnels_td:hover,
-.funnels_tds:hover{
+.funnels_tds:hover {
     cursor: pointer;
 }
-.add_telegram{
+
+.add_telegram {
     background-color: #fff;
     border: 1px solid red;
     border-radius: 4px;
     padding: 20px;
 }
-.add_telegram p{
+
+.add_telegram p {
     font-size: 18px;
 }
-.add_telegram .input_row{
+
+.add_telegram .input_row {
     margin-bottom: 0;
 }
-.manager_telegram_status{
+
+.manager_telegram_status {
     margin-left: 0 !important;
 }
-.manager_telegram_status_row{
+
+.manager_telegram_status_row {
     margin-bottom: 20px;
 }
-.preloader__wrap{
+
+.preloader__wrap {
     position: absolute;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0,0,0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 900;
     display: none;
 }
 
-.preloader__block{
+.preloader__block {
     z-index: 1000;
     position: absolute;
     top: 40%;
     left: 40%;
 }
-.pagination .active span{
+
+.pagination .active span {
     padding: 0px 10px;
     color: #fff;
 }
-.text-center{
+
+.text-center {
     text-align: center;
 }
-.h10{
+
+.h10 {
     height: 10px;
 }

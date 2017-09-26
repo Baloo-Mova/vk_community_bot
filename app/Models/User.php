@@ -8,24 +8,27 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * App\Models\User
  *
- * @property int                                                                                                            $id
- * @property string                                                                                                         $name
- * @property string|null                                                                                                    $email
- * @property string                                                                                                         $password
- * @property string|null                                                                                                    $remember_token
- * @property \Carbon\Carbon|null                                                                                            $created_at
- * @property \Carbon\Carbon|null                                                                                            $updated_at
- * @property string                                                                                                         $vk_token
- * @property int                                                                                                            $vk_id
- * @property int                                                                                                            $expiresIn
- * @property boolean                                                                                                        $trial_used
- * @property boolean                                                                                                        $resubscribe_notification_send
- * @property string                                                                                                         $avatar
- * @property string                                                                                                         $FIO
- * @property string                                                                                                         $balance
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserGroups[]                                         $groups
+ * @property int $id
+ * @property string $name
+ * @property string|null $email
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string $vk_token
+ * @property int $vk_id
+ * @property int $expiresIn
+ * @property boolean $trial_used
+ * @property boolean $resubscribe_notification_send
+ * @property string $avatar
+ * @property string $FIO
+ * @property string $promo
+ * @property string $my_promo
+ * @property string $balance
+ * @property string $promo_balance
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserGroups[] $groups
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentLogs[]                                        $payments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentLogs[] $payments
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
@@ -59,7 +62,10 @@ class User extends Authenticatable
         'expiresIn',
         'avatar',
         'FIO',
-        'resubscribe_notification_send'
+        'resubscribe_notification_send',
+        'promo',
+        'my_promo',
+        'promo_balance',
     ];
 
     /**
@@ -74,7 +80,7 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->belongsToMany(UserGroups::class,'user_groups_pivot','user_id','usergroup_id');
+        return $this->belongsToMany(UserGroups::class, 'user_groups_pivot', 'user_id', 'usergroup_id');
     }
 
     public function payments()

@@ -15,7 +15,7 @@ class BalanceController extends Controller
         $user = \Auth::user();
 
         return view('balance.index', [
-            'user'     => $user,
+            'user' => $user,
             'payments' => $user->payments
         ]);
     }
@@ -26,14 +26,26 @@ class BalanceController extends Controller
     public function replenishment(Request $request)
     {
         $sum = $request->get('sum');
+        $promo = $request->get('promo');
+
+        if ($promo == \Auth::user()->my_promo) {
+            Toastr::error('Нельзя использовать ваш промокод');
+            return back();
+        }
+
+        if (!empty(\Auth::user()->promo)) {
+            $promo = \Auth::user()->promo;
+        }
+
         if (empty($sum) || $sum == 0) {
             return back();
         }
 
-        $payment              = new PaymentLogs();
-        $payment->user_id     = \Auth::user()->id;
+        $payment = new PaymentLogs();
+        $payment->user_id = \Auth::user()->id;
         $payment->description = PaymentLogs::ReplenishmentBalance;
         $payment->payment_sum = $sum;
+        $payment->promo_usage = $promo;
         $payment->save();
 
         $kassa = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.password1'),
@@ -51,12 +63,12 @@ class BalanceController extends Controller
 
         if ($payment->validateResult($_GET)) {
             $order = PaymentLogs::find($payment->getInvoiceId());
-            if ( ! isset($order)) {
+            if (!isset($order)) {
                 abort(401);
             }
 
             $user = User::find($order->user_id);
-            if ( ! isset($user)) {
+            if (!isset($user)) {
                 abort(404);
             }
 
@@ -68,6 +80,23 @@ class BalanceController extends Controller
             $order->save();
 
             $user->increment('balance', $payment->getSum());
+
+            if (!empty($order->promo_usage)) {
+                $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
+
+                if (isset($promoUser)) {
+                    $log = new PaymentLogs();
+                    $log->status = 1;
+                    $log->user_id = $promoUser->id;
+                    $log->description = PaymentLogs::PromoCodeUsage;
+                    $log->payment_sum = $payment->getSum() * (config('app.promo_percent') / 100);
+                    $log->save();
+
+                    $promoUser->increment('promo_balance', $payment->getSum() * (config('app.promo_percent') / 100));
+                    $promoUser->save();
+                }
+            }
+
 
             return $payment->getSuccessAnswer();
         }

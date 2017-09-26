@@ -49,10 +49,11 @@ class Test extends Command
      */
     public function handle()
     {
-        dispatch(new NewMessageReceived([
-            'user_id' => 134923343,
-            'body' => '1',
-            'id' => 1
-        ], 149682680));
+        $users = User::all();
+
+        foreach ($users as $item) {
+            $item->my_promo = 'vkknocker_' . $item->vk_id;
+            $item->save();
+        }
     }
 }

@@ -22,39 +22,54 @@
                     </li>
                 </ul>
             </div>
+
             <div id="balance" class="col s12 tab_content_custom">
-                <form action="{{ route('balance.replenishment') }}" method="post">
-                    {{ csrf_field() }}
-                    <div class="input-field col s12 m6 l4 xl3">
-                        <input type="text" name="sum" id="sum" required>
-                        <label for="sum">Сумма пополнения (руб)</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <button class="btn  light-blue darken-4 waves-effect wavev-light">Пополнить</button>
-                    </div>
-                </form>
+                <div class="col s12 l6">
+                    <form action="{{ route('balance.replenishment') }}" method="post">
+                        {{ csrf_field() }}
+                        <div class="input-field col s12 m6 ">
+                            <input type="text" name="sum" id="sum" required>
+                            <label for="sum">Сумма пополнения (руб)</label>
+                        </div>
+                        <div class="clearfix"></div>
+                        @if(empty($user->promo))
+                            <div class="input-field col s12 m6 ">
+                                <input type="text" name="promo" id="promo">
+                                <label for="promo">Промокод</label>
+                            </div>
+                        @endif
+                        <div class="input-field col s12">
+                            <button class="btn  light-blue darken-4 waves-effect wavev-light">Пополнить</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <span class="promo">
+                       Промокод партнера:
+                         {{ $user->my_promo }}
+                </span>
             </div>
             <div id="history" class="col s12 tab_content_custom">
                 <table class="highlight centered">
                     <thead>
-                        <th>Тип</th>
-                        <th>Сумма</th>
-                        <th>Статус</th>
-                        <th>Дата</th>
+                    <th>Тип</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
                     </thead>
                     <tbody>
-                        @forelse($payments as $pay)
-                            <tr>
-                                <td>{{ $pay->description == 1 ? "Пополнение баланса" : "Оплата подписки" }}</td>
-                                <td>{{ $pay->payment_sum }} руб</td>
-                                <td>{{ $pay->status == 1 ? "Успешно" : "Неуспешно" }}</td>
-                                <td>{{ $pay->created_at }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="text-center" colspan="3">Нет платежей</td>
-                            </tr>
-                        @endforelse
+                    @forelse($payments as $pay)
+                        <tr>
+                            <td>{{ \App\Models\PaymentLogs::$list[$pay->description]}}</td>
+                            <td>{{ $pay->payment_sum }} руб</td>
+                            <td>{{ $pay->status == 1 ? "Успешно" : "Неуспешно" }}</td>
+                            <td>{{ $pay->created_at }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td class="text-center" colspan="3">Нет платежей</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
