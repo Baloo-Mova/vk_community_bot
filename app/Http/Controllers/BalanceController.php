@@ -85,8 +85,8 @@ class BalanceController extends Controller
 
                 if (empty($user->promo)) {
                     $user->promo = $order->promo_usage;
-                    $user->increment('balance', config('promo_increment'));
                     $user->save();
+                    $user->increment('balance', config('app.promo_increment'));
                 }
 
                 $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
@@ -99,7 +99,7 @@ class BalanceController extends Controller
                     $log->payment_sum = $payment->getSum() * (config('app.promo_percent') / 100);
                     $log->save();
 
-                    $promoUser->increment('promo_balance', $payment->getSum() * (config('app.promo_percent') / 100));
+                    $promoUser->increment('promo_balance', \intval($payment->getSum() * (config('app.promo_percent') / 100)));
                     $promoUser->save();
                 }
             }
