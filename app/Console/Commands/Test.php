@@ -49,11 +49,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $users = User::all();
-
-        foreach ($users as $item) {
-            $item->my_promo = 'vkknocker_' . $item->vk_id;
-            $item->save();
-        }
+        echo 3 * (config('app.promo_percent') / 100);
     }
 }

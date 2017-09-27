@@ -17,7 +17,7 @@ class SocialController extends Controller
     public function loginCallback()
     {
         $user = Socialite::with('vk')->stateless()->authUser();
-        \Auth::login($user, true);
+        \Auth::login($user);
 
         return redirect()->intended('/');
     }

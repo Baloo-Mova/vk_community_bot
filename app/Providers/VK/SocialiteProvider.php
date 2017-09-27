@@ -39,27 +39,29 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
 
     public function authUser()
     {
-        $user   = $this->user();
+        $user = $this->user();
         $dbUser = \App\Models\User::where('vk_id', '=', $user->id)->first();
-        if ( ! isset($dbUser)) {
-            $dbUser            = new \App\Models\User();
-            $dbUser->name      = $user->nickname;
-            $dbUser->email     = $user->email;
-            $dbUser->password  = Hash::make(uniqid());
-            $dbUser->vk_token  = $user->token;
-            $dbUser->vk_id     = $user->id;
+        if (!isset($dbUser)) {
+            $dbUser = new \App\Models\User();
+            $dbUser->name = $user->nickname;
+            $dbUser->email = $user->email;
+            $dbUser->password = Hash::make(uniqid());
+            $dbUser->vk_token = $user->token;
+            $dbUser->vk_id = $user->id;
             $dbUser->expiresIn = $user->expiresIn;
-            $dbUser->avatar    = $user->avatar;
-            $dbUser->FIO       = $user->name;
+            $dbUser->avatar = $user->avatar;
+            $dbUser->my_promo = 'vkknocker_' . $user->id;
+            $dbUser->FIO = $user->name;
             $dbUser->save();
         } else {
-            $dbUser->name      = $user->nickname;
-            $dbUser->email     = $user->email;
-            $dbUser->vk_token  = $user->token;
-            $dbUser->vk_id     = $user->id;
+            $dbUser->name = $user->nickname;
+            $dbUser->email = $user->email;
+            $dbUser->vk_token = $user->token;
+            $dbUser->vk_id = $user->id;
             $dbUser->expiresIn = $user->expiresIn;
-            $dbUser->avatar    = $user->avatar;
-            $dbUser->FIO       = $user->name;
+            $dbUser->avatar = $user->avatar;
+            $dbUser->FIO = $user->name;
+            $dbUser->my_promo = 'vkknocker_' . $user->id;
             $dbUser->save();
         }
 
@@ -80,7 +82,7 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
         }
 
         $user = $this->mapUserToObject($this->getUserByToken($token = $this->getAccessTokenResponse($this->getCode())));
-        $exp  = array_get($token, 'expires_in') == 0 ? 86400 : array_get($token, 'expires_in');
+        $exp = array_get($token, 'expires_in') == 0 ? 86400 : array_get($token, 'expires_in');
 
         return $user->setToken(array_get($token, 'access_token'))->setExpiresIn(time() + $exp);
     }
@@ -91,11 +93,11 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
     protected function mapUserToObject(array $user)
     {
         return (new User())->setRaw($user)->map([
-            'id'       => array_get($user, 'uid'),
+            'id' => array_get($user, 'uid'),
             'nickname' => array_get($user, 'screen_name'),
-            'name'     => trim(array_get($user, 'first_name') . ' ' . array_get($user, 'last_name')),
-            'email'    => array_get($user, 'email'),
-            'avatar'   => array_get($user, 'photo_200'),
+            'name' => trim(array_get($user, 'first_name') . ' ' . array_get($user, 'last_name')),
+            'email' => array_get($user, 'email'),
+            'avatar' => array_get($user, 'photo_200'),
         ]);
     }
 
@@ -104,8 +106,8 @@ class SocialiteProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $lang     = $this->getConfig('lang');
-        $lang     = $lang ? '&lang=' . $lang : '';
+        $lang = $this->getConfig('lang');
+        $lang = $lang ? '&lang=' . $lang : '';
         $response = $this->getHttpClient()->get('https://api.vk.com/method/users.get?user_ids=' . $token['user_id'] . '&fields=' . implode(',',
                 $this->fields) . $lang . '&https=1');
 

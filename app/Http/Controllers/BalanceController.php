@@ -82,6 +82,13 @@ class BalanceController extends Controller
             $user->increment('balance', $payment->getSum());
 
             if (!empty($order->promo_usage)) {
+
+                if (empty($user->promo)) {
+                    $user->promo = $order->promo_usage;
+                    $user->increment('balance', config('promo_increment'));
+                    $user->save();
+                }
+
                 $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
 
                 if (isset($promoUser)) {
@@ -96,7 +103,6 @@ class BalanceController extends Controller
                     $promoUser->save();
                 }
             }
-
 
             return $payment->getSuccessAnswer();
         }
