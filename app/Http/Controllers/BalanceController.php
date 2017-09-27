@@ -82,16 +82,14 @@ class BalanceController extends Controller
             $user->increment('balance', $payment->getSum());
 
             if (!empty($order->promo_usage)) {
-
-                if (empty($user->promo)) {
-                    $user->promo = $order->promo_usage;
-                    $user->save();
-                    $user->increment('balance', \intval(config('app.promo_increment')));
-                }
-
                 $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
-
                 if (isset($promoUser)) {
+                    if (empty($user->promo)) {
+                        $user->promo = $order->promo_usage;
+                        $user->save();
+                        $user->increment('balance', \intval(config('app.promo_increment')));
+                    }
+
                     $log = new PaymentLogs();
                     $log->status = 1;
                     $log->user_id = $promoUser->id;
