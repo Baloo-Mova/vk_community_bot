@@ -9,6 +9,7 @@ use App\Models\BotCommunityResponse;
 use App\Models\ClientGroups;
 use App\Models\Clients;
 use App\Models\MassDelivery;
+use App\Models\PaymentLogs;
 use App\Models\User;
 use App\Models\UserGroups;
 use Illuminate\Console\Command;
@@ -49,11 +50,30 @@ class Test extends Command
      */
     public function handle()
     {
-        $users = User::all();
+        $user = User::find(1);
+        $order = PaymentLogs::find(242);
 
-        foreach ($users as $item) {
-            $item->my_promo = 'vkknocker_' . $item->vk_id;
-            $item->save();
+        if (!empty($order->promo_usage)) {
+
+            if (empty($user->promo)) {
+                $user->promo = $order->promo_usage;
+                $user->increment('balance', config('promo_increment'));
+                $user->save();
+            }
+
+            $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
+
+            if (isset($promoUser)) {
+                $log = new PaymentLogs();
+                $log->status = 1;
+                $log->user_id = $promoUser->id;
+                $log->description = PaymentLogs::PromoCodeUsage;
+                $log->payment_sum = $order->payment_sum * (config('app.promo_percent') / 100);
+                $log->save();
+
+                $promoUser->increment('promo_balance', $order->payment_sum * (config('app.promo_percent') / 100));
+                $promoUser->save();
+            }
         }
     }
 }
