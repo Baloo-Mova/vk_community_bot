@@ -76,6 +76,7 @@ class ClientGroupsController extends Controller
         $clGroups = ClientGroups::find($group_id);
         $clGroups->delete();
         Clients::where(['client_group_id' => $group_id])->delete();
+        Funnels::where(['client_group_id' => $group_id])->delete();
 
         return back();
     }
