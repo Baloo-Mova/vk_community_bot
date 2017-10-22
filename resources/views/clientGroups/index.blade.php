@@ -166,6 +166,11 @@
                                        title="Добавить пользователей">
                                         <i class="material-icons left">playlist_add</i>
                                     </a>
+                                    <a href="{{route('clientGroups.download',['group_id'=>$group->id]) }}"
+                                       class="waves-effect waves-light"
+                                       title="Скачать пользователей">
+                                        <i class="material-icons left">file_download</i>
+                                    </a>
                                     <a href="#modal_delete_{{ $group->id }}"
                                        class="waves-effect waves-light"
                                        title="Удалить пользователей">

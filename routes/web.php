@@ -50,6 +50,7 @@ Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     });
     Route::group(['prefix' => 'client-groups'], function () {
         Route::get('/{group_id}', 'ClientGroupsController@index')->name('clientGroups.index');
+        Route::get('/{group_id}/download', 'ClientGroupsController@downloadList')->name('clientGroups.download');
         Route::post('/add-group', 'ClientGroupsController@addGroup')->name('clientGroups.add.group');
         Route::get('/group/{group_id}', 'ClientGroupsController@group')->name('clientGroups.group');
         Route::post('/edit-group', 'ClientGroupsController@editGroup')->name('clientGroups.edit.group');

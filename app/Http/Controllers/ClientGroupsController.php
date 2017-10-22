@@ -11,6 +11,7 @@ use App\Core\VK;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Clients;
 use App\Models\ClientGroups;
+use Illuminate\Support\Facades\Response;
 
 class ClientGroupsController extends Controller
 {
@@ -232,5 +233,14 @@ class ClientGroupsController extends Controller
         Toastr::success('Пользователь удачно удален', 'Удалено');
 
         return back();
+    }
+
+    public function downloadList(Request $request, $group_id){
+        $clients = Clients::whereClientGroupId($group_id)->get()->toArray();
+        $file = storage_path('app/download/'.uniqid('id').".txt");
+        $ids = array_column($clients,'vk_id');
+        file_put_contents($file, implode("\n", $ids));
+
+        return Response::download($file);
     }
 }
