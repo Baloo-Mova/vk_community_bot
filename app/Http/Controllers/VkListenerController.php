@@ -239,7 +239,7 @@ class VkListenerController extends Controller
     public function appGate(Request $request)
     {
         $data = $request->all();
-        file_put_contents('data.txt', $data);
+        file_put_contents('data.txt', json_encode($data));
         if (!isset($data['group_id']) || $data['sign'] != $this->genSign($data)) {
             return view('vk.error', ['backUrl' => null]);
         }
