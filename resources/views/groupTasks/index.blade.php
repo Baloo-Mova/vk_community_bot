@@ -159,7 +159,7 @@
                    class="waves-effect waves-light light-blue darken-4 btn" {{ !$group->payed ? 'disabled' : '' }}>Добавить
                     сценарий</a>
                 <div class="">
-                    <table class="highlight">
+                    <table class="highlight responsive">
                         <thead>
                         <th>Имя сценария</th>
                         <th>Ключевые слова</th>
@@ -211,9 +211,8 @@
                                            title="Ссылка на подписку">
                                             <i class="material-icons left">timer</i>
                                         </a>
-                                        <a class="waves-effect waves-light scenario_edit"
-                                           data-id="{{ $resp->id }}"
-                                           id="showInfo">
+                                        <a class="waves-effect waves-light scenario_edit showInfo"
+                                           data-id="{{ $resp->id }}">
                                             <i class="material-icons left">info_outline</i>
                                         </a>
                                     </td>
@@ -262,7 +261,7 @@
                 }
             );
 
-            $('#showInfo').on('click', function () {
+            $('.showInfo').on('click', function () {
                 var id = $(this).data('id');
 
                 $.ajax({
