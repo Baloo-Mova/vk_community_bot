@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereTime($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Funnels $funnel
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FunnelsTime whereMedia($value)
  */
 class FunnelsTime extends Model
 {

@@ -27,6 +27,8 @@ Route::get('/vk-app-gate/', ['uses' => 'VkListenerController@appGate', 'as' => '
 Route::get('/vk-app-subscribe/{to}', ['uses' => 'VkListenerController@subscribeApp', 'as' => 'vk.app.subscribe']);
 Route::get('/vk-app-cancel/{to}', ['uses' => 'VkListenerController@cancelApp', 'as' => 'vk.app.cancel']);
 
+Route::get('/actions-invoked-list', ['uses' => 'GroupTasksController@invokedList', 'as' => 'actionsInvoked']);
+
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/rate-list', ['uses' => 'RateController@index', 'as' => 'rate.index']);

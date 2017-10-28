@@ -12,21 +12,27 @@ class GroupTasksController extends Controller
     public function index($group_id)
     {
         $responses = BotCommunityResponse::where(['group_id' => $group_id])->get();
-        if ( ! isset($responses)) {
+        if (!isset($responses)) {
             $responses = [];
         }
 
-        $group  = UserGroups::find($group_id);
+        $group = UserGroups::find($group_id);
         $groups = $group->clientGroups;
 
         return view('groupTasks.index', [
-            'user'          => \Auth::user(),
-            'responses'     => $responses,
+            'user' => \Auth::user(),
+            'responses' => $responses,
             "group_id" => $group_id,
-            'group'         => isset($group) ? $group : [],
+            'group' => isset($group) ? $group : [],
             'client_groups' => isset($groups) ? $groups : [],
-            "tab_name"   => "task"
+            "tab_name" => "task"
         ]);
+    }
+
+    public function invokedList(Request $request)
+    {
+        $data = BotCommunityResponse::findOrFail($request->get('id'));
+        return $data->actionsInvoked;
     }
 
     public function add(Request $request)
@@ -42,13 +48,13 @@ class GroupTasksController extends Controller
 
     public function edit(Request $request)
     {
-        $id                      = $request->get('scenario_id');
-        $response                = BotCommunityResponse::find($id);
-        $response->key           = $request->get('key');
+        $id = $request->get('scenario_id');
+        $response = BotCommunityResponse::find($id);
+        $response->key = $request->get('key');
         $response->scenario_name = $request->get('scenario_name');
-        $response->response      = $request->get('response');
-        $response->action_id     = $request->get('action_id');
-        $response->add_group_id  = $request->get('add_group_id');
+        $response->response = $request->get('response');
+        $response->action_id = $request->get('action_id');
+        $response->add_group_id = $request->get('add_group_id');
         $response->save();
 
         Toastr::success('Сценарий успешно отредактирован', 'Успешно');

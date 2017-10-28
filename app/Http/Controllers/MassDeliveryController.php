@@ -14,17 +14,17 @@ class MassDeliveryController extends Controller
     public function index($group_id)
     {
 
-        $userGroup      = UserGroups::find($group_id);
-        $massDeliveries = $userGroup->massdeliveries;
-        $groups         = $userGroup->clientGroups;
+        $userGroup = UserGroups::find($group_id);
+        $massDeliveries = $userGroup->massDeliveries;
+        $groups = $userGroup->clientGroups;
 
         return view('massDelivery.index', [
-            "user"       => \Auth::user(),
-            "group"      => $userGroup,
-            "group_id"   => $group_id,
+            "user" => \Auth::user(),
+            "group" => $userGroup,
+            "group_id" => $group_id,
             "deliveries" => $massDeliveries,
-            "groups"     => isset($groups) ? $groups : [],
-            "tab_name"   => "delivery"
+            "groups" => isset($groups) ? $groups : [],
+            "tab_name" => "delivery"
         ]);
     }
 
@@ -36,19 +36,19 @@ class MassDeliveryController extends Controller
             return back();
         }
 
-        $in         = $request->get('in');
-        $in_arr     = [];
-        $not_in     = $request->get('not_in');
+        $in = $request->get('in');
+        $in_arr = [];
+        $not_in = $request->get('not_in');
         $not_in_arr = [];
-        $result     = [];
+        $result = [];
 
-        if ( ! empty($in)) {
+        if (!empty($in)) {
             foreach ($in as $i) {
                 $in_arr[] = $i;
             }
         }
 
-        if ( ! empty($not_in)) {
+        if (!empty($not_in)) {
             foreach ($not_in as $n) {
                 $not_in_arr[] = $n;
             }
@@ -68,7 +68,7 @@ class MassDeliveryController extends Controller
 
         $good = array_column(Clients::whereIn('client_group_id',
             $result["in"])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
-        $bad  = array_column(Clients::whereIn('client_group_id',
+        $bad = array_column(Clients::whereIn('client_group_id',
             $result["not"])->where(['can_send' => 1])->select('vk_id')->distinct()->get()->toArray(), 'vk_id');
 
         $sendTo = array_diff($good, $bad);
@@ -82,12 +82,12 @@ class MassDeliveryController extends Controller
         $delivery = new MassDelivery();
         $delivery->fill($request->all());
         $delivery->rules = json_encode($result);
-        $then_send       = $request->get('when_send');
+        $then_send = $request->get('when_send');
 
         if (empty($then_send)) {
             $delivery->when_send = Carbon::now('Europe/Moscow');
         } else {
-            $delivery->when_send = Carbon::createFromFormat("d-m-Y H:i:s", trim($then_send).":00");
+            $delivery->when_send = Carbon::createFromFormat("d-m-Y H:i:s", trim($then_send) . ":00");
         }
 
         $delivery->save();
@@ -99,7 +99,7 @@ class MassDeliveryController extends Controller
     public function delete($delivery_id)
     {
         $delivery = MassDelivery::find($delivery_id);
-        if ( ! isset($delivery)) {
+        if (!isset($delivery)) {
             Toastr::error('Рассылка не найдена!', 'Ошибка');
 
             return back();

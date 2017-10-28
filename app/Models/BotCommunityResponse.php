@@ -27,6 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $add_group_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereActionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereAddGroupId($value)
+ * @property string $last_time_checked Время последнего изменения
+ * @property string|null $scenario_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BotCommunityTime[] $timeList
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereLastTimeChecked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BotCommunityResponse whereScenarioName($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ActionsInvoked[] $actionsInvoked
  */
 class BotCommunityResponse extends Model
 {
@@ -50,5 +56,10 @@ class BotCommunityResponse extends Model
     public function timeList()
     {
         return $this->hasMany(BotCommunityTime::class, 'bot_community_response_id', 'id');
+    }
+
+    public function actionsInvoked()
+    {
+        return $this->hasMany(ActionsInvoked::class, 'bot_community_response_id', 'id')->select(['key', 'count']);
     }
 }

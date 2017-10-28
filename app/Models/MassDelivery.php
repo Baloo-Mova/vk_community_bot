@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $when_send
  * @property-read \App\Models\UserGroups $group
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereWhenSend($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MassDelivery whereMedia($value)
  */
 class MassDelivery extends Model
 {

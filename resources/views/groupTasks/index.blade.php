@@ -33,7 +33,8 @@
                     </div>
                     <div class="input-field col s12">
                         <input name="key" id="key" type="text" class="validate">
-                        <label for="key">Ключевое слово</label>
+                        <label for="key">Ключевые слова (для указания нескольких фраз используйте разделитель
+                            ";")</label>
                     </div>
                     <div class="input-field col s12">
                         <textarea id="response" name="response" class="materialize-textarea"></textarea>
@@ -74,6 +75,21 @@
             </div>
         </div>
 
+        <div class="modal" id="actionsInvokedModal" style="overflow: visible !important; padding: 20px 0px;">
+            <div class="modal-content modal__content" style="overflow-y: auto">
+                <h4>Частота срабатывания</h4>
+                <table class="bordered">
+                    <thead>
+                    <th>Ключ</th>
+                    <th>Кол-во срабатываний</th>
+                    </thead>
+                    <tbody id="actionsInvoked">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="modal2" class="modal" style="overflow: visible !important; padding: 20px 0px;">
             <div class="modal-content modal__content" style="overflow-y: auto;">
                 <h4>Редактирование сценария</h4>
@@ -87,7 +103,8 @@
                     </div>
                     <div class="input-field col s12">
                         <input name="key" id="key" class="scenario_key" type="text" class="validate">
-                        <label for="key" class="scenario_key_label">Ключевое слово</label>
+                        <label for="key" class="scenario_key_label">Ключевые слова (для указания нескольких фраз
+                            используйте разделитель ";")</label>
                     </div>
                     <div class="input-field col s12">
                         <textarea id="response" name="response"
@@ -145,7 +162,7 @@
                     <table class="highlight">
                         <thead>
                         <th>Имя сценария</th>
-                        <th>Ключевое слово</th>
+                        <th>Ключевые слова</th>
                         <th>Ответ</th>
                         <th>Статус</th>
                         <th>Действия</th>
@@ -194,6 +211,11 @@
                                            title="Ссылка на подписку">
                                             <i class="material-icons left">timer</i>
                                         </a>
+                                        <a class="waves-effect waves-light scenario_edit"
+                                           data-id="{{ $resp->id }}"
+                                           id="showInfo">
+                                            <i class="material-icons left">info_outline</i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -212,13 +234,14 @@
 
 @section('css')
     <style>
-        @media screen and (max-width: 400px){
-            .modal__content{
+        @media screen and (max-width: 400px) {
+            .modal__content {
                 height: 370px;
             }
         }
-        @media screen and (min-width: 400px){
-            .modal__content{
+
+        @media screen and (min-width: 400px) {
+            .modal__content {
                 height: 450px;
             }
         }
@@ -238,6 +261,28 @@
                     dismissible: false
                 }
             );
+
+            $('#showInfo').on('click', function () {
+                var id = $(this).data('id');
+
+                $.ajax({
+                    method: "GET",
+                    data: {id: id},
+                    url: "{{ route('actionsInvoked') }}",
+                    success: function (data) {
+                        var toShow = '';
+
+                        for (var i = 0; i < data.length; i++) {
+                            toShow += '<tr><td>' + data[i].key + '</td><td>' + data[i].count + '</td></tr>';
+                        }
+                        $('#actionsInvoked').html(toShow);
+                        $('#actionsInvokedModal').modal('open');
+                    },
+                    error: function (data) {
+                        toastr.error('Возникла ошибка, обратитесь к администрации');
+                    }
+                })
+            });
 
             $(".resp_checkbox").on("change", function () {
                 var resp_id = $(this).data('responseId'),

@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Funnels whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Funnels whereName($value)
  * @mixin \Eloquent
+ * @property int $client_group_id
+ * @property-read \App\Models\ClientGroups $clientGroup
+ * @property-read \App\Models\UserGroups $group
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Funnels whereClientGroupId($value)
  */
 class Funnels extends Model
 {

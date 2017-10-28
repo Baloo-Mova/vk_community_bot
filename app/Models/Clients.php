@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereCanSend($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereGroupId($value)
+ * @property string $created
+ * @property-read \App\Models\ClientGroups $clientGroup
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Clients whereCreated($value)
  */
 class Clients extends Model
 {

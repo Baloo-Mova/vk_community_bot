@@ -21,6 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereVkId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereWhenSend($value)
+ * @property int $funnel_id
+ * @property-read \App\Models\UserGroups $group
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereFunnelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AutoDelivery whereMedia($value)
  */
 class AutoDelivery extends Model
 {

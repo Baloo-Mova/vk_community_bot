@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Core\VK;
 use App\Helpers\Telegram;
+use App\Models\ActionsInvoked;
 use App\Models\AutoDelivery;
 use App\Models\Clients;
 use App\Models\Errors;
@@ -38,7 +39,6 @@ class NewMessageReceived implements ShouldQueue
         $this->data = $data;
         $this->group_id = $group_id;
         $this->queue = "NewMessageReceived";
-
     }
 
     /**
@@ -48,7 +48,6 @@ class NewMessageReceived implements ShouldQueue
      */
     public function handle()
     {
-
         $group = UserGroups::whereGroupId($this->group_id)->first();
 
         if (isset($group->token)) {
@@ -68,7 +67,6 @@ class NewMessageReceived implements ShouldQueue
                 ];
             });
 
-
             $messageId = $this->data['id'];
             $userId = $this->data['user_id'];
             $body = $this->data['body'];
@@ -85,6 +83,7 @@ class NewMessageReceived implements ShouldQueue
 
             $clientIsset = Clients::where(['group_id' => $this->group_id, 'vk_id' => $userId])->first();
 
+
             if (!isset($clientIsset)) {
                 $list = ListRules::where([
                     ['from', '<', Carbon::now()],
@@ -98,40 +97,62 @@ class NewMessageReceived implements ShouldQueue
             }
 
             $actionId = "";
-            foreach ($res as $key => $value) {
-                if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
-                    $canRun = true;
-                    if ($value['times']->count() > 0) {
-                        $canRun = false;
-                        foreach ($value['times'] as $time) {
-                            if ((time() < strtotime($time['to'])) && (time() > strtotime($time['from']))) {
-                                $canRun = true;
-                                continue;
-                            }
-                        }
-                    }
-
-                    if (!$canRun) {
+            foreach ($res as $keys => $value) {
+                $keysList = explode(';', $keys);
+                foreach ($keysList as $key) {
+                    if (empty($key)) {
                         continue;
                     }
 
-                    if (in_array($value['id'], $activeScenario)) {
-                        $actionId = $value['name'];
+                    if (mb_stripos(trim($body), trim($key), 0, "UTF-8") !== false) {
+                        $canRun = true;
+                        if ($value['times']->count() > 0) {
+                            $canRun = false;
+                            foreach ($value['times'] as $time) {
+                                if ((time() < strtotime($time['to'])) && (time() > strtotime($time['from']))) {
+                                    $canRun = true;
+                                    continue;
+                                }
+                            }
+                        }
+
+                        if (!$canRun) {
+                            continue;
+                        }
+
+                        //action invoked
+
+                        $aInv = ActionsInvoked::where(['key' => $key, 'bot_community_response_id' => $value['id']])->first();
+
+                        if (!isset($aInv)) {
+                            $aInv = new ActionsInvoked();
+                            $aInv->key = $key;
+                            $aInv->count = 0;
+                            $aInv->bot_community_response_id = $value['id'];
+                            $aInv->save();
+                        }
+
+                        $aInv->increment('count', 1);
+
+                        if (in_array($value['id'], $activeScenario)) {
+                            $actionId = $value['name'];
+                        }
+
+                        switch ($value['action']) {
+                            case 1:
+                                $this->addToGroup($value['group'], $userId);
+                                break;
+                            case 2:
+                                $this->deleteFromGroup($value['group'], $userId);
+                                break;
+                            case 3:
+                                $this->deleteFromDB($this->group_id, $userId);
+                                break;
+                        }
+                        $vk->setSeenMessage([$messageId], $userId);
+                        $vk->sendMessage($value['response'], $userId);
+                        break;
                     }
-                    switch ($value['action']) {
-                        case 1:
-                            $this->addToGroup($value['group'], $userId);
-                            break;
-                        case 2:
-                            $this->deleteFromGroup($value['group'], $userId);
-                            break;
-                        case 3:
-                            $this->deleteFromDB($this->group_id, $userId);
-                            break;
-                    }
-                    $vk->setSeenMessage([$messageId], $userId);
-                    $vk->sendMessage($value['response'], $userId);
-                    break;
                 }
             }
 

@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\Models\UserGroups $group
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Clients[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ListRules[] $listRules
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientGroups whereShowInList($value)
  */
 class ClientGroups extends Model
 {

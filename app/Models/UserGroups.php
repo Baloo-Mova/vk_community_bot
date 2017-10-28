@@ -44,6 +44,21 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSecretKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSuccessResponse($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Funnels[] $funnels
+ * @property string|null $telegram
+ * @property int $send_to_telegram
+ * @property string|null $moderator_events
+ * @property string|null $telegram_keyword
+ * @property string|null $send_scenario
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BotCommunityResponse[] $actions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ModeratorLogs[] $moderatorLogs
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereModeratorEvents($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSendScenario($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereSendToTelegram($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereServerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereShowInHistory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereTelegram($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserGroups whereTelegramKeyword($value)
  */
 class UserGroups extends Model
 {

@@ -50,30 +50,6 @@ class Test extends Command
      */
     public function handle()
     {
-        $user = User::find(1);
-        $order = PaymentLogs::find(242);
-
-        if (!empty($order->promo_usage)) {
-
-            if (empty($user->promo)) {
-                $user->promo = $order->promo_usage;
-                $user->increment('balance', config('promo_increment'));
-                $user->save();
-            }
-
-            $promoUser = User::where(['my_promo' => $order->promo_usage])->first();
-
-            if (isset($promoUser)) {
-                $log = new PaymentLogs();
-                $log->status = 1;
-                $log->user_id = $promoUser->id;
-                $log->description = PaymentLogs::PromoCodeUsage;
-                $log->payment_sum = $order->payment_sum * (config('app.promo_percent') / 100);
-                $log->save();
-
-                $promoUser->increment('promo_balance', $order->payment_sum * (config('app.promo_percent') / 100));
-                $promoUser->save();
-            }
-        }
+        dispatch(new NewMessageReceived(['user_id' => 134923343, 'id' => 123, 'body' => '2'], '149682680'));
     }
 }

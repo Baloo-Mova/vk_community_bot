@@ -43,6 +43,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereVkId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereVkToken($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereMyPromo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePromo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePromoBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereResubscribeNotificationSend($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereTrialUsed($value)
  */
 class User extends Authenticatable
 {
