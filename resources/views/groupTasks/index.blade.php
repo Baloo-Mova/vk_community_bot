@@ -77,7 +77,30 @@
 
         <div class="modal" id="actionsInvokedModal" style="overflow: visible !important; padding: 20px 0px;">
             <div class="modal-content modal__content" style="overflow-y: auto">
+
+                <div class="loading">Loading&#8230;</div>
+
                 <h4>Частота срабатывания</h4>
+                <div class="row"><input type="hidden" class="actions_invoked_id">
+                    <div class="col l4">
+                        <div class="input-field col s12 datetime1">
+                            <input name="from" id="from" class="when_send" type="text" data-field="datetime" readonly>
+                            <label for="from" class="when_send">Дата с</label>
+                            <div id="dtBox1"></div>
+                        </div>
+                    </div>
+                    <div class="col l4">
+                        <div class="input-field col s12 datetime2">
+                            <input name="to" id="to" class="when_send" type="text" data-field="datetime" readonly>
+                            <label for="to" class="when_send">Дата по</label>
+                            <div id="dtBox2"></div>
+                        </div>
+                    </div>
+                    <div class="col l2">
+                        <button id="showAID" class="waves-effect waves-light light-blue darken-4 btn showBtn">Показать
+                        </button>
+                    </div>
+                </div>
                 <table class="bordered">
                     <thead>
                     <th>Ключ</th>
@@ -173,7 +196,6 @@
                                 <td class="text-center" colspan="4">Нет записей</td>
                             </tr>
                         @else
-
                             @forelse($responses as $resp)
                                 <tr>
                                     <td>{{ $resp->scenario_name }}</td>
@@ -237,11 +259,142 @@
             .modal__content {
                 height: 370px;
             }
+
+            .showBtn {
+                margin-top: 0px;
+            }
         }
 
         @media screen and (min-width: 400px) {
             .modal__content {
                 height: 450px;
+            }
+
+            .showBtn {
+                margin-top: 20px;
+            }
+        }
+
+        /* Absolute Center Spinner */
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Transparent Overlay */
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* :not(:required) hides these rules from IE9 and below */
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 1500ms infinite linear;
+            -moz-animation: spinner 1500ms infinite linear;
+            -ms-animation: spinner 1500ms infinite linear;
+            -o-animation: spinner 1500ms infinite linear;
+            animation: spinner 1500ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+        }
+
+        /* Animation */
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
         }
     </style>
@@ -250,6 +403,8 @@
 @section('js')
     <script>
         $(document).ready(function () {
+
+            $('.loading').hide();
             $('.modal').modal();
             $('.action_select_select').material_select();
             $('.group_select_select').material_select();
@@ -261,26 +416,49 @@
                 }
             );
 
-            $('.showInfo').on('click', function () {
-                var id = $(this).data('id');
+            $("#dtBox1").DateTimePicker({
+                "parentElement": ".datetime1",
+                "language": "ru"
+            });
+            $("#dtBox2").DateTimePicker({
+                "parentElement": ".datetime2",
+                "language": "ru"
+            });
 
+            function showInfo(id, d_from, d_to) {
                 $.ajax({
                     method: "GET",
-                    data: {id: id},
+                    data: {id: id, from: d_from, to: d_to},
                     url: "{{ route('actionsInvoked') }}",
                     success: function (data) {
                         var toShow = '';
-
                         for (var i = 0; i < data.length; i++) {
                             toShow += '<tr><td>' + data[i].key + '</td><td>' + data[i].count + '</td></tr>';
                         }
                         $('#actionsInvoked').html(toShow);
-                        $('#actionsInvokedModal').modal('open');
+                        $('.loading').hide();
                     },
                     error: function (data) {
                         toastr.error('Возникла ошибка, обратитесь к администрации');
+                        $('.loading').hide();
                     }
-                })
+                });
+            }
+
+            $('#showAID').on('click', function () {
+                $('.loading').show();
+                var id = $('.actions_invoked_id').val(),
+                    from = $('#from').val(),
+                    to = $('#to').val();
+                showInfo(id, from, to);
+            });
+
+            $('.showInfo').on('click', function () {
+                var id = $(this).data('id');
+                $('.loading').show();
+                $('.actions_invoked_id').val(id);
+                $('#actionsInvokedModal').modal('open');
+                showInfo(id, null, null);
             });
 
             $(".resp_checkbox").on("change", function () {

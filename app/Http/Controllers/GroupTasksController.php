@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionsInvoked;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BotCommunityResponse;
 use App\Models\UserGroups;
@@ -31,8 +33,17 @@ class GroupTasksController extends Controller
 
     public function invokedList(Request $request)
     {
-        $data = BotCommunityResponse::findOrFail($request->get('id'));
-        return $data->actionsInvoked;
+        $query = ActionsInvoked::where(['bot_community_response_id' => $request->get('id')]);
+
+        if ($request->has('from') && $request->has('to')) {
+            $query = $query->whereBetween('time', [Carbon::parse($request->get('from')), Carbon::parse($request->get('to'))]);
+        }
+
+        $data = $query->selectRaw('`key`, count(`key`) as count')
+            ->groupBy('key')
+            ->get();
+
+        return $data;
     }
 
     public function add(Request $request)

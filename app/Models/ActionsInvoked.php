@@ -16,13 +16,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ActionsInvoked whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ActionsInvoked whereKey($value)
  * @mixin \Eloquent
+ * @property string|null $time
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ActionsInvoked whereTime($value)
  */
 class ActionsInvoked extends Model
 {
     protected $table = 'actions_invoked';
     public $timestamps = false;
     protected $fillable = [
-        'count',
+        'time',
         'key',
         'bot_community_response_id'
     ];

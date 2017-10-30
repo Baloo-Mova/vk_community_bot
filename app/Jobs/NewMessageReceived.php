@@ -122,17 +122,11 @@ class NewMessageReceived implements ShouldQueue
 
                         //action invoked
 
-                        $aInv = ActionsInvoked::where(['key' => $key, 'bot_community_response_id' => $value['id']])->first();
-
-                        if (!isset($aInv)) {
-                            $aInv = new ActionsInvoked();
-                            $aInv->key = $key;
-                            $aInv->count = 0;
-                            $aInv->bot_community_response_id = $value['id'];
-                            $aInv->save();
-                        }
-
-                        $aInv->increment('count', 1);
+                        $aInv = new ActionsInvoked();
+                        $aInv->key = $key;
+                        $aInv->time = Carbon::now();
+                        $aInv->bot_community_response_id = $value['id'];
+                        $aInv->save();
 
                         if (in_array($value['id'], $activeScenario)) {
                             $actionId = $value['name'];
