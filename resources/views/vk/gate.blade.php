@@ -37,6 +37,10 @@
         .special-button {
             width: 150px;
         }
+
+        .text-margin{
+            margin-left: 5px;
+        }
     </style>
 
     <script src="https://vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>
@@ -74,20 +78,18 @@
     <ul class="collection">
         @forelse($list as $item)
             <li class="collection-item">
-                <span class="collection-text">{{$item['name']}}</span>
-                <div class="secondary-content">
-                    @if(!isset($item['client_id']))
-                        <button class="special-button subscribe waves-effect waves-light light-blue darken-4 btn btn-small"
-                                onclick="prepareData('{{$item['id']}}')">
-                            Подписаться
-                        </button>
-                    @else
-                        <button class="special-button unsubscribe waves-effect waves-light red darken-4 btn btn-small"
-                                onclick="unsubscribe('{{$item['id']}}')">
-                            Отписаться
-                        </button>
-                    @endif
-                </div>
+                @if(!isset($item['client_id']))
+                    <button class="special-button subscribe waves-effect waves-light light-blue darken-4 btn btn-small"
+                            onclick="prepareData('{{$item['id']}}')">
+                        Подписаться
+                    </button>
+                @else
+                    <button class="special-button unsubscribe waves-effect waves-light red darken-4 btn btn-small"
+                            onclick="unsubscribe('{{$item['id']}}')">
+                        Отписаться
+                    </button>
+                @endif
+                <span class="collection-text text-margin">{{$item['name']}}</span>
             </li>
         @empty
             <li class="collection-item" style="text-align: center;">
