@@ -223,7 +223,11 @@ class ClientGroupsController extends Controller
         $array = array_chunk($userIds, 999);
         $userIds = [];
         foreach ($array as $item) {
-            $userIds = array_merge($userIds, array_column($vk->getUserInfo($item), 'id'));
+            $tmp = $vk->getUserInfo($item);
+            if(!isset($tmp)){
+                continue;
+            }
+            $userIds = array_merge($userIds, array_column($tmp, 'id'));
         }
 
         Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id', $userIds)->delete();
