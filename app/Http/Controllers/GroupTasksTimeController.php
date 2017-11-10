@@ -68,7 +68,6 @@ class GroupTasksTimeController extends Controller
             return back();
         }
 
-
         $list->save();
 
         Toastr::success("Изменения успешно внесены!");

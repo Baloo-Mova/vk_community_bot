@@ -26,7 +26,6 @@ class RateController extends Controller
 
         if ( ! isset($name) || ! isset($price) || ! isset($days)) {
             Toastr::error('Не заполнены нужные данные!');
-
             return back();
         }
 
@@ -49,7 +48,6 @@ class RateController extends Controller
         $rate = Rates::find($id);
         if ( ! isset($rate)) {
             Toastr::error('Чет тут не то!');
-
             return back();
         }
 
@@ -59,7 +57,6 @@ class RateController extends Controller
         $rate->save();
 
         Toastr::success('Редактирование успешно!');
-
         return back();
     }
 
@@ -68,14 +65,12 @@ class RateController extends Controller
         $rate = Rates::find($id);
         if ( ! isset($rate)) {
             Toastr::error('Чет тут не то!');
-
             return back();
         }
 
         $rate->delete();
 
         Toastr::success('Удаление успешно!');
-
         return back();
     }
 }

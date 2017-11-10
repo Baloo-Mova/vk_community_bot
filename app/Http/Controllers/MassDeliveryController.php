@@ -32,7 +32,6 @@ class MassDeliveryController extends Controller
     {
         if (empty($request->get('message'))) {
             Toastr::error('Укажите поле сообшение', 'Ошибка');
-
             return back();
         }
 
@@ -75,7 +74,6 @@ class MassDeliveryController extends Controller
 
         if (count($sendTo) < 1) {
             Toastr::error('Вы не указали кому рассылать.', 'Ошибка');
-
             return back();
         }
 
@@ -92,7 +90,6 @@ class MassDeliveryController extends Controller
 
         $delivery->save();
         Toastr::success('Рассылка успешно добавлена, в рассылке участвуют: ' . count($sendTo), 'Добавлено');
-
         return back();
     }
 
@@ -101,13 +98,11 @@ class MassDeliveryController extends Controller
         $delivery = MassDelivery::find($delivery_id);
         if (!isset($delivery)) {
             Toastr::error('Рассылка не найдена!', 'Ошибка');
-
             return back();
         }
         $delivery->delete();
 
         Toastr::success('Рассылка успешно удалена', 'Удалено');
-
         return back();
     }
 }

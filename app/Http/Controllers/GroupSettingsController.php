@@ -20,7 +20,6 @@ class GroupSettingsController extends Controller
         if (!$group->checkAccess()) {
             $group->removeControl();
             Toastr::error('Видимо отсутствует доступ. Выдайте доступ заново.', "Проблема с группой");
-
             return back();
         }
 
@@ -62,13 +61,11 @@ class GroupSettingsController extends Controller
 
         if (!isset($group_id)) {
             Toastr::error('Отсутствует обязательный (Id группы) параметр!', 'Ошибка');
-
             return back();
         }
 
         if ($user->balance < $payment_sum) {
             Toastr::error('На Вашем балансе недостаточно средств', 'Ошибка');
-
             return back();
         }
 
@@ -76,7 +73,6 @@ class GroupSettingsController extends Controller
 
         if (!$get_money) {
             Toastr::error('На Вашем балансе недостаточно средств', 'Ошибка');
-
             return back();
         }
 
@@ -84,7 +80,6 @@ class GroupSettingsController extends Controller
         if (!isset($group)) {
             $user->increment('balance', $payment_sum);
             Toastr::error('Группа не найдена', 'Ошибка');
-
             return back();
         }
 
@@ -102,7 +97,6 @@ class GroupSettingsController extends Controller
         }
         $group->save();
 
-
         $payment = new PaymentLogs();
         $payment->user_id = \Auth::user()->id;
         $payment->description = PaymentLogs::SubscriptionPayment;
@@ -116,7 +110,6 @@ class GroupSettingsController extends Controller
         }
 
         Toastr::success('Подписка успешно оплачена', 'Оплачено');
-
         return back();
     }
 }

@@ -54,7 +54,6 @@ class GroupTasksController extends Controller
         $response->save();
 
         Toastr::success('Сценарий успешно добавлен', 'Успешно');
-
         return back();
     }
 
@@ -70,7 +69,6 @@ class GroupTasksController extends Controller
         $response->save();
 
         Toastr::success('Сценарий успешно отредактирован', 'Успешно');
-
         return back();
     }
 
@@ -81,7 +79,6 @@ class GroupTasksController extends Controller
         BotCommunityTime::where('bot_community_response_id', $id)->delete();
 
         Toastr::success('Сценарий успешно удален', 'Успешно');
-
         return back();
     }
 

@@ -38,7 +38,6 @@ class GroupsController extends Controller
             }
         }
 
-
         return view('groups.index', [
             'user'   => \Auth::user(),
             'activated_groups' => $activated_groups,

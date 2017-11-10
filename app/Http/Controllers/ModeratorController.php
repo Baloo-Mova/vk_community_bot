@@ -78,7 +78,6 @@ class ModeratorController extends Controller
             return back();
         }
 
-
         $scenario_list = [];
 
         foreach ($list as $l){

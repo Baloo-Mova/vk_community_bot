@@ -15,7 +15,6 @@ class ClientGroupTimes extends Controller
     {
         $clientGroup = ClientGroups::find($id);
 
-
         return view('clientGroups.times.index', [
             "user" => \Auth::user(),
             'times' => $clientGroup->listRules,
@@ -69,7 +68,6 @@ class ClientGroupTimes extends Controller
             Toastr::error('Не верно введены даты.', 'Ошибка');
             return back();
         }
-
 
         $list->save();
 
