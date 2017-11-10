@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionsInvoked;
+use App\Models\BotCommunityTime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BotCommunityResponse;
@@ -77,6 +78,7 @@ class GroupTasksController extends Controller
     {
         $response = BotCommunityResponse::find($id);
         $response->delete();
+        BotCommunityTime::where('bot_community_response_id', $id)->delete();
 
         Toastr::success('Сценарий успешно удален', 'Успешно');
 

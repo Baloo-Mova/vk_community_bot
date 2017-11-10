@@ -36,7 +36,6 @@ class FunnelsController extends Controller
     {
         if (!$request->has('client_group_id') || !$request->has('name')) {
             Toastr::error('Заполнены не все данные', 'Ошибка');
-
             return back();
         }
         $funnel = new Funnels();
@@ -53,13 +52,11 @@ class FunnelsController extends Controller
         $funnel = Funnels::find($request->get('funnel_id'));
         if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
-
             return back();
         }
         $name = $request->get('name');
         if (!isset($name)) {
             Toastr::error('Пожалуйста, укажите новое имя воронки!', 'Ошибка');
-
             return back();
         }
         $funnel->name = $name;
@@ -75,7 +72,6 @@ class FunnelsController extends Controller
         $funnel = Funnels::find($funnel_id);
         if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
-
             return back();
         }
         FunnelsTime::where(['funell_id' => $funnel_id])->delete();
@@ -90,7 +86,6 @@ class FunnelsController extends Controller
         $funnel = Funnels::find($funnel_id);
         if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
-
             return back();
         }
         $times = $funnel->times;
@@ -113,9 +108,8 @@ class FunnelsController extends Controller
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0 || !$request->has('text')) {
-            Toastr::error('Поля не заполнены', 'Ошибка');
-
+        if ($time == 0 || !$request->has('text') || !$request->has('media')) {
+            Toastr::error('Пропущены обязательные к заполнению поля', 'Ошибка');
             return back();
         }
 
@@ -162,16 +156,14 @@ class FunnelsController extends Controller
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0) {
-            Toastr::error('Неверно указано время', 'Ошибка');
-
+        if ($time == 0 || !$request->has('text') || !$request->has('media')) {
+            Toastr::error('Пропущены обязательные к заполнению поля', 'Ошибка');
             return back();
         }
 
         $ftime = FunnelsTime::find($request->get('time_id'));
         if (!isset($ftime)) {
             Toastr::error('Времени с таким ID не существует!', 'Ошибка');
-
             return back();
         }
 
@@ -188,7 +180,6 @@ class FunnelsController extends Controller
         ]);
 
         Toastr::success('Время успешно изменено!', 'Успешно');
-
         return back();
     }
 
@@ -197,7 +188,6 @@ class FunnelsController extends Controller
         $time = FunnelsTime::find($time_id);
         if (!isset($time)) {
             Toastr::error('Времени с таким ID не существует!', 'Ошибка');
-
             return back();
         }
         $time->delete();

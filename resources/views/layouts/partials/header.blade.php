@@ -63,6 +63,11 @@
                         Назад
                     </a>
                 @endif
+                @if( Request::is('group-tasks/times/*'))
+                    <a href="{{ route('groupTasks.index', ['group_id' => $group_id]) }}">
+                        Назад
+                    </a>
+                @endif
             </div>
             <div class="right template__badge-balance">
                 <span class="lime badge darken-3 white-text">Promo: {{$user->promo_balance}} р.</span>

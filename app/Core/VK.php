@@ -381,10 +381,16 @@ class VK
 
     public function getUserInfo($array)
     {
-        return $this->requestToApi('users.get', [
+        $response = $this->requestToApi('users.get', [
             'user_ids' => implode(',', $array),
             'fields' => 'photo_100'
-        ])['response'];
+        ]);
+
+        if(!isset($response['response'])){
+            return null;
+        }
+
+        return $response['response'];
     }
 
     public function massSend($message, $to, $media = '')

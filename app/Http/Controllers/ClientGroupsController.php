@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AutoDelivery;
+use App\Models\BotCommunityResponse;
 use App\Models\Funnels;
+use App\Models\ListRules;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\UserGroups;
@@ -12,6 +14,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Clients;
 use App\Models\ClientGroups;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ClientGroupsController extends Controller
 {
@@ -78,7 +81,10 @@ class ClientGroupsController extends Controller
         $clGroups->delete();
         Clients::where(['client_group_id' => $group_id])->delete();
         Funnels::where(['client_group_id' => $group_id])->delete();
+        BotCommunityResponse::where('add_group_id',$group_id)->update(['action_id' => null, 'add_group_id' => null]);
+        ListRules::where('client_group_id', $group_id)->delete();
 
+        Toastr::success('Список успешно удален!');
         return back();
     }
 
@@ -110,6 +116,11 @@ class ClientGroupsController extends Controller
         $userIds = [];
         foreach ($array as $item) {
             $user_info = $vk->getUserInfo($item);
+
+            if(!isset($user_info)){
+                continue;
+            }
+
             $userIds = array_merge($userIds, $user_info);
             sleep(1);
         }
@@ -238,6 +249,15 @@ class ClientGroupsController extends Controller
 
     public function downloadList(Request $request, $group_id){
         $clients = Clients::whereClientGroupId($group_id)->get()->toArray();
+        if(count($clients) == 0){
+            Toastr::error('Нет пользователей, привязанных к этому списку');
+            return back();
+        }
+
+        if(!file_exists(storage_path('app/download'))){
+            Storage::makeDirectory('download');
+        }
+
         $file = storage_path('app/download/'.uniqid('id').".txt");
         $ids = array_column($clients,'vk_id');
         file_put_contents($file, implode("\n", $ids));

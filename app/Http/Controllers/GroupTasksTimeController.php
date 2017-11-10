@@ -14,11 +14,11 @@ class GroupTasksTimeController extends Controller
     public function index($id)
     {
         $clientGroup = BotCommunityResponse::with('timeList')->find($id);
-
         return view('groupTasks.times.index', [
             "user" => \Auth::user(),
             'times' => $clientGroup->timeList,
-            'group_task_id' => $id
+            'group_task_id' => $id,
+            'group_id' => $clientGroup->group_id
         ]);
     }
 
