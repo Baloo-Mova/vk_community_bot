@@ -64,7 +64,6 @@ class ClientGroupsController extends Controller
         $clGroups = ClientGroups::find($request->get('group_id'));
         if (!isset($clGroups)) {
             Toastr::error('Группа не найдена', 'Ошибка');
-
             return back();
         }
         $clGroups->show_in_list = isset($request->need_show) ? true : false;
@@ -81,7 +80,7 @@ class ClientGroupsController extends Controller
         $clGroups->delete();
         Clients::where(['client_group_id' => $group_id])->delete();
         Funnels::where(['client_group_id' => $group_id])->delete();
-        BotCommunityResponse::where('add_group_id',$group_id)->update(['action_id' => null, 'add_group_id' => null]);
+        BotCommunityResponse::where('add_group_id', $group_id)->update(['action_id' => null, 'add_group_id' => null]);
         ListRules::where('client_group_id', $group_id)->delete();
 
         Toastr::success('Список успешно удален!');
@@ -97,7 +96,6 @@ class ClientGroupsController extends Controller
             $group = ClientGroups::find($group_id)->group;
         } catch (\Exception $ex) {
             Toastr::error('Ошибка добавления (Отсутствует группа?)', 'Ошибка');
-
             return back();
         }
 
@@ -117,7 +115,7 @@ class ClientGroupsController extends Controller
         foreach ($array as $item) {
             $user_info = $vk->getUserInfo($item);
 
-            if(!isset($user_info)){
+            if (!isset($user_info)) {
                 continue;
             }
 
@@ -197,7 +195,6 @@ class ClientGroupsController extends Controller
         }
 
         Toastr::success('Пользователи успешно добавлены!', 'Добавлено');
-
         return back();
     }
 
@@ -224,7 +221,7 @@ class ClientGroupsController extends Controller
         $userIds = [];
         foreach ($array as $item) {
             $tmp = $vk->getUserInfo($item);
-            if(!isset($tmp)){
+            if (!isset($tmp)) {
                 continue;
             }
             $userIds = array_merge($userIds, array_column($tmp, 'id'));
@@ -233,7 +230,6 @@ class ClientGroupsController extends Controller
         Clients::where('client_group_id', '=', $group_id)->whereIn('vk_id', $userIds)->delete();
 
         Toastr::success('Пользователи удачно удалены', 'Удалено');
-
         return back();
     }
 
@@ -242,28 +238,27 @@ class ClientGroupsController extends Controller
         $client = Clients::find($user_id);
         if (!isset($client)) {
             Toastr::error('Пользователь не найден!', 'Ошибка');
-
             return back();
         }
         $client->delete();
         Toastr::success('Пользователь удачно удален', 'Удалено');
-
         return back();
     }
 
-    public function downloadList(Request $request, $group_id){
+    public function downloadList(Request $request, $group_id)
+    {
         $clients = Clients::whereClientGroupId($group_id)->get()->toArray();
-        if(count($clients) == 0){
+        if (count($clients) == 0) {
             Toastr::error('Нет пользователей, привязанных к этому списку');
             return back();
         }
 
-        if(!file_exists(storage_path('app/download'))){
+        if (!file_exists(storage_path('app/download'))) {
             Storage::makeDirectory('download');
         }
 
-        $file = storage_path('app/download/'.uniqid('id').".txt");
-        $ids = array_column($clients,'vk_id');
+        $file = storage_path('app/download/' . uniqid('id') . ".txt");
+        $ids = array_column($clients, 'vk_id');
         file_put_contents($file, implode("\n", $ids));
 
         return Response::download($file);
