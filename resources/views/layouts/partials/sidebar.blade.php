@@ -38,7 +38,7 @@
         </a>
     </li>
     <li class="nonactive">
-        <a href="{{ route('inwork') }}" class="waves-effect waves-grey">
+        <a href="{{ route('partnership') }}" class="waves-effect waves-grey">
             <i class="fa fa-percent  fa-2x sidebar_icon" aria-hidden="true"></i>
             Партнерская программа
         </a>

@@ -30,6 +30,10 @@ Route::get('/vk-app-cancel/{to}', ['uses' => 'VkListenerController@cancelApp', '
 Route::get('/actions-invoked-list', ['uses' => 'GroupTasksController@invokedList', 'as' => 'actionsInvoked']);
 
 Route::group(['middleware' => ['vkAuth', 'auth']], function () {
+
+    Route::get('/partnership', ['uses' => 'BalanceController@partnership', 'as' => 'partnership']);
+    Route::post('/partnership', ['uses' => 'BalanceController@partnershipChange', 'as' => 'partnership.change']);
+
     Route::group(['middleware' => ['isAdmin']], function () {
         Route::get('/rate-list', ['uses' => 'RateController@index', 'as' => 'rate.index']);
         Route::post('/rate-edit', ['uses' => 'RateController@update', 'as' => 'rate.edit']);

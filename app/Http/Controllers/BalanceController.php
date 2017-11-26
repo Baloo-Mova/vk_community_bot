@@ -56,6 +56,35 @@ class BalanceController extends Controller
         return redirect($kassa->getPaymentUrl());
     }
 
+    public function partnership()
+    {
+        return view('balance.partnership', [
+            'user' => \Auth::user()
+        ]);
+    }
+
+
+    public function partnershipChange(Request $request)
+    {
+        $this->validate($request, [
+            'my_promo' => 'unique:users',
+        ], [
+            'my_promo.unique' => 'Данный промокод уже используется и не доступен'
+        ]);
+
+
+        $user = \Auth::user();
+        $old_promo = $user->my_promo;
+        $user->my_promo = $request->get('my_promo');
+        $user->save();
+
+        User::wherePromo($old_promo)->update(['promo' => $user->my_promo]);
+
+        Toastr::success('Ваш промокод успешно изменен!');
+
+        return back();
+    }
+
     public function checkResult()
     {
         $payment = new \Idma\Robokassa\Payment(config('robokassa.login'), config('robokassa.password1'),

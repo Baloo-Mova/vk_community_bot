@@ -48,7 +48,6 @@ class FunnelsController extends Controller
 
     public function edit(Request $request)
     {
-        return;
         $funnel = Funnels::find($request->get('funnel_id'));
         if (!isset($funnel)) {
             Toastr::error('Воронки с таким ID не существует!', 'Ошибка');
@@ -108,7 +107,7 @@ class FunnelsController extends Controller
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0 || !$request->has('text') || !$request->has('media')) {
+        if ($time == 0 || !$request->has('text')) {
             Toastr::error('Пропущены обязательные к заполнению поля', 'Ошибка');
             return back();
         }
@@ -156,7 +155,7 @@ class FunnelsController extends Controller
         $time += intval($h) * 3600;
         $time += intval($m) * 60;
 
-        if ($time == 0 || !$request->has('text') || !$request->has('media')) {
+        if ($time == 0 || !$request->has('text')) {
             Toastr::error('Пропущены обязательные к заполнению поля', 'Ошибка');
             return back();
         }
@@ -170,12 +169,14 @@ class FunnelsController extends Controller
         $oldValue = $ftime->time;
         $ftime->time = $time;
         $ftime->text = $request->get('text');
+        $ftime->media = $request->get('media');
         $ftime->save();
 
         $timeToUpdate = $time - $oldValue;
 
         AutoDelivery::where(['funnel_id' => $ftime->id])->update([
             'message' => $ftime->text,
+            'media' => $ftime->media,
             'when_send' => DB::raw('when_send + ' . $timeToUpdate)
         ]);
 

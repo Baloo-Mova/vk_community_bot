@@ -37,7 +37,7 @@ class VK
     public function __construct()
     {
         $this->httpClient = new Client([
-            'proxy' => env('PROXY', null) != null ? '194.28.210.3:8000' : '',
+            'proxy' => env('PROXY', null) != null ? '185.221.161.176:9296' : '',
             'verify' => false,
         ]);
     }
